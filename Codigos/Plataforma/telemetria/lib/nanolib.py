@@ -8,9 +8,9 @@ class Nano:
     def __init__(self):
         """Construtor
         Bota os métodos para funcionar
-        """ 
+        """
 
-        self.ser = serial.Serial(port='/dev/ttyUSB1',baudrate = 9600, timeout=1)   
+        self.ser = serial.Serial(port='/dev/ttyUSB1', baudrate=9600, timeout=1)
 
         self.wow = 0
         self.rpmD = 0
@@ -23,11 +23,11 @@ class Nano:
     def atualiza(self):
         """Atualiza a parada
 
-        """ 
-        x=self.ser.readline().decode("utf-8")
+        """
+        x = self.ser.readline().decode("utf-8")
         if(x != ""):
-            x = x.replace("\r\n","")
-            x = x.replace(" ","")
+            x = x.replace("\r\n", "")
+            x = x.replace(" ", "")
             y = x.split(",")
             if len(y) == 7:
                 self.wow = y[0]

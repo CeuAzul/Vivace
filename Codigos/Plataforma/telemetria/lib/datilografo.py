@@ -6,6 +6,7 @@ import shutil
 from shutil import copytree, ignore_patterns
 from .dado import Dado
 
+
 class Escritor:
     """É responsável pela escrita dos dados em um arquivo de texto.
     Esta classe será chamada toda vez que queremos gravar os valores
@@ -31,7 +32,8 @@ class Escritor:
     Nome arquivo - 03
     ...
     """
-    def __init__(self, separador=",", printaNome=True, printaUM=True, nomeArquivo="Telemetria - ", extensao=".csv", pasta ="/home/pi/Telemetria/Codigos/Plataforma/telemetria/Dados"):
+
+    def __init__(self, separador=",", printaNome=True, printaUM=True, nomeArquivo="Telemetria - ", extensao=".csv", pasta="/home/pi/Telemetria/Codigos/Plataforma/telemetria/Dados"):
         """Construtor inicializa parâmetros de configuração do Escritor
         No construtor ele já cria o arquivo, verifica se nome já existe, caso já exista, adiciona 1 no nome.
 
@@ -42,7 +44,7 @@ class Escritor:
         :param extensao: Extensão do arquivo a ser criado
         """
 
-        self.dados = []                 #vetor de Dado()
+        self.dados = []  # vetor de Dado()
         self.separador = separador
         self.printaNome = printaNome
         self.printaUM = printaUM
@@ -50,10 +52,11 @@ class Escritor:
         self.pasta = pasta
         self.extensao = extensao
         self.numeroArquivo = 1
-        while os.path.exists(self.pasta+"/"+self.nomeArquivo+str(self.numeroArquivo)+self.extensao):
+        while os.path.exists(self.pasta + "/" + self.nomeArquivo + str(self.numeroArquivo) + self.extensao):
             self.numeroArquivo += 1
-        self.nomeCompleto = self.pasta+"/"+self.nomeArquivo+str(self.numeroArquivo)+self.extensao
-        
+        self.nomeCompleto = self.pasta + "/" + self.nomeArquivo + \
+            str(self.numeroArquivo) + self.extensao
+
     def addDado(self, d):
         """Função que adiciona um dado no vetor de dados.
         NÃO UTILIZAR ESSA FUNÇÃO A MENOS QUE VOCÊ SAIBA O QUE TA FAZENDO.
@@ -65,7 +68,7 @@ class Escritor:
         """Função que atualiza o vetor de dados do Escritor com os dados que vem como parâmetro dessa função.
         O Escritor apenas consegue ver os dados que foram passados por meio dessa função.
         É utilizada como a porta de entrada para os dados que serão escritos.
-        
+
         :param d: Vetor de Dado que será escrito na ordem do vetor.
         """
         self.dados = d
@@ -74,7 +77,7 @@ class Escritor:
         """ Função pega tamanho do arquivo
         """
         try:
-            b = (os.path.getsize(self.nomeCompleto)/1000000)
+            b = (os.path.getsize(self.nomeCompleto) / 1000000)
             return b
         except Exception as e:
             print(e)
@@ -107,7 +110,8 @@ class Escritor:
             for x in self.dados:
                 if x.gravaDado:
                     if type(x.valor) == float:
-                        file.write("%.*f%s" % (x.casasDecimais, x.valor, self.separador))
+                        file.write("%.*f%s" %
+                                   (x.casasDecimais, x.valor, self.separador))
                     else:
                         file.write("%s%s" % (x.valor, self.separador))
             file.write("\r\n")
@@ -116,14 +120,11 @@ class Escritor:
         nomesPastas = os.listdir("/media/pi")
         try:
             for pen in nomesPastas:
-                if pen != "SETTINGS" :
-                    d = datetime.datetime.now().strftime('%d%m%Y_%H%M%S%f')[:-3]
+                if pen != "SETTINGS":
+                    d = datetime.datetime.now().strftime(
+                        '%d%m%Y_%H%M%S%f')[:-3]
                     source = self.pasta
-                    destination = '/media/pi/%s/Telemetria/Dados_%s' % (pen,d)
+                    destination = '/media/pi/%s/Telemetria/Dados_%s' % (pen, d)
                     copytree(source, destination)
         except Exception as e:
             print(e)
-
-        
-
-

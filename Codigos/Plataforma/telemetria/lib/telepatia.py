@@ -3,6 +3,7 @@ import serial
 import time
 from .dado import Dado
 
+
 class Transmissor:
     """ Esta classe é chamada toda vez que queremos transmitir um dado usando o transceiver da 3DR
     Depois de criar os dados, utiza-se a função setDados() para popular o vetor dessa classe com os
@@ -14,8 +15,8 @@ class Transmissor:
     - Por fim, chame a função transmiteLinha()
 
     """
-    
-    def __init__(self, separador = ",", protocolo = True,  baudRate = 57600, codificacao='UTF-8'):
+
+    def __init__(self, separador=",", protocolo=True,  baudRate=57600, codificacao='UTF-8'):
         """Construtor inicializa parâmetros de configuração do Transmissor
         Exitem dois métodos de transmissão, utilizando o protolo ou não.
 
@@ -25,13 +26,13 @@ class Transmissor:
         Não utilizando protocolo: As mensagens são enviadas da mesma ordem que os dados são gravados
         "valor1, valor2, valor3"
 
-        
+
         :param separador: Especifica o tipo de separados dos valores mais comum é virgula espaço ou tabulação
         :param protocolo: Indica a utilização ou não do protocolo
         :param baudRate: Taxa de transmissão da serial
         :param codificacao: Tipo de codificação dos caracteres ASCII
         """
-        self.dados=[]
+        self.dados = []
         self.separador = separador
         self.baudRate = baudRate
         self.separador = separador
@@ -43,7 +44,7 @@ class Transmissor:
         """Função que atualiza o vetor de dados do Transmissor com os dados que vem como parâmetro dessa função.
         O Transmissor apenas consegue ver os dados que foram passados por meio dessa função.
         É utilizada como a porta de entrada para os dados que serão escritos.
-        
+
         :param d: Vetor de Dado que será escrito na ordem do vetor.
         """
         self.dados = d
@@ -58,10 +59,12 @@ class Transmissor:
         for x in self.dados:
             if x.transmiteDado:
                 if self.protocolo:
-                    self.ser.write(bytes("!"+x.apelido+"="+str(x.valor)+"@\n", self.codificacao))
+                    self.ser.write(bytes("!" + x.apelido + "=" +
+                                         str(x.valor) + "@\n", self.codificacao))
                 else:
-                    self.ser.write(bytes(str(x.valor)+self.separador, self.codificacao))
-        if not self.protocolo:            
+                    self.ser.write(
+                        bytes(str(x.valor) + self.separador, self.codificacao))
+        if not self.protocolo:
             self.ser.write(bytes("\n", self.codificacao))
 
     def leLinha(self):
@@ -69,5 +72,5 @@ class Transmissor:
 
         :returns: String do telecomando
         """
-        x=self.ser.readline().decode("utf-8")
+        x = self.ser.readline().decode("utf-8")
         return x

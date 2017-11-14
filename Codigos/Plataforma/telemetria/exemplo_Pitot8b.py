@@ -8,18 +8,17 @@ from lib.datilografo import Escritor
 from lib.pitot8b import Pitot8b
 import time
 
-#Cria objeto Escritor
+# Cria objeto Escritor
 escritor = Escritor("   ", True, True, "Pitot 8b - ", ".csv")
 
-#Cria objeto do pitot com ADC 8 bits
-pitot8b = Pitot8b(0);
-pitot8b2 = Pitot8b(1);
-pitot8b3 = Pitot8b(2);
-pitot8b4 = Pitot8b(3);
+# Cria objeto do pitot com ADC 8 bits
+pitot8b = Pitot8b(0)
+pitot8b2 = Pitot8b(1)
+pitot8b3 = Pitot8b(2)
+pitot8b4 = Pitot8b(3)
 
 
-
-#Cria alguns dados do pitot
+# Cria alguns dados do pitot
 item = Dado("Item", "it", "itn", True, True, False)
 tempo = Dado("Tempo", "Segundos", "tmp", True, True, False)
 valADC = Dado("Valor direto do ADC", "byte", "ppa", True, True, True)
@@ -32,21 +31,24 @@ velcas4 = Dado("Velocidade calibrada Pitot 4", "m/s", "vel4", True, True, True)
 rpm1 = Dado("rpm1", "rpm", "rpm1", True, True, True)
 rpm2 = Dado("rpm2", "rpm", "rpm2", True, True, True)
 
-inicio = int(round(time.time()*1000))
+inicio = int(round(time.time() * 1000))
+
 
 def atualizaEscritor():
     """Atualiza vetor de dados e passa eles para o Escritor
     """
-    d = [item, tempo, valADC, tensao, pressaoDin, velcas, velcas2, velcas3, velcas4, rpm1, rpm2]
+    d = [item, tempo, valADC, tensao, pressaoDin,
+         velcas, velcas2, velcas3, velcas4, rpm1, rpm2]
     escritor.setDados(d)
 
-#Faz cabeçalho
+
+# Faz cabeçalho
 atualizaEscritor()
 escritor.fazCabecalho()
-tempoAgora = int(round(time.time()*1000)) - inicio
+tempoAgora = int(round(time.time() * 1000)) - inicio
 item.setValor(0)
 
-#Faz iterações de escritas de linha, modificando os valore dos dados
+# Faz iterações de escritas de linha, modificando os valore dos dados
 for x in range(1000):
     pitot8b.atualiza(10, 1.218)
     pitot8b2.atualiza(20, 1.218)
@@ -67,15 +69,13 @@ for x in range(1000):
 
     if(x == 500):
         pitot8b.setReferenciaAqui(20)
-        
 
-    item.setValor(item.getValor()+1)
-    tempoAgora = int(round(time.time()*1000)) - inicio
+    item.setValor(item.getValor() + 1)
+    tempoAgora = int(round(time.time() * 1000)) - inicio
     tempo.setValor(tempoAgora)
-    print(velcas.getValor(), velcas2.getValor(), rpm1.getValor(), rpm2.getValor())
+    print(velcas.getValor(), velcas2.getValor(),
+          rpm1.getValor(), rpm2.getValor())
     atualizaEscritor()
     escritor.escreveLinhaDado()
 
-
-        #valADC.getValor(),", ", tensao.getValor(),", ", pressaoDin.getValor(),", ",
-            
+    #valADC.getValor(),", ", tensao.getValor(),", ", pressaoDin.getValor(),", ",

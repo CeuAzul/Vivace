@@ -9,14 +9,14 @@ from lib.mpulib import MPU
 from lib.datilografo import Escritor
 from lib.telepatia import Transmissor
 
-#Cria objeto da MPU
+# Cria objeto da MPU
 mpu = MPU(True, True, True, True, True, True, True, True)
 
-#Cria escritor e transmissor
+# Cria escritor e transmissor
 escritor = Escritor(",", True, True, "Aceleração - ", ".csv")
 transmissor = Transmissor(",", True, 57600, 'UTF-8')
 
-#Cria objeto dos dados
+# Cria objeto dos dados
 item = Dado("Item", "it", "itn", True, False, False)
 tempo = Dado("Tempo", "Segundos", "tmp", True, True, False)
 taxaGiroX = Dado("Taxa de giro em X", "º/s", "gyx", True, False, False)
@@ -28,14 +28,15 @@ aceleracaoZ = Dado("Aceleração em Z", "g", "acz", True, True, False)
 pitch = Dado("Pitch", "º", "pit", True, True, False)
 roll = Dado("Roll", "º", "rol", True, True, False)
 
-inicio = int(round(time.time()*1000))
+inicio = int(round(time.time() * 1000))
+
 
 def atualizaEscritor():
     """Função que atualiza os dados do Escritor, com o vetor de dados atualizados.
     """
-    d = [tempo, item, taxaGiroX, taxaGiroY, taxaGiroZ, aceleracaoX, aceleracaoY, aceleracaoZ, pitch, roll]
+    d = [tempo, item, taxaGiroX, taxaGiroY, taxaGiroZ,
+         aceleracaoX, aceleracaoY, aceleracaoZ, pitch, roll]
     escritor.setDados(d)
-
 
 
 def transmiteDado(delay):
@@ -43,13 +44,12 @@ def transmiteDado(delay):
     A função atualiza o vetor de dados do transmissor e transmite os dados selecionados
     """
     while True:
-        d = [tempo, item, taxaGiroX, taxaGiroY, taxaGiroZ, aceleracaoX, aceleracaoY, aceleracaoZ, pitch, roll]
+        d = [tempo, item, taxaGiroX, taxaGiroY, taxaGiroZ,
+             aceleracaoX, aceleracaoY, aceleracaoZ, pitch, roll]
         transmissor.setDados(d)
         transmissor.transmiteLinha()
         time.sleep(delay)
-        
-        
-    
+
 
 def atualizaIMU():
     """Função que atualiza os dados da IMU e passa para as variáveis do código global.
@@ -65,24 +65,24 @@ def atualizaIMU():
     roll.setValor(mpu.getRoll())
 
 
-#Faz cabeçalho
+# Faz cabeçalho
 atualizaEscritor()
 escritor.fazCabecalho()
 
-tempoAgora = int(round(time.time()*1000)) - inicio
+tempoAgora = int(round(time.time() * 1000)) - inicio
 item.setValor(0)
 
-#Cria thread de transmisão de dados
+# Cria thread de transmisão de dados
 t = threading.Thread(target=transmiteDado, args=(0.05,))
 t.setDaemon(True)
 t.start()
 
-#Código periódico responsável por gravar os dados no arquivo e atualizar a IMU
-while True :
+# Código periódico responsável por gravar os dados no arquivo e atualizar a IMU
+while True:
     try:
         atualizaIMU()
-        item.setValor(item.getValor()+1)
-        tempoAgora = int(round(time.time()*1000)) - inicio
+        item.setValor(item.getValor() + 1)
+        tempoAgora = int(round(time.time() * 1000)) - inicio
         tempo.setValor(tempoAgora)
         atualizaEscritor()
         escritor.escreveLinhaDado()
@@ -91,9 +91,3 @@ while True :
         t.kill_received = True
         print("saiu")
         exit()
-    
-
-
-
-        
-            

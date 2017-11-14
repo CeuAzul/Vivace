@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+
 class Dado:
     """
     Esta classe é criada com o objetivo de servir como objeto para um dado.
@@ -9,7 +10,8 @@ class Dado:
     o ultimo valor captado pelo sensor, dessa forma, sabemos exatamente o valor
     atual do dado.
     """
-    def __init__(self, nome, unidadeMedida, apelido, gravaDado = True, transmiteDado = False, printaDado = False, casasDecimais = 3):
+
+    def __init__(self, nome, unidadeMedida, apelido, gravaDado=True, transmiteDado=False, printaDado=False, casasDecimais=3):
         """Construtor: Inicializa variáveis necessárias
         :param name: Nome completo do dado
         :param unidadeMedida: Unidade de medida do dado
@@ -22,7 +24,7 @@ class Dado:
         """
         self.nome = nome
         self.unidadeMedida = unidadeMedida
-        self.apelido = apelido  #Deve conter 3 letras/numeros
+        self.apelido = apelido  # Deve conter 3 letras/numeros
         self.gravaDado = gravaDado
         self.transmiteDado = transmiteDado
         self.printaDado = printaDado
@@ -33,7 +35,7 @@ class Dado:
         """Função seta o valor atual da variável para a especificada no parâmetro
         :param valor: Valor atual do dado
         """
-        #Filtrar dado aqui
+        # Filtrar dado aqui
         self.valor = valor
 
     def getValor(self):
@@ -59,5 +61,3 @@ class Dado:
         :param mode: Boolean indicando se deve ser exibido ou não
         """
         self.printDado = mode
-
-        

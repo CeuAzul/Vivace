@@ -26,42 +26,44 @@ NaN = float('nan')
 def isnan(x):
     return str(x) == 'nan'
 
+
 # Don't hand-hack this list, it's generated.
-ONLINE_SET      = (1 << 1)
-TIME_SET        = (1 << 2)
-TIMERR_SET      = (1 << 3)
-LATLON_SET      = (1 << 4)
-ALTITUDE_SET    = (1 << 5)
-SPEED_SET       = (1 << 6)
-TRACK_SET       = (1 << 7)
-CLIMB_SET       = (1 << 8)
-STATUS_SET      = (1 << 9)
-MODE_SET        = (1 << 10)
-DOP_SET         = (1 << 11)
-HERR_SET        = (1 << 12)
-VERR_SET        = (1 << 13)
-ATTITUDE_SET    = (1 << 14)
-SATELLITE_SET   = (1 << 15)
-SPEEDERR_SET    = (1 << 16)
-TRACKERR_SET    = (1 << 17)
-CLIMBERR_SET    = (1 << 18)
-DEVICE_SET      = (1 << 19)
-DEVICELIST_SET  = (1 << 20)
-DEVICEID_SET    = (1 << 21)
-RTCM2_SET       = (1 << 22)
-RTCM3_SET       = (1 << 23)
-AIS_SET         = (1 << 24)
-PACKET_SET      = (1 << 25)
-SUBFRAME_SET    = (1 << 26)
-GST_SET         = (1 << 27)
-VERSION_SET     = (1 << 28)
-POLICY_SET      = (1 << 29)
-LOGMESSAGE_SET  = (1 << 30)
-ERROR_SET       = (1 << 31)
-TIMEDRIFT_SET   = (1 << 32)
-EOF_SET         = (1 << 33)
+ONLINE_SET = (1 << 1)
+TIME_SET = (1 << 2)
+TIMERR_SET = (1 << 3)
+LATLON_SET = (1 << 4)
+ALTITUDE_SET = (1 << 5)
+SPEED_SET = (1 << 6)
+TRACK_SET = (1 << 7)
+CLIMB_SET = (1 << 8)
+STATUS_SET = (1 << 9)
+MODE_SET = (1 << 10)
+DOP_SET = (1 << 11)
+HERR_SET = (1 << 12)
+VERR_SET = (1 << 13)
+ATTITUDE_SET = (1 << 14)
+SATELLITE_SET = (1 << 15)
+SPEEDERR_SET = (1 << 16)
+TRACKERR_SET = (1 << 17)
+CLIMBERR_SET = (1 << 18)
+DEVICE_SET = (1 << 19)
+DEVICELIST_SET = (1 << 20)
+DEVICEID_SET = (1 << 21)
+RTCM2_SET = (1 << 22)
+RTCM3_SET = (1 << 23)
+AIS_SET = (1 << 24)
+PACKET_SET = (1 << 25)
+SUBFRAME_SET = (1 << 26)
+GST_SET = (1 << 27)
+VERSION_SET = (1 << 28)
+POLICY_SET = (1 << 29)
+LOGMESSAGE_SET = (1 << 30)
+ERROR_SET = (1 << 31)
+TIMEDRIFT_SET = (1 << 32)
+EOF_SET = (1 << 33)
 SET_HIGH_BIT = 34
-UNION_SET = (RTCM2_SET|RTCM3_SET|SUBFRAME_SET|AIS_SET|VERSION_SET|DEVICELIST_SET|ERROR_SET|GST_SET)
+UNION_SET = (RTCM2_SET | RTCM3_SET | SUBFRAME_SET | AIS_SET |
+             VERSION_SET | DEVICELIST_SET | ERROR_SET | GST_SET)
 STATUS_NO_FIX = 0
 STATUS_FIX = 1
 STATUS_DGPS_FIX = 2
@@ -71,17 +73,17 @@ MODE_3D = 3
 MAXCHANNELS = 20
 SIGNAL_STRENGTH_UNKNOWN = NaN
 
-WATCH_ENABLE   = 0x000001	 # enable streaming
-WATCH_DISABLE  = 0x000002    # disable watching
-WATCH_JSON     = 0x000010	 # JSON output
-WATCH_NMEA     = 0x000020	 # output in NMEA
-WATCH_RARE     = 0x000040	 # output of packets in hex
-WATCH_RAW      = 0x000080	 # output of raw packets
-WATCH_SCALED   = 0x000100	 # scale output to floats
-WATCH_TIMING   = 0x000200	 # timing information
-WATCH_DEVICE   = 0x000800	 # watch specific device
-WATCH_SPLIT24  = 0x001000    # split AIS Type 24s
-WATCH_PPS      = 0x002000    # enable PPS JSON
+WATCH_ENABLE = 0x000001	 # enable streaming
+WATCH_DISABLE = 0x000002    # disable watching
+WATCH_JSON = 0x000010	 # JSON output
+WATCH_NMEA = 0x000020	 # output in NMEA
+WATCH_RARE = 0x000040	 # output of packets in hex
+WATCH_RAW = 0x000080	 # output of raw packets
+WATCH_SCALED = 0x000100	 # scale output to floats
+WATCH_TIMING = 0x000200	 # timing information
+WATCH_DEVICE = 0x000800	 # watch specific device
+WATCH_SPLIT24 = 0x001000    # split AIS Type 24s
+WATCH_PPS = 0x002000    # enable PPS JSON
 WATCH_NEWSTYLE = 0x010000    # force JSON streaming
 WATCH_OLDSTYLE = 0x020000    # force old-style streaming
 
@@ -117,11 +119,12 @@ class GPSData:
 
         def __repr__(self):
             return "PRN: %3d  E: %3d  Az: %3d  Ss: %3d  Used: %s" % (
-                self.PRN, self.elevation, self.azimuth, self.ss, "ny"[self.used]
+                self.PRN, self.elevation, self.azimuth, self.ss, "ny"[
+                    self.used]
             )
 
     def __init__(self):
-        # Initialize all data members 
+        # Initialize all data members
         self.online = 0                 # NZ if GPS on, zero if not
 
         self.valid = 0
@@ -164,10 +167,13 @@ class GPSData:
             st += "Track:    ?\n"
         else:
             st += "Track:    %f\n" % (self.fix.track)
-        st += "Status:   STATUS_%s\n" % ("NO_FIX", "FIX", "DGPS_FIX")[self.status]
-        st += "Mode:     MODE_%s\n" % ("ZERO", "NO_FIX", "2D", "3D")[self.fix.mode]
+        st += "Status:   STATUS_%s\n" % ("NO_FIX",
+                                         "FIX", "DGPS_FIX")[self.status]
+        st += "Mode:     MODE_%s\n" % ("ZERO",
+                                       "NO_FIX", "2D", "3D")[self.fix.mode]
         st += "Quality:  %d p=%2.2f h=%2.2f v=%2.2f t=%2.2f g=%2.2f\n" % \
-              (self.satellites_used, self.pdop, self.hdop, self.vdop, self.tdop, self.gdop)
+              (self.satellites_used, self.pdop,
+               self.hdop, self.vdop, self.tdop, self.gdop)
         st += "Y: %s satellites in view:\n" % len(self.satellites)
         for sat in self.satellites:
             st += "    %r\n" % sat
@@ -176,6 +182,7 @@ class GPSData:
 
 class GPS(GPSCommon, GPSData, GPSJson):
     """ Client interface to a running gpsd instance. """
+
     def __init__(self, host="127.0.0.1", port=GPSD_PORT, verbose=0, mode=0):
         GPSCommon.__init__(self, host, port, verbose)
         GPSData.__init__(self)
@@ -253,7 +260,8 @@ class GPS(GPSCommon, GPSData, GPSJson):
                     d1 = int(prefix.pop())
                     new_sats = []
                     for i in range(d1):
-                        new_sats.append(GPS.Satellite(*map(int, satellites[i].split())))
+                        new_sats.append(GPS.Satellite(
+                            *map(int, satellites[i].split())))
                     self.satellites = new_sats
                     self.valid |= SATELLITE_SET
 
@@ -271,8 +279,8 @@ class GPS(GPSCommon, GPSData, GPSJson):
             self.valid = ONLINE_SET | DEVICE_SET
             self.path = self.data["path"]
             self.activated = default("activated", None)
-            driver = default("driver", None, DEVICEID_SET) 
-            subtype = default("subtype", None, DEVICEID_SET) 
+            driver = default("driver", None, DEVICEID_SET)
+            subtype = default("subtype", None, DEVICEID_SET)
             self.gps_id = driver
             if subtype:
                 self.gps_id += " " + subtype
@@ -286,13 +294,15 @@ class GPS(GPSCommon, GPSData, GPSJson):
             self.utc = default("time", None, TIME_SET)
             if self.utc is not None:
                 # Time can be either Unix time as a float or an ISO8601 string
-                ##print("GPS: received fix.time type={}".format(type(self.fix.time)))     # TODO: Remove after verified
-                if isinstance(self.fix.time, float):    # changed from type(self.fix.time) == type(0.0):
+                # print("GPS: received fix.time type={}".format(type(self.fix.time)))     # TODO: Remove after verified
+                # changed from type(self.fix.time) == type(0.0):
+                if isinstance(self.fix.time, float):
                     self.fix.time = self.utc
                 elif isinstance(self.fix.time, bytes):  # added
                     self.fix.time = iso_time(self.utc.encode("ascii"))
                 else:
-                    self.fix.time = iso_time(self.utc)  # changed from iso_time(self.utc.encode("ascii"))
+                    # changed from iso_time(self.utc.encode("ascii"))
+                    self.fix.time = iso_time(self.utc)
             self.fix.ept = default("ept",   NaN, TIMERR_SET)
             self.fix.latitude = default("lat",   NaN, LATLON_SET)
             self.fix.longitude = default("lon",   NaN)
@@ -309,11 +319,13 @@ class GPS(GPSCommon, GPSData, GPSJson):
             self.fix.mode = default("mode",  0,   MODE_SET)
         elif self.data.get("class") == "SKY":
             for attrp in ("x", "y", "v", "h", "p", "g"):
-                setattr(self, attrp+"dop", default(attrp+"dop", NaN, DOP_SET))
+                setattr(self, attrp + "dop",
+                        default(attrp + "dop", NaN, DOP_SET))
             if "satellites" in self.data.keys():
-                self.satellites = [] 
+                self.satellites = []
                 for sat in self.data['satellites']:
-                    self.satellites.append(GPS.Satellite(PRN=sat['PRN'], elevation=sat['el'], azimuth=sat['az'], ss=sat['ss'], used=sat['used']))
+                    self.satellites.append(GPS.Satellite(
+                        PRN=sat['PRN'], elevation=sat['el'], azimuth=sat['az'], ss=sat['ss'], used=sat['used']))
             self.satellites_used = 0
             for sat in self.satellites:
                 if sat.used:
@@ -355,7 +367,7 @@ class GPS(GPSCommon, GPSData, GPSJson):
                     return self.send(arg)
             else:
                 GPSJson.stream(self, ~flags, devpath)
-        else: # flags & WATCH_ENABLE:
+        else:  # flags & WATCH_ENABLE:
             if flags & WATCH_OLDSTYLE:
                 arg = 'w+'
                 if flags & WATCH_NMEA:
@@ -363,6 +375,7 @@ class GPS(GPSCommon, GPSData, GPSJson):
                     return self.send(arg)
             else:
                 GPSJson.stream(self, flags, devpath)
+
 
 if __name__ == '__main__':
     import getopt

@@ -7,14 +7,14 @@ from lib.dado import Dado
 from lib.datilografo import Escritor
 from lib.nanolib import Nano
 
-#Cria objeto do transmissor
+# Cria objeto do transmissor
 nano = Nano()
 
-#Cria objeto Escritor
+# Cria objeto Escritor
 escritor = Escritor(",", True, True, "Fred - ", ".csv")
 
 
-#Cria objetos dos Dados
+# Cria objetos dos Dados
 tempo = Dado("Tempo", "Segundos", "tmp", True, True, True)
 cor1 = Dado("Corrente1", "A", "cru", True, True, False)
 cor2 = Dado("Corrente2", "A", "crd", True, True, False)
@@ -24,7 +24,8 @@ pwm1 = Dado("PWM1", "Microssec", "pwu", True, False, False)
 pwm2 = Dado("PWM2", "Microssec", "pwd", True, False, False)
 pwm3 = Dado("PWM3", "Microssec", "pwt", True, False, False)
 
-inicio = int(round(time.time()*1000))
+inicio = int(round(time.time() * 1000))
+
 
 def atualizaEscritor():
     """Atualiza vetor de dados e passa eles para o Escritor
@@ -33,12 +34,12 @@ def atualizaEscritor():
     escritor.setDados(d)
 
 
-#Faz cabeçalho
+# Faz cabeçalho
 atualizaEscritor()
 escritor.fazCabecalho()
-tempoAgora = int(round(time.time()*1000)) - inicio
+tempoAgora = int(round(time.time() * 1000)) - inicio
 
-#Faz iterações de escritas de linha, modificando os valore dos dados
+# Faz iterações de escritas de linha, modificando os valore dos dados
 for x in range(1000):
     nano.atualiza()
     cor1.setValor(nano.getRpmD())
@@ -48,13 +49,10 @@ for x in range(1000):
     pwm1.setValor(nano.getTempoVoo())
     pwm2.setValor(nano.getDistancia())
     pwm3.setValor(nano.getDistRef())
-    tempoAgora = int(round(time.time()*1000)) - inicio
+    tempoAgora = int(round(time.time() * 1000)) - inicio
     tempo.setValor(tempoAgora)
-    print(cor1.getValor(),", ", cor2.getValor(),", ", cor3.getValor(),", ", voltBat.getValor(),", ", pwm1.getValor(),", ", pwm2.getValor(),", ",pwm3.getValor())
+    print(cor1.getValor(), ", ", cor2.getValor(), ", ", cor3.getValor(), ", ", voltBat.getValor(
+    ), ", ", pwm1.getValor(), ", ", pwm2.getValor(), ", ", pwm3.getValor())
     atualizaEscritor()
     escritor.escreveLinhaDado()
     time.sleep(0.2)
-
-
-        
-            
