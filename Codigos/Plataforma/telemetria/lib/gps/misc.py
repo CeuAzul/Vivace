@@ -23,12 +23,12 @@ MPS_TO_KNOTS = 1.9438445	     # Meters per second to knots
 
 def degree_to_radian(x):
     """ Degrees to radians. """
-    return x * (math.pi/180)
+    return x * (math.pi / 180)
 
 
 def radian_to_degree(x):
     """ Radians to degrees. """
-    return x * (180/math.pi)
+    return x * (180 / math.pi)
 
 
 def calc_rad(lat):
@@ -59,13 +59,17 @@ def calc_rad(lat):
 
 def earth_distance(lat1, lon1, lat2, lon2):
     """ Distance in meters between two points specified in degrees. """
-    x1 = calc_rad(lat1) * math.cos(degree_to_radian(lon1)) * math.sin(degree_to_radian(90-lat1))
-    x2 = calc_rad(lat2) * math.cos(degree_to_radian(lon2)) * math.sin(degree_to_radian(90-lat2))
-    y1 = calc_rad(lat1) * math.sin(degree_to_radian(lon1)) * math.sin(degree_to_radian(90-lat1))
-    y2 = calc_rad(lat2) * math.sin(degree_to_radian(lon2)) * math.sin(degree_to_radian(90-lat2))
-    z1 = calc_rad(lat1) * math.cos(degree_to_radian(90-lat1))
-    z2 = calc_rad(lat2) * math.cos(degree_to_radian(90-lat2))
-    a = (x1*x2 + y1*y2 + z1*z2)/pow(calc_rad((lat1+lat2)/2), 2)
+    x1 = calc_rad(lat1) * math.cos(degree_to_radian(lon1)) * \
+        math.sin(degree_to_radian(90 - lat1))
+    x2 = calc_rad(lat2) * math.cos(degree_to_radian(lon2)) * \
+        math.sin(degree_to_radian(90 - lat2))
+    y1 = calc_rad(lat1) * math.sin(degree_to_radian(lon1)) * \
+        math.sin(degree_to_radian(90 - lat1))
+    y2 = calc_rad(lat2) * math.sin(degree_to_radian(lon2)) * \
+        math.sin(degree_to_radian(90 - lat2))
+    z1 = calc_rad(lat1) * math.cos(degree_to_radian(90 - lat1))
+    z2 = calc_rad(lat2) * math.cos(degree_to_radian(90 - lat2))
+    a = (x1 * x2 + y1 * y2 + z1 * z2) / pow(calc_rad((lat1 + lat2) / 2), 2)
     # a should be in [1, -1] but can sometimes fall outside it by
     # a very small amount due to rounding errors in the preceding
     # calculations (this is prone to happen when the argument points
@@ -74,15 +78,17 @@ def earth_distance(lat1, lon1, lat2, lon2):
         a = 1
     elif a < -1:
         a = -1
-    return calc_rad((lat1+lat2) / 2) * math.acos(a)
+    return calc_rad((lat1 + lat2) / 2) * math.acos(a)
 
 
 def meter_offset(lat1, lon1, lat2, lon2):
     """ Return offset in meters of second arg from first. """
     dx = earth_distance(lat1, lon1, lat1, lon2)
     dy = earth_distance(lat1, lon1, lat2, lon1)
-    if lat1 < lat2: dy *= -1
-    if lon1 < lon2: dx *= -1
+    if lat1 < lat2:
+        dy *= -1
+    if lon1 < lon2:
+        dx *= -1
     return dx, dy
 
 
@@ -103,10 +109,9 @@ def iso_time(s):
         else:
             date = s
             msec = "0"
-        # Note: no leap-second correction! 
+        # Note: no leap-second correction!
         return calendar.timegm(time.strptime(date, "%Y-%m-%dT%H:%M:%S")) + float("0." + msec)
     else:
         raise TypeError
 
 # End
-

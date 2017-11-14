@@ -4,7 +4,7 @@
 import time
 import socket
 import sys
-import select    #, exceptions
+import select  # , exceptions
 
 if sys.hexversion >= 0x2060000:
     import json			        # For Python 2.6
@@ -23,6 +23,7 @@ class JsonError(Exception):
 
 class GPSCommon:
     """ Isolate socket handling and buffering from the protocol interpretation. """
+
     def __init__(self, host="127.0.0.1", port=GPSD_PORT, verbose=0):
         self.sock = None        # in case we blow up in connect
         self.linebuffer = ""
@@ -40,12 +41,12 @@ class GPSCommon:
         if not port and (host.find(':') == host.rfind(':')):
             i = host.rfind(':')
             if i >= 0:
-                host, port = host[:i], host[i+1:]
+                host, port = host[:i], host[i + 1:]
             try:
                 port = int(port)
             except ValueError:
                 raise socket.error("nonnumeric port")
-        #if self.verbose > 0:
+        # if self.verbose > 0:
         #    print 'connect:', (host, port)
         msg = "getaddrinfo returns an empty list"
         self.sock = None
@@ -53,10 +54,10 @@ class GPSCommon:
             af, socktype, proto, _canonname, sa = res
             try:
                 self.sock = socket.socket(af, socktype, proto)
-                #if self.debuglevel > 0: print 'connect:', (host, port)
+                # if self.debuglevel > 0: print 'connect:', (host, port)
                 self.sock.connect(sa)
             except socket.error as msg:
-                #if self.debuglevel > 0: print 'connect fail:', (host, port)
+                # if self.debuglevel > 0: print 'connect fail:', (host, port)
                 self.close()
                 continue
             break
@@ -75,7 +76,8 @@ class GPSCommon:
         """ Return True if data is ready for the client. """
         if self.linebuffer:
             return True
-        (winput, _woutput, _wexceptions) = select.select((self.sock,), (), (), timeout)
+        (winput, _woutput, _wexceptions) = select.select(
+            (self.sock,), (), (), timeout)
         return winput != []
 
     def read(self):
@@ -131,6 +133,7 @@ class GPSCommon:
             commands += "\n"
         self.sock.send(bytes(commands, 'UTF-8'))    # convert to UTF-8 bytes
 
+
 WATCH_ENABLE = 0x000001	    # enable streaming
 WATCH_DISABLE = 0x000002    # disable watching
 WATCH_JSON = 0x000010	    # JSON output
@@ -146,6 +149,7 @@ WATCH_DEVICE = 0x000800	    # watch specific device
 
 class GPSJson:
     """ Basic JSON decoding. """
+
     def __iter__(self):
         return self
 
@@ -179,7 +183,7 @@ class GPSJson:
                 arg += ',"split24":false'
             if flags & WATCH_PPS:
                 arg += ',"pps":false'
-        else: # flags & WATCH_ENABLE:
+        else:  # flags & WATCH_ENABLE:
             arg = '?WATCH={"enable":true'
             if flags & WATCH_JSON:
                 arg += ',"json":true'
@@ -204,6 +208,7 @@ class GPSJson:
 
 class DictWrapper:
     """ Wrapper that yields both class and dictionary behavior """
+
     def __init__(self, ddict):
         self.__dict__ = ddict
 

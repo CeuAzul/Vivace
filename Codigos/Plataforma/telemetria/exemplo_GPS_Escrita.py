@@ -10,11 +10,11 @@ import datetime
 
 NaN = float('nan')
 
-#Cria objeto do GPS e do Escritor
+# Cria objeto do GPS e do Escritor
 gps = Gps()
 escritor = Escritor(",", True, True, "GPS - ", ".csv")
 
-#Cria Objeto dos dados
+# Cria Objeto dos dados
 item = Dado("Item", "it", "itn", True, True, False)
 tempo = Dado("Tempo", "Segundos", "tmp", True, True, False)
 dadoTempoGPS = Dado("Tempo GPS", "-", "tmg", True, True, False)
@@ -24,13 +24,15 @@ longitude = Dado("Longitude", "º", "lng", True, True, False)
 altitude = Dado("Altitude", "m", "alt", True, True, False)
 direcaoCurso = Dado("Direção de curso", "º", "cog", True, True, False)
 velocidade = Dado("Velocidade GPS", "nós", "vel", True, True, False)
-velocidadeSubida = Dado("Velocidade de subida", "m/s", "ves", True, True, False)
+velocidadeSubida = Dado("Velocidade de subida", "m/s",
+                        "ves", True, True, False)
 
 erroX = Dado("Erro em X", "m", "erx", True, True, False)
 erroY = Dado("Erro em Y", "m", "ery", True, True, False)
 erroAltitude = Dado("Erro da altitude", "m", "era", True, True, False)
 erroVelocidade = Dado("Erro de velocidade", "nós", "ers", True, True, False)
-erroVelocidadeSubida = Dado("Erro da velocidade de subida", "m/s", "ves", True, True, False)
+erroVelocidadeSubida = Dado(
+    "Erro da velocidade de subida", "m/s", "ves", True, True, False)
 
 nivelFixacao = Dado("Nivel de fixação GPS", "-", "mfx", True, True, False)
 latitudeRef = Dado("Latitude de referência", "-", "ltr", True, True, False)
@@ -42,16 +44,18 @@ distanciaAbsoluta = Dado("Distancia absoluta", "m", "dtr", True, True, False)
 
 
 tempoGPS = NaN
-utc = NaN                           
+utc = NaN
 
-inicio = int(round(time.time()*1000))
+inicio = int(round(time.time() * 1000))
 
 
 def atualizaEscritor():
     """Função que atualiza os dados do Escritor, com o vetor de dados atualizados.
     """
-    d = [tempo, dadoTempoGPS, item, latitude, longitude, altitude, direcaoCurso, velocidade, velocidadeSubida, erroX, erroY, erroAltitude, erroVelocidade, erroVelocidadeSubida, nivelFixacao, latitudeRef, longitudeRef, posicaoX, posicaoY, distanciaAbsoluta]
+    d = [tempo, dadoTempoGPS, item, latitude, longitude, altitude, direcaoCurso, velocidade, velocidadeSubida, erroX, erroY,
+         erroAltitude, erroVelocidade, erroVelocidadeSubida, nivelFixacao, latitudeRef, longitudeRef, posicaoX, posicaoY, distanciaAbsoluta]
     escritor.setDados(d)
+
 
 def atualizaGps():
     """Função adquire os dados do GPS e passa eles para as variáveis
@@ -78,24 +82,25 @@ def atualizaGps():
     tempoGps = gps.getTempo()
     dadoTempoGPS.setValor(tempoGps)
 
-#Faz cabeçalho
+
+# Faz cabeçalho
 atualizaEscritor()
 escritor.fazCabecalho()
 
-tempoAgora = int(round(time.time()*1000)) - inicio
+tempoAgora = int(round(time.time() * 1000)) - inicio
 item.setValor(0)
 print("calibrou")
 
-#Faz iterações de atualizações do gps e escrita dos dados no arquivo
-while tempoAgora <= 600000 :
+# Faz iterações de atualizações do gps e escrita dos dados no arquivo
+while tempoAgora <= 600000:
     atualizaGps()
-    item.setValor(item.getValor()+1)
-    tempoAgora = int(round(time.time()*1000)) - inicio
+    item.setValor(item.getValor() + 1)
+    tempoAgora = int(round(time.time() * 1000)) - inicio
     tempo.setValor(tempoAgora)
     atualizaEscritor()
     escritor.escreveLinhaDado()
-    print(nivelFixacao.getValor() , " , " , dadoTempoGPS.getValor(), " , ", gps.getUTC())
-
+    print(nivelFixacao.getValor(), " , ",
+          dadoTempoGPS.getValor(), " , ", gps.getUTC())
 
     time.sleep(0.1)
 gps.finaliza()
