@@ -35,11 +35,11 @@ def atualizaEscritor():
 def atualizaBarometro():
     """Atualiza dados do barômetro e pega parâmetros e coloca nas variáveis.
     """
-    barometro.atualiza()
+    barometro.atualiza(1)
     pressao.setValor(barometro.getPressao())
     temperaturaBar.setValor(barometro.getTemperatura())
     densidadeAr.setValor(barometro.getDensidadeAr())
-    altitudeRelativa.setValor(barometro.getAltitudeRelativa())
+    altitudeRelativa.setValor(barometro.getAltitudeRelativa("m"))
     altitudePressao.setValor(barometro.getAltitudePressao())
 
 
@@ -51,14 +51,18 @@ tempoAgora = int(round(time.time()*1000)) - inicio
 item.setValor(0)
 
 #Faz iterações de atualizações e escritas de arquivo.
-while tempoAgora <= 5000 :
+while tempoAgora <= 20000 :
+    if item.getValor() == 40:
+        barometro.atualizaReferencia()
+    if item.getValor() == 100:
+        barometro.atualizaReferencia()
     atualizaBarometro()
     item.setValor(item.getValor()+1)
     tempoAgora = int(round(time.time()*1000)) - inicio
     tempo.setValor(tempoAgora)
     atualizaEscritor()
     escritor.escreveLinhaDado()
-  ##  print("Pressão: ", barometro.getPressao(), "  Temp: ", barometro.getTemperatura(), "   Dens: ", barometro.getDensidadeAr(), "   Alt. rel.: ", barometro.getAltitudeRelativa(), "   Alt. pres.", barometro.getAltitudePressao())
+    print(item.getValor(), "Alt. rel.: ", barometro.getAltitudeRelativa())
 
 
         

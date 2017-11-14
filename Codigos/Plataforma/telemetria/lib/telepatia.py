@@ -37,7 +37,7 @@ class Transmissor:
         self.separador = separador
         self.protocolo = protocolo
         self.codificacao = codificacao
-        self.ser = serial.Serial('/dev/ttyUSB0', baudRate)
+        self.ser = serial.Serial('/dev/ttyUSB0', baudRate, timeout=0.001)
 
     def setDados(self, d):
         """Função que atualiza o vetor de dados do Transmissor com os dados que vem como parâmetro dessa função.
@@ -63,3 +63,11 @@ class Transmissor:
                     self.ser.write(bytes(str(x.valor)+self.separador, self.codificacao))
         if not self.protocolo:            
             self.ser.write(bytes("\n", self.codificacao))
+
+    def leLinha(self):
+        """Essa função é responsável por ler telecomandos recebidos pela serial
+
+        :returns: String do telecomando
+        """
+        x=self.ser.readline().decode("utf-8")
+        return x

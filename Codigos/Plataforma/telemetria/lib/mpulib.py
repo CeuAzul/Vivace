@@ -3,14 +3,14 @@ import smbus
 import math
 
 class MPU:
-"""
-Um objeto dessa classe deve ser criado quando quiser realizar a comunicação
-ou obter dados da MPU (Acelerômetro e Giroscópio). 
-Para utilizar a classe, criamos o construtor colocando como parâmetros
-se queremos pegar os parâmetros. Depois, utilizamos a função
-atualiza() para fazer a aquisição pelo I2C. Por fim, acessa os dados
-usando os getters().
-"""
+    """
+    Um objeto dessa classe deve ser criado quando quiser realizar a comunicação
+    ou obter dados da MPU (Acelerômetro e Giroscópio). 
+    Para utilizar a classe, criamos o construtor colocando como parâmetros
+    se queremos pegar os parâmetros. Depois, utilizamos a função
+    atualiza() para fazer a aquisição pelo I2C. Por fim, acessa os dados
+    usando os getters().
+    """
     def __init__(self, useGyx=True, useGyy=True, useGyz = True, useAcx=True, useAcy=True, useAcz=True, usePitch=True, useRoll=True, useTemp=True):
         """Inicializa a classe com os parâmetros setados para adquirir e
         realiza configurações para aquisição do I2C.
@@ -53,7 +53,7 @@ usando os getters().
         # Now wake the 6050 up as it starts in sleep mode
         self.bus.write_byte_data(self.address, self.power_mgmt_1, 0)
         self.bus.write_byte_data(self.address, self.gyRegScale, 0b00001000)
-        self.bus.write_byte_data(self.address, self.acRegScale, 0b00010000)
+        self.bus.write_byte_data(self.address, self.acRegScale, 0b00011000) # ate 16g
 
     def read_byte(self, adr):
         """Função apenas para uso interno na comunicação i2c.
@@ -110,15 +110,15 @@ usando os getters().
             
         if self.useAcx:
             accel_xout = self.read_word_2c(0x3b)
-            accel_xout_scaled = accel_xout / 4096
+            accel_xout_scaled = accel_xout / 2048
             self.acx = accel_xout_scaled
         if self.useAcy:
             accel_yout = self.read_word_2c(0x3d)
-            accel_yout_scaled = accel_yout / 4096
+            accel_yout_scaled = accel_yout / 2048
             self.acy = accel_yout_scaled
         if self.useAcz:
             accel_zout = self.read_word_2c(0x3f)
-            accel_zout_scaled = accel_zout / 4096
+            accel_zout_scaled = accel_zout / 2048
             self.acz = accel_zout_scaled
             
         if self.useTemp:

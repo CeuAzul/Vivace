@@ -10,7 +10,7 @@ from lib.datilografo import Escritor
 from lib.telepatia import Transmissor
 
 #Cria objeto da MPU e utiliza apenas aceleração
-mpu = MPU(False, False, False, False, False, True, False, False)
+mpu = MPU(False, False, False, True, True, True, False, False)
 
 #Cria objeto do transmissor e do escritor
 escritor = Escritor(",", True, True, "Aceleração - ", ".csv")
@@ -22,8 +22,8 @@ tempo = Dado("Tempo", "Segundos", "tmp", True, True, False)
 taxaGiroX = Dado("Taxa de giro em X", "º/s", "gyx", True, False, False)
 taxaGiroY = Dado("Taxa de giro em Y", "º/s", "gyy", True, False, False)
 taxaGiroZ = Dado("Taxa de giro em Z", "º/s", "gyz", True, False, False)
-aceleracaoX = Dado("Aceleração em X", "g", "acx", True, False, False)
-aceleracaoY = Dado("Aceleração em Y", "g", "acy", True, False, False)
+aceleracaoX = Dado("Aceleração em X", "g", "acx", False, False, False)
+aceleracaoY = Dado("Aceleração em Y", "g", "acy", False, False, False)
 aceleracaoZ = Dado("Aceleração em Z", "g", "acz", True, True, False)
 pitch = Dado("Pitch", "º", "pit", True, False, False)
 roll = Dado("Roll", "º", "rol", True, False, False)
@@ -79,7 +79,7 @@ tempoAgora = int(round(time.time()*1000)) - inicio
 item.setValor(0)
 
 #Cria thread de transmissão
-t = threading.Thread(target=transmiteDado, args=(0.05,))
+t = threading.Thread(target=transmiteDado, args=(0.1,))
 t.setDaemon(True)
 t.start()
 
