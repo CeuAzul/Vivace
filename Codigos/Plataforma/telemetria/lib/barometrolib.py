@@ -3,14 +3,14 @@ import time
 from smbus import SMBus
 
 class Barometro:
-"""
-Um objeto dessa classe deve ser criado quando quiser realizar a comunicação
-ou obter dados do barômetro. 
-Para utilizar a classe, criamos o construtor colocando como parâmetros
-se queremos pegar temperatura e pressão. Depois, utilizamos a função
-atualiza() para fazer a aquisição pelo I2C. Por fim, pegamos os dados
-usando os getters().
-"""
+        """
+        Um objeto dessa classe deve ser criado quando quiser realizar a comunicação
+        ou obter dados do barômetro. 
+        Para utilizar a classe, criamos o construtor colocando como parâmetros
+        se queremos pegar temperatura e pressão. Depois, utilizamos a função
+        atualiza() para fazer a aquisição pelo I2C. Por fim, pegamos os dados
+        usando os getters().
+        """
         __MS5611_ADDRESS_CSB_LOW  = 0x76
         __MS5611_ADDRESS_CSB_HIGH = 0x77
         __MS5611_DEFAULT_ADDRESS  = 0x77
@@ -40,13 +40,13 @@ usando os getters().
         __MS5611_RA_D2_OSR_4096   = 0x58
 
         def __init__(self, usePressao=True, useTemp=True):
-        """Construtor da classe, coloca parâmetros indicando ser
-        gostaria de utilizar o dado de pressão ou utilizar os dados
-        de temperatura. Além disso, a função configura os dados
-        para que a comunicação do i2c seja feita corretamente.
-        :param usePressao: Indicador se deve ser obtido o dado de pressão.
-        :param useTemp: Indicador se deve ser obtido o dado de temperatura.
-        """
+              """Construtor da classe, coloca parâmetros indicando ser
+               gostaria de utilizar o dado de pressão ou utilizar os dados
+               de temperatura. Além disso, a função configura os dados
+               para que a comunicação do i2c seja feita corretamente.
+              :param usePressao: Indicador se deve ser obtido o dado de pressão.
+              :param useTemp: Indicador se deve ser obtido o dado de temperatura.
+              """
               self.bus = SMBus(1)
               self.address = 0x77
               self.C1=0
@@ -93,6 +93,10 @@ usando os getters().
               self.C5 = C5[0] * 256.0 + C5[1]
               self.C6 = C6[0] * 256.0 + C6[1]
 
+              self.atualizaReferencia()
+              
+        def atualizaReferencia(self):
+              self.pressaoReferencia = 0
               for i in range(0, 10):
                   self.atualiza()
                   self.pressaoReferencia = self.pressaoReferencia + self.getPressao()
@@ -137,11 +141,11 @@ usando os getters().
                         SENS2 = 0
                 elif (self.temp < 2000):
                         T2 = dT * dT / 2**31
-                        OFF2 = 5 * ((self.TEMP - 2000) ** 2) / 2
+                        OFF2 = 5 * ((self.temp - 2000) ** 2) / 2
                         SENS2 = OFF2 / 2
                 elif (self.temp < -1500):
-                        OFF2 = OFF2 + 7 * ((self.TEMP + 1500) ** 2)
-                        SENS2 = SENS2 + 11 * (self.TEMP + 1500) ** 2 / 2
+                        OFF2 = OFF2 + 7 * ((self.temp + 1500) ** 2)
+                        SENS2 = SENS2 + 11 * (self.temp + 1500) ** 2 / 2
 
                 self.temp = self.temp - T2
                 OFF = OFF - OFF2
@@ -152,12 +156,21 @@ usando os getters().
                 self.temp = self.temp / 100 # Temperature updated
                 self.pres = self.pres / 100 # Pressure updated
 
-        def getPressao(self):
+        def getPressao(self, um="PA"):
                 """Retorna valor da pressão atual
                 :returns: Pressão atual
+                :param um: Unidade de medida.
                 """
-                return self.pres
+                if um=="PA":
+                        return self.pres*100
+                elif um=="hPA":
+                        return salf.pres
+                elif um=="mBar":
+                        return self.pres
+                else:
+                        return self.pres
 
+                
         def getTemperatura(self):
                 """Retorna valor de temperatura
                 :returns: Temperatura (ºC)
@@ -170,38 +183,59 @@ usando os getters().
                 """
                 return self.densidadeAr
 
-        def getAltitudeRelativa(self):
+        def getAltitudeRelativa(self, um="m"):
                 """Retorna altitude em relação ao lugar de calibração (solo)
+                :param um: Unidade de medida.
                 :returns: Altitude em relação ao solo
                 """
-                return self.altitudeRelativa
+                if um=="m":
+                        return self.altitudeRelativa
+                elif um=="ft":
+                        return self.altitudeRelativa*3.28084
+                else: #retorna metros
+                        return self.altitudeRelativa
 
-        def getAltitudePressao(self):
+        def getAltitudePressao(self, um="m"):
                 """Retorna altitude-pressão. Altitude pressão é o valor da
                 pressão de atmosfera padrão 101325 pascal
+                :param um: Unidade de medida.
                 :returns: Altitude-pressão em relação a atmosfera padrão
                 """
-                return self.altitudePressao
+                if um=="m":
+                        return self.altitudePressao
+                elif um=="ft":
+                        return self.altitudePressao*3.28084
+                else: #retorna metros
+                        return self.altitudePressao
+                
 
-        def atualiza(self):
-                """Pega mais uma amostra dos parâmetros relacionados ao
-                barômetro e armazena-os nas variáveis da classe.
-                """
-            if self.usePressao:
-                self.refreshPressure()
-                time.sleep(0.01) # Waiting for pressure data ready
-                self.readPressure()
-            if self.useTemp:
-                self.refreshTemperature()
-                time.sleep(0.01) # Waiting for temperature data ready
-                self.readTemperature()
+        def atualiza(self, samples=1):
+            """Pega mais uma amostra dos parâmetros relacionados ao
+            barômetro e armazena-os nas variáveis da classe.
+            """
+            somaTemp = 0
+            somaPressao = 0
+            for x in range(samples):     
+                if self.usePressao:
+                    self.refreshPressure()
+                    time.sleep(0.01) # Waiting for pressure data ready
+                    self.readPressure()
+                    
+                if self.useTemp:
+                    self.refreshTemperature()
+                    time.sleep(0.01) # Waiting for temperature data ready
+                    self.readTemperature()
 
-            self.calculatePressureAndTemperature()
+                self.calculatePressureAndTemperature()
+                somaTemp = somaTemp + self.temp
+                somaPressao = somaPressao + self.pres
+            self.temp = somaTemp/samples
+            self.pres = somaPressao/samples
             if self.useTemp:
                 if self.usePressao:
                     self.densidadeAr = self.pres*100 / (287.05*(self.temp+273.15))
             if self.usePressao:
                 if (self.pressaoReferencia != 0):
-                        self.altitudeRelativa = (44330.0 * (1.0 - pow(self.pres*100 / (self.pressaoReferencia*100), 0.1902949)))
+                        self.altitudeRelativa = (44330.0 * (1.0 - pow(self.pres*100 / (self.pressaoReferencia), 0.1902949)))
                 self.altitudePressao = (44330.0 * (1.0 - pow(self.pres*100 / self.pressaoAtmosfericaPadrao, 0.1902949)))
 

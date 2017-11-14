@@ -1,5 +1,9 @@
 #!/usr/bin/python
 import os.path
+import os
+import datetime
+import shutil
+from shutil import copytree, ignore_patterns
 from .dado import Dado
 
 class Escritor:
@@ -27,7 +31,7 @@ class Escritor:
     Nome arquivo - 03
     ...
     """
-    def __init__(self, separador=",", printaNome=True, printaUM=True, nomeArquivo="Telemetria - ", extensao=".csv"):
+    def __init__(self, separador=",", printaNome=True, printaUM=True, nomeArquivo="Telemetria - ", extensao=".csv", pasta ="/home/pi/Telemetria/Codigos/Plataforma/telemetria/Dados"):
         """Construtor inicializa parâmetros de configuração do Escritor
         No construtor ele já cria o arquivo, verifica se nome já existe, caso já exista, adiciona 1 no nome.
 
@@ -43,11 +47,12 @@ class Escritor:
         self.printaNome = printaNome
         self.printaUM = printaUM
         self.nomeArquivo = nomeArquivo
+        self.pasta = pasta
         self.extensao = extensao
         self.numeroArquivo = 1
-        while os.path.exists(self.nomeArquivo+str(self.numeroArquivo)+self.extensao):
+        while os.path.exists(self.pasta+"/"+self.nomeArquivo+str(self.numeroArquivo)+self.extensao):
             self.numeroArquivo += 1
-        self.nomeCompleto = self.nomeArquivo+str(self.numeroArquivo)+self.extensao
+        self.nomeCompleto = self.pasta+"/"+self.nomeArquivo+str(self.numeroArquivo)+self.extensao
         
     def addDado(self, d):
         """Função que adiciona um dado no vetor de dados.
@@ -65,31 +70,60 @@ class Escritor:
         """
         self.dados = d
 
+    def verificaTamanhoArquivo(self):
+        """ Função pega tamanho do arquivo
+        """
+        try:
+            b = (os.path.getsize(self.nomeCompleto)/1000000)
+            return b
+        except Exception as e:
+            print(e)
+            return -1
+
     def fazCabecalho(self):
         """Função que escreve o cabeçalho do arquivo:
         Primeira linha (se printaNome=True) = Printa o nome dos dados
         Segunda linha (se printaUM=True) = Printa unidade de medida na segunda linha
         """
-        file = open(self.nomeCompleto, "a")
-        if self.printaNome:
-            for x in self.dados:
-                if x.gravaDado:
-                    file.write("%s%s" % (x.nome, self.separador))
-        file.write("\n")
-        if self.printaUM:
-            for x in self.dados:
-                if x.gravaDado:
-                    file.write("%s%s" % (x.unidadeMedida, self.separador))
-        file.write("\n")
+        os.makedirs(os.path.dirname(self.nomeCompleto), exist_ok=True)
+        with open(self.nomeCompleto, "a") as file:
+            if self.printaNome:
+                for x in self.dados:
+                    if x.gravaDado:
+                        file.write("%s%s" % (x.nome, self.separador))
+            file.write("\r\n")
+            if self.printaUM:
+                for x in self.dados:
+                    if x.gravaDado:
+                        file.write("%s%s" % (x.unidadeMedida, self.separador))
+            file.write("\r\n")
 
     def escreveLinhaDado(self):
         """Função que escreve a linha com os valores atuais do dado separado pelo separador.
            Antes de gravar, a função verifica se o dado é mesmo para ser gravado ou não.
         """
-        file = open(self.nomeCompleto, "a")
-        for x in self.dados:
-            if x.gravaDado:
-                file.write("%s%s" % (x.valor, self.separador))
-        file.write("\n")            
+        os.makedirs(os.path.dirname(self.nomeCompleto), exist_ok=True)
+        with open(self.nomeCompleto, "a") as file:
+            for x in self.dados:
+                if x.gravaDado:
+                    if type(x.valor) == float:
+                        file.write("%.*f%s" % (x.casasDecimais, x.valor, self.separador))
+                    else:
+                        file.write("%s%s" % (x.valor, self.separador))
+            file.write("\r\n")
+
+    def passaProPendrive(self):
+        nomesPastas = os.listdir("/media/pi")
+        try:
+            for pen in nomesPastas:
+                if pen != "SETTINGS" :
+                    d = datetime.datetime.now().strftime('%d%m%Y_%H%M%S%f')[:-3]
+                    source = self.pasta
+                    destination = '/media/pi/%s/Telemetria/Dados_%s' % (pen,d)
+                    copytree(source, destination)
+        except Exception as e:
+            print(e)
+
+        
 
 

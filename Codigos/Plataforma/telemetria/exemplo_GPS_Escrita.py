@@ -6,6 +6,8 @@ import time
 from lib.dado import Dado
 from lib.gpslib import Gps
 from lib.datilografo import Escritor
+import datetime
+
 NaN = float('nan')
 
 #Cria objeto do GPS e do Escritor
@@ -85,14 +87,15 @@ item.setValor(0)
 print("calibrou")
 
 #Faz iterações de atualizações do gps e escrita dos dados no arquivo
-while tempoAgora <= 20000 :
+while tempoAgora <= 600000 :
     atualizaGps()
     item.setValor(item.getValor()+1)
     tempoAgora = int(round(time.time()*1000)) - inicio
     tempo.setValor(tempoAgora)
     atualizaEscritor()
     escritor.escreveLinhaDado()
-    print(longitudeRef.getValor(), ", ",longitude.getValor(), ", ", posicaoX.getValor(), ", ", posicaoY.getValor(), ", ", distanciaAbsoluta.getValor())
+    print(nivelFixacao.getValor() , " , " , dadoTempoGPS.getValor(), " , ", gps.getUTC())
+
+
     time.sleep(0.1)
 gps.finaliza()
-            

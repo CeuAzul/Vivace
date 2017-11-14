@@ -1,0 +1,18 @@
+1- Editar /etc/rc.local
+2- Adicionar isso antes de "exit 0"
+(sleep 10;/usr/bin/python3 /YOURPATH/YOUSCRIPT.SOMETHING)&
+
+
+Exibir dispositivos usb:
+sudo ls /dev/tty*
+
+
+/usr/bin/python3 /home/pi/Telemetria/Codigos/Plataforma/telemetria/codigo-global.py
+
+CONFIGURAÇÃO REGULAR 2017
+1 aileron
+2 profundor
+3 acelarador
+4 leme direita
+5 trem de pouso
+6 leme

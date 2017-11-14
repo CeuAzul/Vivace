@@ -40,6 +40,10 @@ for x in range(1000):
     posicaoZ.setValor(4*x)
     atualizaTransmissor()
     transmissor.transmiteLinha()
+    #print("oi")
+    recebe = transmissor.leLinha()
+    if recebe:
+        print(recebe)
     time.sleep(0.05)
 
 
