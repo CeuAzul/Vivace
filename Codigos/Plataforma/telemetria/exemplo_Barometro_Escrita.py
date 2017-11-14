@@ -8,13 +8,13 @@ from lib.dado import Dado
 from lib.barometrolib import Barometro
 from lib.datilografo import Escritor
 
-#Cria o dado do barômetro
+# Cria o dado do barômetro
 barometro = Barometro(True, True)
 
-#Cria objeto do escritor
+# Cria objeto do escritor
 escritor = Escritor(",", True, True, "Barometro - ", ".csv")
 
-#Cria objeto dos dados
+# Cria objeto dos dados
 item = Dado("Item", "it", "itn", True, True, False)
 tempo = Dado("Tempo", "Segundos", "tmp", True, True, False)
 pressao = Dado("Pressao real", "pa", "prr", True, True, False)
@@ -24,13 +24,16 @@ altitudeRelativa = Dado("Altitude relativa", "m", "alt", True, True, False)
 altitudePressao = Dado("Altitude Pressão", "m", "hps", True, True, False)
 
 
-inicio = int(round(time.time()*1000))
+inicio = int(round(time.time() * 1000))
+
 
 def atualizaEscritor():
     """Atualiza vetor de dados e passa eles para o Escritor.
     """
-    d = [item, tempo, pressao, temperaturaBar, densidadeAr, altitudeRelativa, altitudePressao]
+    d = [item, tempo, pressao, temperaturaBar,
+         densidadeAr, altitudeRelativa, altitudePressao]
     escritor.setDados(d)
+
 
 def atualizaBarometro():
     """Atualiza dados do barômetro e pega parâmetros e coloca nas variáveis.
@@ -43,27 +46,23 @@ def atualizaBarometro():
     altitudePressao.setValor(barometro.getAltitudePressao())
 
 
-#Faz cabeçalho no arquivo
+# Faz cabeçalho no arquivo
 atualizaEscritor()
 escritor.fazCabecalho()
 
-tempoAgora = int(round(time.time()*1000)) - inicio
+tempoAgora = int(round(time.time() * 1000)) - inicio
 item.setValor(0)
 
-#Faz iterações de atualizações e escritas de arquivo.
-while tempoAgora <= 20000 :
+# Faz iterações de atualizações e escritas de arquivo.
+while tempoAgora <= 20000:
     if item.getValor() == 40:
         barometro.atualizaReferencia()
     if item.getValor() == 100:
         barometro.atualizaReferencia()
     atualizaBarometro()
-    item.setValor(item.getValor()+1)
-    tempoAgora = int(round(time.time()*1000)) - inicio
+    item.setValor(item.getValor() + 1)
+    tempoAgora = int(round(time.time() * 1000)) - inicio
     tempo.setValor(tempoAgora)
     atualizaEscritor()
     escritor.escreveLinhaDado()
     print(item.getValor(), "Alt. rel.: ", barometro.getAltitudeRelativa())
-
-
-        
-            

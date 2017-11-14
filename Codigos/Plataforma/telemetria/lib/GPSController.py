@@ -3,12 +3,13 @@ import time
 import threading
 import math
 
+
 class GpsController(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
-        self.gpsd = GPS(mode=WATCH_ENABLE) #starting the stream of info
+        self.gpsd = GPS(mode=WATCH_ENABLE)  # starting the stream of info
         self.running = False
-    
+
     def run(self):
         self.running = True
         while self.running:
@@ -18,10 +19,9 @@ class GpsController(threading.Thread):
             except:
                 pass
 
-
     def stopController(self):
         self.running = False
-  
+
     @property
     def fix(self):
         return self.gpsd.fix
@@ -34,9 +34,10 @@ class GpsController(threading.Thread):
     def satellites(self):
         return self.gpsd.satellites
 
+
 if __name__ == '__main__':
     # create the controller
-    gpsc = GpsController() 
+    gpsc = GpsController()
     try:
         # start controller
         gpsc.start()
@@ -56,18 +57,18 @@ if __name__ == '__main__':
             print("sats ", gpsc.satellites)
             time.sleep(0.5)
 
-    #Ctrl C
+    # Ctrl C
     except KeyboardInterrupt:
         print("User cancelled")
-        
-    #Error
+
+    # Error
     except:
         print("Unexpected error:", sys.exc_info()[0])
         raise
     finally:
         print("Stopping gps controller")
         gpsc.stopController()
-        #wait for the tread to finish
+        # wait for the tread to finish
         gpsc.join()
-      
+
     print("Done")
