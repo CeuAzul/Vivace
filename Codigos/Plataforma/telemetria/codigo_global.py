@@ -187,8 +187,10 @@ def atualizaVetorDados():
 
 
 def modoDeTransmissao(modo):
+    """Função responsável por setar o modo de tranmissao de dados.
+    """
     sinaldo.setValor(modo)
-    if (modo == 0 or modo == 1):
+    if modo == 0 or modo == 1:
         tempo.setTransmissao(False)
         altitudePressao.setTransmissao(False)
         wow.setTransmissao(False)
@@ -372,7 +374,7 @@ def leTelecomando(delay):
         agravante.setValor(escritor.verificaTamanhoArquivo())
         receb = transmissor.leLinha()
         ultimoTransmitido.setValor(receb)
-        if (receb == "@t#c%$0#1$"):
+        if receb == "@t#c%$0#1$":
             if teleconfirm == 1:
                 teleconfirm = 0
                 # Inicia gravação + recepção normal
@@ -380,7 +382,7 @@ def leTelecomando(delay):
             else:
                 teleconfirm = 1
 
-        if (receb == "@%&*v##&(@"):
+        if receb == "@%&*v##&(@":
             if teleconfirm == 2:
                 teleconfirm = 0
                 # Transmitir apenas Vcas, hp, RPM e altitude gps
@@ -398,7 +400,7 @@ def leTelecomando(delay):
             else:
                 teleconfirm = 2
 
-        if (receb == "&*$$%#!@&_"):
+        if receb == "&*$$%#!@&_":
             if teleconfirm == 3:
                 teleconfirm = 0
                 modoDeTransmissao(3)
@@ -406,7 +408,7 @@ def leTelecomando(delay):
             else:
                 teleconfirm = 3
 
-        if (receb == "*)(#$%@!&*"):
+        if receb == "*)(#$%@!&*":
             if teleconfirm == 4:
                 teleconfirm = 0
                 modoDeTransmissao(0)
@@ -414,7 +416,7 @@ def leTelecomando(delay):
             else:
                 teleconfirm = 4
 
-        if (receb == "AqT%$BNy*("):
+        if receb == "AqT%$BNy*(":
             if teleconfirm == 5:
                 teleconfirm = 0
                 # Novo arquivo
@@ -422,7 +424,7 @@ def leTelecomando(delay):
             else:
                 teleconfirm = 5
 
-        if (receb == "Tc*B+@F&5v"):
+        if receb == "Tc*B+@F&5v":
             if teleconfirm == 6:
                 teleconfirm = 0
                 escritor.passaProPendrive()
@@ -430,14 +432,14 @@ def leTelecomando(delay):
             else:
                 teleconfirm = 6
 
-        if (receb == "!$@f#_a*(%"):
+        if receb == "!$@f#_a*(%":
             if teleconfirm == 7:
                 teleconfirm = 0
                 os.system('sudo reboot')
             else:
                 teleconfirm = 7
 
-        if (receb == "d&y?%(+#(("):
+        if receb == "d&y?%(+#((":
             if teleconfirm == 8:
                 teleconfirm = 0
                 os.system('sudo shutdown now')
@@ -473,7 +475,7 @@ def atualizaBarometro(delay):
     """
     global atualizaRefBar
     while threadsRodando:
-        if(atualizaRefBar == True):
+        if atualizaRefBar == True:
             barometro.atualizaReferencia()
             atualizaRefBar = False
         barometro.atualiza()
@@ -522,7 +524,7 @@ def atualizaGps(delay):
         agora = datetime.now()
         inicioDia = datetime(agora.year, agora.month, agora.day)
 
-        if ((gps.verificaAtualizacaoHorario()) and (sinaldo.getValor() == 0)):
+        if (gps.verificaAtualizacaoHorario()) and (sinaldo.getValor() == 0):
             modoDeTransmissao(1)
 
         time.sleep(delay)
@@ -598,7 +600,7 @@ def atualizaLinhaEscritor(delay):
     while threadsRodando:
         tempoAgora = (datetime.now() - inicioDia).total_seconds()
         tempo.setValor(tempoAgora)
-        if (sinaldo.getValor() == 4):
+        if sinaldo.getValor() == 4:
             atualizaEscritor()
             escritor.escreveLinhaDado()
         time.sleep(delay)
