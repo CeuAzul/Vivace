@@ -190,7 +190,7 @@ def modoDeTransmissao(modo):
     """Função responsável por setar o modo de tranmissao de dados.
     """
     sinaldo.setValor(modo)
-    if (modo == 0 or modo == 1):
+    if modo == 0 or modo == 1:
         tempo.setTransmissao(False)
         altitudePressao.setTransmissao(False)
         wow.setTransmissao(False)
