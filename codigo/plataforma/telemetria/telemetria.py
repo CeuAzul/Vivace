@@ -11,14 +11,14 @@ import time
 import os
 from datetime import datetime
 import threading
-from lib.dado import Dado
-from lib.mpulib import MPU
-from lib.datilografo import Escritor
-from lib.telepatia import Transmissor
-from lib.barometrolib import Barometro
-from lib.gpslib import Gps
-from lib.pitot8b import Pitot8b
-from lib.nanolib import Nano
+from libs.dado import Dado
+from libs.mpu import MPU
+from libs.datilografo import Escritor
+from libs.telepatia import Transmissor
+from libs.barometro import Barometro
+from libs.gps import Gps
+from libs.pitot import Pitot
+from libs.nano import Nano
 
 def main():
 
