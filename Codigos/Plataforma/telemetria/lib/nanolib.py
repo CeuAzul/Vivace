@@ -1,7 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import serial
+import os
+if os.uname()[1] == 'raspberrypi':
+    import serial
 
 
 class Nano:

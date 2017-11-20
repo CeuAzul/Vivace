@@ -3,7 +3,9 @@
 
 import time
 
-from smbus import SMBus
+import os
+if os.uname()[1] == 'raspberrypi':
+    from smbus import SMBus
 
 
 class Barometro:
