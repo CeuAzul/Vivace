@@ -1,5 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
+
 # Original contents have been modified to be compatible with Python3 for use
 # in the TwisterPi embedded application.  The original author's comments can
 # be found unaltered below.

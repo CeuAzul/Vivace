@@ -1,10 +1,12 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 """FUNÇÃO GLOBAL
 Código que cria objeto de todos os sensore e faz com que eles
 trabalhem em harmonia usando as threads.
 
 Neste código é utilizado a MPU, Barômetro e o GPS
 """
-#!/usr/bin/python
 import time
 import os
 from datetime import datetime
