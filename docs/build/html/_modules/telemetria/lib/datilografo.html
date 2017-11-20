@@ -1,0 +1,353 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>telemetria.lib.datilografo &mdash; Vivace 2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="Vivace 2.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Vivace
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Vivace</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>telemetria.lib.datilografo</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for telemetria.lib.datilografo</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">from</span> <span class="nn">shutil</span> <span class="k">import</span> <span class="n">copytree</span><span class="p">,</span> <span class="n">ignore_patterns</span>
+<span class="kn">from</span> <span class="nn">.dado</span> <span class="k">import</span> <span class="n">Dado</span>
+
+
+<div class="viewcode-block" id="Escritor"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.datilografo.Escritor">[docs]</a><span class="k">class</span> <span class="nc">Escritor</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;É responsável pela escrita dos dados em um arquivo de texto.</span>
+<span class="sd">    Esta classe será chamada toda vez que queremos gravar os valores</span>
+<span class="sd">    que estão sendo adquirido pelos sensores em um arquivo de texto.</span>
+
+<span class="sd">    A classe pode ser modificada das seguintes maneiras:</span>
+<span class="sd">    - Indicar o tipo de separador dos dados (virgula, espaço, tabulação etc..)</span>
+<span class="sd">    - Se deve colocar o nome dos dados na primeira linha.</span>
+<span class="sd">    - Se deve colocar a unidade de medida na segunda linha</span>
+<span class="sd">    - Nome do arquivo</span>
+<span class="sd">    - Extensão do arquivo</span>
+
+<span class="sd">    Para utilizar a classe seguimos os seguintes passos:</span>
+<span class="sd">    1- Inicializamos a classe configurando o escritor para criar o arquivo do jeito que quisermo.</span>
+<span class="sd">    2- Chamamos a função setDado com um vetor de objetos criados da classe &quot;Dado&quot;, já com nome e unidade de medida.</span>
+<span class="sd">    3- Quando quisermos que a gravação de dados inicie, devemos chamar &quot;fazCabecalho()&quot;</span>
+<span class="sd">    4- Cada vez que quiser que o Escritor grave uma linha dado, primeiro atualize o vetor de dados &quot;setDados()&quot; e depois invoque &quot;escreveLinhaDado(self)&quot;</span>
+<span class="sd">    5- Veja o dado sendo gravado e corra para o abraço!</span>
+
+<span class="sd">    Multiplos inicializações são criadas arquivos com o mesmo nome, mas com número diferente ex:</span>
+<span class="sd">    Nome arquivo - 01</span>
+<span class="sd">    Nome arquivo - 02</span>
+<span class="sd">    Nome arquivo - 03</span>
+<span class="sd">    ...</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">separador</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">printaNome</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">printaUM</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">nomeArquivo</span><span class="o">=</span><span class="s2">&quot;Telemetria - &quot;</span><span class="p">,</span> <span class="n">extensao</span><span class="o">=</span><span class="s2">&quot;.csv&quot;</span><span class="p">,</span> <span class="n">pasta</span><span class="o">=</span><span class="s2">&quot;/home/pi/Telemetria/Codigos/Plataforma/telemetria/Dados&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construtor inicializa parâmetros de configuração do Escritor</span>
+<span class="sd">        No construtor ele já cria o arquivo, verifica se nome já existe, caso já exista, adiciona 1 no nome.</span>
+
+<span class="sd">        :param separador: Especifica o tipo de separados dos valores mais comum é virgula espaço ou tabulação</span>
+<span class="sd">        :param printaNome: Indicador se deve ser gravado o nome do dado na primeira linha do cabeçalho</span>
+<span class="sd">        :param printaUM: Indicador se deve ser gravado a unidade de medida na segunda linha do cabeçalho</span>
+<span class="sd">        :param nomeArquivo: Nome do arquivo</span>
+<span class="sd">        :param extensao: Extensão do arquivo a ser criado</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dados</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># vetor de Dado()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">separador</span> <span class="o">=</span> <span class="n">separador</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">printaNome</span> <span class="o">=</span> <span class="n">printaNome</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">printaUM</span> <span class="o">=</span> <span class="n">printaUM</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nomeArquivo</span> <span class="o">=</span> <span class="n">nomeArquivo</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pasta</span> <span class="o">=</span> <span class="n">pasta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extensao</span> <span class="o">=</span> <span class="n">extensao</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numeroArquivo</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pasta</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">nomeArquivo</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numeroArquivo</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">extensao</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">numeroArquivo</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nomeCompleto</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pasta</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">nomeArquivo</span> <span class="o">+</span> \
+            <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numeroArquivo</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">extensao</span>
+
+<div class="viewcode-block" id="Escritor.addDado"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.datilografo.Escritor.addDado">[docs]</a>    <span class="k">def</span> <span class="nf">addDado</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Função que adiciona um dado no vetor de dados.</span>
+<span class="sd">        NÃO UTILIZAR ESSA FUNÇÃO A MENOS QUE VOCÊ SAIBA O QUE TA FAZENDO.</span>
+<span class="sd">        :param d: Dado a ser adicionado.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dados</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Escritor.setDados"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.datilografo.Escritor.setDados">[docs]</a>    <span class="k">def</span> <span class="nf">setDados</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Função que atualiza o vetor de dados do Escritor com os dados que vem como parâmetro dessa função.</span>
+<span class="sd">        O Escritor apenas consegue ver os dados que foram passados por meio dessa função.</span>
+<span class="sd">        É utilizada como a porta de entrada para os dados que serão escritos.</span>
+
+<span class="sd">        :param d: Vetor de Dado que será escrito na ordem do vetor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dados</span> <span class="o">=</span> <span class="n">d</span></div>
+
+<div class="viewcode-block" id="Escritor.verificaTamanhoArquivo"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.datilografo.Escritor.verificaTamanhoArquivo">[docs]</a>    <span class="k">def</span> <span class="nf">verificaTamanhoArquivo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Função pega tamanho do arquivo</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nomeCompleto</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000000</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">b</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Escritor.fazCabecalho"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.datilografo.Escritor.fazCabecalho">[docs]</a>    <span class="k">def</span> <span class="nf">fazCabecalho</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Função que escreve o cabeçalho do arquivo:</span>
+<span class="sd">        Primeira linha (se printaNome=True) = Printa o nome dos dados</span>
+<span class="sd">        Segunda linha (se printaUM=True) = Printa unidade de medida na segunda linha</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nomeCompleto</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nomeCompleto</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">printaNome</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dados</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">gravaDado</span><span class="p">:</span>
+                        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">nome</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">separador</span><span class="p">))</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">printaUM</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dados</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">gravaDado</span><span class="p">:</span>
+                        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">unidadeMedida</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">separador</span><span class="p">))</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Escritor.escreveLinhaDado"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.datilografo.Escritor.escreveLinhaDado">[docs]</a>    <span class="k">def</span> <span class="nf">escreveLinhaDado</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Função que escreve a linha com os valores atuais do dado separado pelo separador.</span>
+<span class="sd">           Antes de gravar, a função verifica se o dado é mesmo para ser gravado ou não.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nomeCompleto</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nomeCompleto</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dados</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">gravaDado</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">valor</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span><span class="p">:</span>
+                        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.*f%s</span><span class="s2">&quot;</span> <span class="o">%</span>
+                                   <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">casasDecimais</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">valor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">separador</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">valor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">separador</span><span class="p">))</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Escritor.passaProPendrive"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.datilografo.Escritor.passaProPendrive">[docs]</a>    <span class="k">def</span> <span class="nf">passaProPendrive</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">nomesPastas</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">&quot;/media/pi&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">pen</span> <span class="ow">in</span> <span class="n">nomesPastas</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">pen</span> <span class="o">!=</span> <span class="s2">&quot;SETTINGS&quot;</span><span class="p">:</span>
+                    <span class="n">d</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
+                        <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">%m%Y_%H%M%S</span><span class="si">%f</span><span class="s1">&#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
+                    <span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pasta</span>
+                    <span class="n">destination</span> <span class="o">=</span> <span class="s1">&#39;/media/pi/</span><span class="si">%s</span><span class="s1">/Telemetria/Dados_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pen</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+                    <span class="n">copytree</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Leonardo Mariga and Rafael Araujo Lehmkuhl.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

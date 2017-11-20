@@ -1,0 +1,614 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>telemetria.lib.gpslib &mdash; Vivace 2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="Vivace 2.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Vivace
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Vivace</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>telemetria.lib.gpslib</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for telemetria.lib.gpslib</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">from</span> <span class="nn">.GPSController</span> <span class="k">import</span> <span class="n">GpsController</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">radians</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">asin</span><span class="p">,</span> <span class="n">sqrt</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">NaN</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>
+<span class="n">MODE_NO_FIX</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">MODE_2D</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">MODE_3D</span> <span class="o">=</span> <span class="mi">3</span>
+
+
+<div class="viewcode-block" id="Gps"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps">[docs]</a><span class="k">class</span> <span class="nc">Gps</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Esta classe é o conjunto de funções relaciodas a aquisição de dados do GPS</span>
+<span class="sd">    Para utiliza-la, basta criar o objeto GPS e de tempos em tempos, chamar</span>
+<span class="sd">    a função atualizaGps(). Essa função irá pegar os ultimos dados recebidos</span>
+<span class="sd">    dos satélites e irá preencher as variáveis com estes dados. Para pegar</span>
+<span class="sd">    esses valores, basta usar os getters disponíveis.</span>
+
+<span class="sd">    Note o seguinte: Esta função utiliza uma outra classe chamada GPSController</span>
+<span class="sd">    que ajudar a fazer a gerência das informações. Nessa classe, é criada uma thread</span>
+<span class="sd">    que irá constantemente pegar as informações vindas do satélite, precessar e</span>
+<span class="sd">    pegar os dados. Essa thread pode ser entendida como um processo separado, ou</span>
+<span class="sd">    seja, mesmo que não estamos vendo, há um processo sendo executado no fundo, fazendo</span>
+<span class="sd">    a aquisição dos dados do gps. Essa classe (Gps) é usada apenas para pegar os dados</span>
+<span class="sd">    processados do GpsController e adicionar para as variáveis da classe (tal como uma</span>
+<span class="sd">    interface entre a classe GpsController e o código global).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Gps.haversine"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.haversine">[docs]</a>    <span class="k">def</span> <span class="nf">haversine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat1</span><span class="p">,</span> <span class="n">lon2</span><span class="p">,</span> <span class="n">lat2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calcula a distância em metros entre dois pontos de coodenadas de latitude e longitude</span>
+
+<span class="sd">        :param lon1: Valor da longitude 1</span>
+<span class="sd">        :param lat1: Valor da latitude 1</span>
+<span class="sd">        :param lon2: Valor da longitude 2</span>
+<span class="sd">        :param lat2: Valor da latitude 2</span>
+<span class="sd">        :returns: Distância em metros entre os pontos</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># convert decimal degrees to radians</span>
+        <span class="n">lon1</span><span class="p">,</span> <span class="n">lat1</span><span class="p">,</span> <span class="n">lon2</span><span class="p">,</span> <span class="n">lat2</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">radians</span><span class="p">,</span> <span class="p">[</span><span class="n">lon1</span><span class="p">,</span> <span class="n">lat1</span><span class="p">,</span> <span class="n">lon2</span><span class="p">,</span> <span class="n">lat2</span><span class="p">])</span>
+        <span class="c1"># haversine formula</span>
+        <span class="n">dlon</span> <span class="o">=</span> <span class="n">lon2</span> <span class="o">-</span> <span class="n">lon1</span>
+        <span class="n">dlat</span> <span class="o">=</span> <span class="n">lat2</span> <span class="o">-</span> <span class="n">lat1</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">dlat</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">cos</span><span class="p">(</span><span class="n">lat1</span><span class="p">)</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">lat2</span><span class="p">)</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">dlon</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">asin</span><span class="p">(</span><span class="n">sqrt</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+        <span class="n">km</span> <span class="o">=</span> <span class="mi">6367</span> <span class="o">*</span> <span class="n">c</span>
+        <span class="n">metros</span> <span class="o">=</span> <span class="n">km</span> <span class="o">*</span> <span class="mi">1000</span>
+        <span class="k">return</span> <span class="n">metros</span></div>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construtor, utilizado apenas para inicializar variáveis.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">erroY</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">erroX</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tempo</span> <span class="o">=</span> <span class="n">NaN</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">utc</span> <span class="o">=</span> <span class="n">NaN</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">contTempo</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">erroTempo</span> <span class="o">=</span> <span class="n">NaN</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">altitude</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">erroAltitude</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">direcaoCurso</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">erroDirecao</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">velocidade</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">erroVelocidade</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">velSubida</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">erroVelSubida</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">nivelFixacao</span> <span class="o">=</span> <span class="n">MODE_NO_FIX</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">latitudeRef</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">longitudeRef</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">posicaoX</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">posicaoY</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">distanciaAbsoluta</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sRelogio</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># create controller</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gpsc</span> <span class="o">=</span> <span class="n">GpsController</span><span class="p">()</span>
+        <span class="c1"># start controller</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gpsc</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ultLatitude</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ultLongitude</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ultAltitude</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ultDirecaoCurso</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ultVelocidade</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ultVelSubida</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ultPosicaoX</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ultPosicaoY</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ultDistanciaAbsoluta</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="Gps.atualiza"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.atualiza">[docs]</a>    <span class="k">def</span> <span class="nf">atualiza</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Essa função atualiza as variáveis relacionadas ao GPS. Chame-a</span>
+<span class="sd">        toda vez que quiser passar as ultimas informações procesadas dos</span>
+<span class="sd">        satélites para as variáveis dessa classe.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gpsc</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">latitude</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">erroY</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gpsc</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">epy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gpsc</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">longitude</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">erroX</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gpsc</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">epx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tempo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gpsc</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">utc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gpsc</span><span class="o">.</span><span class="n">utc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">erroTempo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gpsc</span><span class="o">.</span><span class="n">gpsd</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">ept</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">altitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gpsc</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">altitude</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">erroAltitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gpsc</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">epv</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">direcaoCurso</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gpsc</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">track</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">velocidade</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gpsc</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">speed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">erroVelocidade</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gpsc</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">eps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">velSubida</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gpsc</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">climb</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">erroVelSubida</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gpsc</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">epc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nivelFixacao</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gpsc</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">mode</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sRelogio</span> <span class="o">==</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sRelogio</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atualizaHorarioSistema</span><span class="p">()</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latitudeRef</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">longitudeRef</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setReferenciaAqui</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">&lt;</span> <span class="mi">90</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">90</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">posicaoY</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">haversine</span><span class="p">(</span>
+                    <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">latitudeRef</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latitude</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latitudeRef</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">posicaoY</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">posicaoY</span>
+            <span class="k">if</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">&lt;</span> <span class="mi">360</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">360</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">posicaoX</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">haversine</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">longitudeRef</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">longitudeRef</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">posicaoX</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">posicaoX</span>
+            <span class="k">if</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">&lt;</span> <span class="mi">360</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">360</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="k">if</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">&lt;</span> <span class="mi">90</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">90</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">distanciaAbsoluta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">haversine</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">longitudeRef</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">latitudeRef</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span><span class="p">)</span>
+
+        <span class="c1"># Verificamos se é numérico, se não, colocar o ultimo dado gravado</span>
+        <span class="c1">#----------------------------------------</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latitude</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latitude</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultLatitude</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ultLatitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span>
+        <span class="c1">#----------------------------------------</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">longitude</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultLatitude</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ultLongitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span>
+        <span class="c1">#----------------------------------------</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">altitude</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">altitude</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">altitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultAltitude</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ultAltitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">altitude</span>
+        <span class="c1">#----------------------------------------</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">direcaoCurso</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">direcaoCurso</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">direcaoCurso</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultDirecaoCurso</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ultDirecaoCurso</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">direcaoCurso</span>
+        <span class="c1">#----------------------------------------</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">velocidade</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">velocidade</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">velocidade</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultVelocidade</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ultVelocidade</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocidade</span>
+        <span class="c1">#----------------------------------------</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">velSubida</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">velSubida</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">velSubida</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultVelSubida</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ultVelSubida</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">velSubida</span>
+        <span class="c1">#----------------------------------------</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">posicaoX</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">posicaoX</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">posicaoX</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultPosicaoX</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ultPosicaoX</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">posicaoX</span>
+        <span class="c1">#----------------------------------------</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">posicaoY</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">posicaoY</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">posicaoY</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultPosicaoY</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ultPosicaoY</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">posicaoY</span>
+        <span class="c1">#----------------------------------------</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">distanciaAbsoluta</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">distanciaAbsoluta</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">distanciaAbsoluta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultDistanciaAbsoluta</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ultDistanciaAbsoluta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">distanciaAbsoluta</span></div>
+
+<div class="viewcode-block" id="Gps.setReferenciaAqui"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.setReferenciaAqui">[docs]</a>    <span class="k">def</span> <span class="nf">setReferenciaAqui</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Esta função pega os ultimo dado de latitude e longitude e coloca</span>
+<span class="sd">        como referência. Esta referência será utilizada para saber a distância</span>
+<span class="sd">        em metros que o avião está, ou seja, será utilizada como (0,0) no plano</span>
+<span class="sd">        cartesiano.</span>
+
+<span class="sd">        :returns: Se deu certo colocar este ponto como referência.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">deuCertoLat</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">deuCertoLong</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">&lt;</span> <span class="mi">90</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">90</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">latitudeRef</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span>
+            <span class="n">deuCertoLat</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">&lt;</span> <span class="mi">360</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">360</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">longitudeRef</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span>
+            <span class="n">deuCertoLong</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">deuCertoLat</span> <span class="ow">and</span> <span class="n">deuCertoLong</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Gps.finaliza"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.finaliza">[docs]</a>    <span class="k">def</span> <span class="nf">finaliza</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Após a aquisição de dado, precisa-se parar a interpretação dos dados</span>
+<span class="sd">        pelo gpsc. Por isso chamamos essa função, caso contrário, ele ficará</span>
+<span class="sd">        realizando o processo indefinidamente.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># stop controller</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gpsc</span><span class="o">.</span><span class="n">stopController</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Gps.getLatitude"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.getLatitude">[docs]</a>    <span class="k">def</span> <span class="nf">getLatitude</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Retorna a latitude atual.</span>
+<span class="sd">        :returns:Latitude atual.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span></div>
+
+<div class="viewcode-block" id="Gps.getErroY"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.getErroY">[docs]</a>    <span class="k">def</span> <span class="nf">getErroY</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Retorna o erro em metros do eixo de latitude.</span>
+<span class="sd">        :returns: Erro no eixo Y.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">erroY</span></div>
+
+<div class="viewcode-block" id="Gps.getLongitude"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.getLongitude">[docs]</a>    <span class="k">def</span> <span class="nf">getLongitude</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retorna Longitude atual.</span>
+<span class="sd">        :returns: Longitude atual.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span></div>
+
+<div class="viewcode-block" id="Gps.getErroX"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.getErroX">[docs]</a>    <span class="k">def</span> <span class="nf">getErroX</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Retorna o erro em metros do eixo de longitude.</span>
+<span class="sd">        :returns: Erro no eixo X.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">erroX</span></div>
+
+<div class="viewcode-block" id="Gps.getTempo"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.getTempo">[docs]</a>    <span class="k">def</span> <span class="nf">getTempo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retorna tempo atual.</span>
+<span class="sd">        :returns: Tempo atual.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">utc</span></div>
+
+<div class="viewcode-block" id="Gps.getErroTempo"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.getErroTempo">[docs]</a>    <span class="k">def</span> <span class="nf">getErroTempo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :returns: Erro do tempo atual.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">erroTempo</span></div>
+
+<div class="viewcode-block" id="Gps.getUTC"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.getUTC">[docs]</a>    <span class="k">def</span> <span class="nf">getUTC</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Pega o tempo atual em UTC</span>
+<span class="sd">        :returns: Tempo atual em UTC.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">utc</span></div>
+
+<div class="viewcode-block" id="Gps.getAltitude"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.getAltitude">[docs]</a>    <span class="k">def</span> <span class="nf">getAltitude</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Pega altitude atual vinda do gps</span>
+<span class="sd">        :returns: Altitude atual</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">altitude</span></div>
+
+<div class="viewcode-block" id="Gps.getErroAltitude"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.getErroAltitude">[docs]</a>    <span class="k">def</span> <span class="nf">getErroAltitude</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Pega o erro de altitude.</span>
+<span class="sd">        :returns: Erro atual de altitude</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">erroAltitude</span></div>
+
+<div class="viewcode-block" id="Gps.getDirecaoCurso"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.getDirecaoCurso">[docs]</a>    <span class="k">def</span> <span class="nf">getDirecaoCurso</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Pega direção de curso do avião (direção da velocidade que o avião ta indo</span>
+<span class="sd">        semelhante ao yaw.</span>
+<span class="sd">        :returns: Direção de curso</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">direcaoCurso</span></div>
+
+<div class="viewcode-block" id="Gps.getVelocidade"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.getVelocidade">[docs]</a>    <span class="k">def</span> <span class="nf">getVelocidade</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Pega velocidade atual do avião.</span>
+<span class="sd">        :returns: Velocidade em m/s (?)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocidade</span></div>
+
+<div class="viewcode-block" id="Gps.getErroVelocidade"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.getErroVelocidade">[docs]</a>    <span class="k">def</span> <span class="nf">getErroVelocidade</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Pega erro de velocidade.</span>
+<span class="sd">        :returns: Erro de velocidade</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">erroVelocidade</span></div>
+
+<div class="viewcode-block" id="Gps.getVelSubida"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.getVelSubida">[docs]</a>    <span class="k">def</span> <span class="nf">getVelSubida</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Velocidade vertical do avião.</span>
+<span class="sd">        :returns: Velocidade vertical</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">velSubida</span></div>
+
+<div class="viewcode-block" id="Gps.getErroVelSubida"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.getErroVelSubida">[docs]</a>    <span class="k">def</span> <span class="nf">getErroVelSubida</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Pega erro de velocidade atual do avião.</span>
+<span class="sd">        :returns: Erro de velocidade vertical.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">erroVelSubida</span></div>
+
+<div class="viewcode-block" id="Gps.getNivelFixacao"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.getNivelFixacao">[docs]</a>    <span class="k">def</span> <span class="nf">getNivelFixacao</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Pega em que dimensão o satélite está com lock.</span>
+<span class="sd">        MODE_NO_FIX = 1 (Não pegou satélite)</span>
+<span class="sd">        MODE_2D = 2 (Pegando apenas latitude e longitude)</span>
+<span class="sd">        MODE_3D = 3 (Pegando latitude, longitude e altitude)</span>
+<span class="sd">        :returns: Nível de fixação (1 = não fixo, 2 = 2d, 3 = 3d).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nivelFixacao</span></div>
+
+<div class="viewcode-block" id="Gps.getLatitudeRef"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.getLatitudeRef">[docs]</a>    <span class="k">def</span> <span class="nf">getLatitudeRef</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Pega a latitude de referência (latitude que será considerada</span>
+<span class="sd">        o ponto zero no plano, apartir desse ponto será calculada a distância</span>
+<span class="sd">        x e y)</span>
+<span class="sd">        :returns: Latitude de referência.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">latitudeRef</span></div>
+
+<div class="viewcode-block" id="Gps.getLongitudeRef"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.getLongitudeRef">[docs]</a>    <span class="k">def</span> <span class="nf">getLongitudeRef</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Pega a longitude de referência (lopngitude que será considerada</span>
+<span class="sd">        o ponto zero no plano, apartir desse ponto será calculada a distância</span>
+<span class="sd">        x e y)</span>
+<span class="sd">        :returns: Longitude de referência.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">longitudeRef</span></div>
+
+<div class="viewcode-block" id="Gps.getPosicaoX"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.getPosicaoX">[docs]</a>    <span class="k">def</span> <span class="nf">getPosicaoX</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Pega a distância X em metros apartir de um ponto de referência (latitude e longitude de referência)</span>
+<span class="sd">        :returns: Posição X do avião em metros.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">posicaoX</span></div>
+
+<div class="viewcode-block" id="Gps.getPosicaoY"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.getPosicaoY">[docs]</a>    <span class="k">def</span> <span class="nf">getPosicaoY</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Pega a distância Y em metros apartir de um ponto de referência (latitude e longitude de referência)</span>
+<span class="sd">        :returns: Posição Y do avião em metros.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">posicaoY</span></div>
+
+<div class="viewcode-block" id="Gps.getDistanciaAbsoluta"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.getDistanciaAbsoluta">[docs]</a>    <span class="k">def</span> <span class="nf">getDistanciaAbsoluta</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Pega distância absoluta apartir do ponto de referência</span>
+<span class="sd">        :returns: Distância absoluta apartir do ponto de referência</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">distanciaAbsoluta</span></div>
+
+<div class="viewcode-block" id="Gps.verificaAtualizacaoHorario"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.verificaAtualizacaoHorario">[docs]</a>    <span class="k">def</span> <span class="nf">verificaAtualizacaoHorario</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Função utilizada para verificar se o horário já foi atualizado</span>
+<span class="sd">        :returns: Se o horário já foi atualizado, retorna True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sRelogio</span></div>
+
+<div class="viewcode-block" id="Gps.resetaAtualizacaoHorario"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.resetaAtualizacaoHorario">[docs]</a>    <span class="k">def</span> <span class="nf">resetaAtualizacaoHorario</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Função utilizada para reatualizar o horário da plataforma se houver bugs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">contTempo</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sRelogio</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Gps.atualizaHorarioSistema"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.gpslib.Gps.atualizaHorarioSistema">[docs]</a>    <span class="k">def</span> <span class="nf">atualizaHorarioSistema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Atualiza horário do Raspberry com o horário do gps</span>
+<span class="sd">        :returns: Sucesso ou não de sincronizar horário</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">utc</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">utc</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">contTempo</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">:</span>
+                <span class="n">dataHoraBR</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">utc</span>
+                <span class="c1"># Faz formatação correta para enviar comando pro sistema</span>
+                <span class="n">horasistema</span> <span class="o">=</span> <span class="n">dataHoraBR</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataHoraBR</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">7</span><span class="p">]</span> <span class="o">+</span> \
+                    <span class="n">dataHoraBR</span><span class="p">[</span><span class="mi">8</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">dataHoraBR</span><span class="p">[</span><span class="mi">11</span><span class="p">:</span><span class="mi">19</span><span class="p">]</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;sudo date -u --set=&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">horasistema</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">contTempo</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">contTempo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">contTempo</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Leonardo Mariga and Rafael Araujo Lehmkuhl.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

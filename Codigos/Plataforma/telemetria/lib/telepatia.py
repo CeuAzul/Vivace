@@ -1,5 +1,9 @@
 #!/usr/bin/python
-import serial
+# -*- coding: utf-8 -*-
+
+import os
+if os.uname()[1] == 'raspberrypi':
+    import serial
 import time
 from .dado import Dado
 

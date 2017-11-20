@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 from .GPSController import GpsController
 import math
 from math import radians, cos, sin, asin, sqrt

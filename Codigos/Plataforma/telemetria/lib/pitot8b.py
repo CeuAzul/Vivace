@@ -1,7 +1,10 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 """Biblioteca Pitot
 Biblioteca irá converter os dados do ADC para um valor de velocidade e pressão
 """
-#!/usr/bin/python
+
 import time
 from .adc8 import ADC8
 from random import randint

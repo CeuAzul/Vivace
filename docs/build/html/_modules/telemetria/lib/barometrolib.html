@@ -1,0 +1,474 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>telemetria.lib.barometrolib &mdash; Vivace 2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="Vivace 2.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Vivace
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Vivace</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>telemetria.lib.barometrolib</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for telemetria.lib.barometrolib</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">uname</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;raspberrypi&#39;</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">smbus</span> <span class="k">import</span> <span class="n">SMBus</span>
+
+
+<div class="viewcode-block" id="Barometro"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.barometrolib.Barometro">[docs]</a><span class="k">class</span> <span class="nc">Barometro</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Um objeto dessa classe deve ser criado quando quiser realizar a comunicação</span>
+<span class="sd">    ou obter dados do barômetro.</span>
+<span class="sd">    Para utilizar a classe, criamos o construtor colocando como parâmetros</span>
+<span class="sd">    se queremos pegar temperatura e pressão. Depois, utilizamos a função</span>
+<span class="sd">    atualiza() para fazer a aquisição pelo I2C. Por fim, pegamos os dados</span>
+<span class="sd">    usando os getters().</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__MS5611_ADDRESS_CSB_LOW</span> <span class="o">=</span> <span class="mh">0x76</span>
+    <span class="n">__MS5611_ADDRESS_CSB_HIGH</span> <span class="o">=</span> <span class="mh">0x77</span>
+    <span class="n">__MS5611_DEFAULT_ADDRESS</span> <span class="o">=</span> <span class="mh">0x77</span>
+
+    <span class="n">__MS5611_RA_ADC</span> <span class="o">=</span> <span class="mh">0x00</span>
+    <span class="n">__MS5611_RA_RESET</span> <span class="o">=</span> <span class="mh">0x1E</span>
+
+    <span class="n">__MS5611_RA_C0</span> <span class="o">=</span> <span class="mh">0xA0</span>
+    <span class="n">__MS5611_RA_C1</span> <span class="o">=</span> <span class="mh">0xA2</span>
+    <span class="n">__MS5611_RA_C2</span> <span class="o">=</span> <span class="mh">0xA4</span>
+    <span class="n">__MS5611_RA_C3</span> <span class="o">=</span> <span class="mh">0xA6</span>
+    <span class="n">__MS5611_RA_C4</span> <span class="o">=</span> <span class="mh">0xA8</span>
+    <span class="n">__MS5611_RA_C5</span> <span class="o">=</span> <span class="mh">0xAA</span>
+    <span class="n">__MS5611_RA_C6</span> <span class="o">=</span> <span class="mh">0xAC</span>
+    <span class="n">__MS5611_RA_C7</span> <span class="o">=</span> <span class="mh">0xAE</span>
+
+    <span class="n">__MS5611_RA_D1_OSR_256</span> <span class="o">=</span> <span class="mh">0x40</span>
+    <span class="n">__MS5611_RA_D1_OSR_512</span> <span class="o">=</span> <span class="mh">0x42</span>
+    <span class="n">__MS5611_RA_D1_OSR_1024</span> <span class="o">=</span> <span class="mh">0x44</span>
+    <span class="n">__MS5611_RA_D1_OSR_2048</span> <span class="o">=</span> <span class="mh">0x46</span>
+    <span class="n">__MS5611_RA_D1_OSR_4096</span> <span class="o">=</span> <span class="mh">0x48</span>
+
+    <span class="n">__MS5611_RA_D2_OSR_256</span> <span class="o">=</span> <span class="mh">0x50</span>
+    <span class="n">__MS5611_RA_D2_OSR_512</span> <span class="o">=</span> <span class="mh">0x52</span>
+    <span class="n">__MS5611_RA_D2_OSR_1024</span> <span class="o">=</span> <span class="mh">0x54</span>
+    <span class="n">__MS5611_RA_D2_OSR_2048</span> <span class="o">=</span> <span class="mh">0x56</span>
+    <span class="n">__MS5611_RA_D2_OSR_4096</span> <span class="o">=</span> <span class="mh">0x58</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">usePressao</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useTemp</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construtor da classe, coloca parâmetros indicando ser</span>
+<span class="sd">         gostaria de utilizar o dado de pressão ou utilizar os dados</span>
+<span class="sd">         de temperatura. Além disso, a função configura os dados</span>
+<span class="sd">         para que a comunicação do i2c seja feita corretamente.</span>
+<span class="sd">        :param usePressao: Indicador se deve ser obtido o dado de pressão.</span>
+<span class="sd">        :param useTemp: Indicador se deve ser obtido o dado de temperatura.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bus</span> <span class="o">=</span> <span class="n">SMBus</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="mh">0x77</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">C1</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">C2</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">C3</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">C4</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">C5</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">C6</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">D1</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">D2</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">temp</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1"># Calculated temperature</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pres</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1"># Calculated Pressure</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">densidadeAr</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">altitudePressao</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">altitudeRelativa</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pressaoReferencia</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pressaoAtmosfericaPadrao</span> <span class="o">=</span> <span class="mi">101325</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">usePressao</span> <span class="o">=</span> <span class="n">usePressao</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">useTemp</span> <span class="o">=</span> <span class="n">useTemp</span>
+
+        <span class="c1"># The MS6511 Sensor stores 6 values in the EPROM memory that we need in order to calculate the actual temperature and pressure</span>
+        <span class="c1"># These values are calculated/stored at the factory when the sensor is calibrated.</span>
+        <span class="c1"># I probably could have used the read word function instead of the whole block, but I wanted to keep things consistent.</span>
+        <span class="n">C1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">read_i2c_block_data</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__MS5611_RA_C1</span><span class="p">)</span>  <span class="c1"># Pressure Sensitivity</span>
+        <span class="c1"># time.sleep(0.05)</span>
+        <span class="n">C2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">read_i2c_block_data</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__MS5611_RA_C2</span><span class="p">)</span>  <span class="c1"># Pressure Offset</span>
+        <span class="c1"># time.sleep(0.05)</span>
+        <span class="c1"># Temperature coefficient of pressure sensitivity</span>
+        <span class="n">C3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">read_i2c_block_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__MS5611_RA_C3</span><span class="p">)</span>
+        <span class="c1"># time.sleep(0.05)</span>
+        <span class="c1"># Temperature coefficient of pressure offset</span>
+        <span class="n">C4</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">read_i2c_block_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__MS5611_RA_C4</span><span class="p">)</span>
+        <span class="c1"># time.sleep(0.05)</span>
+        <span class="n">C5</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">read_i2c_block_data</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__MS5611_RA_C5</span><span class="p">)</span>  <span class="c1"># Reference temperature</span>
+        <span class="c1"># time.sleep(0.05)</span>
+        <span class="c1"># Temperature coefficient of the temperature</span>
+        <span class="n">C6</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">read_i2c_block_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__MS5611_RA_C6</span><span class="p">)</span>
+
+        <span class="c1"># Again here we are converting the 2 8bit packages into a single decimal</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">C1</span> <span class="o">=</span> <span class="n">C1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">256.0</span> <span class="o">+</span> <span class="n">C1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">C2</span> <span class="o">=</span> <span class="n">C2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">256.0</span> <span class="o">+</span> <span class="n">C2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">C3</span> <span class="o">=</span> <span class="n">C3</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">256.0</span> <span class="o">+</span> <span class="n">C3</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">C4</span> <span class="o">=</span> <span class="n">C4</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">256.0</span> <span class="o">+</span> <span class="n">C4</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">C5</span> <span class="o">=</span> <span class="n">C5</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">256.0</span> <span class="o">+</span> <span class="n">C5</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">C6</span> <span class="o">=</span> <span class="n">C6</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">256.0</span> <span class="o">+</span> <span class="n">C6</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">atualizaReferencia</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Barometro.atualizaReferencia"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.barometrolib.Barometro.atualizaReferencia">[docs]</a>    <span class="k">def</span> <span class="nf">atualizaReferencia</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pressaoReferencia</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">atualiza</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pressaoReferencia</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pressaoReferencia</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">getPressao</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pressaoReferencia</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pressaoReferencia</span> <span class="o">/</span> <span class="mi">10</span></div>
+
+<div class="viewcode-block" id="Barometro.refreshPressure"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.barometrolib.Barometro.refreshPressure">[docs]</a>    <span class="k">def</span> <span class="nf">refreshPressure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">OSR</span><span class="o">=</span><span class="n">__MS5611_RA_D1_OSR_4096</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Função utilizada internamente para comunicação I2C</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">write_byte</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">OSR</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Barometro.refreshTemperature"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.barometrolib.Barometro.refreshTemperature">[docs]</a>    <span class="k">def</span> <span class="nf">refreshTemperature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">OSR</span><span class="o">=</span><span class="n">__MS5611_RA_D2_OSR_4096</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Função utilizada internamente para comunicação I2C</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">write_byte</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">OSR</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Barometro.readPressure"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.barometrolib.Barometro.readPressure">[docs]</a>    <span class="k">def</span> <span class="nf">readPressure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Função utilizada internamente para comunicação I2C</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">D1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">read_i2c_block_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__MS5611_RA_ADC</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">D1</span> <span class="o">=</span> <span class="n">D1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">65536</span> <span class="o">+</span> <span class="n">D1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">256.0</span> <span class="o">+</span> <span class="n">D1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Barometro.readTemperature"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.barometrolib.Barometro.readTemperature">[docs]</a>    <span class="k">def</span> <span class="nf">readTemperature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Função utilizada internamente para comunicação I2C</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">D2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">read_i2c_block_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__MS5611_RA_ADC</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">D2</span> <span class="o">=</span> <span class="n">D2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">65536</span> <span class="o">+</span> <span class="n">D2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">256.0</span> <span class="o">+</span> <span class="n">D2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Barometro.calculatePressureAndTemperature"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.barometrolib.Barometro.calculatePressureAndTemperature">[docs]</a>    <span class="k">def</span> <span class="nf">calculatePressureAndTemperature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Função utilizada internamente para comunicação I2C.</span>
+<span class="sd">        É a função principal para realizar a aquisição dos dados</span>
+<span class="sd">        pelo i2c.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dT</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">D2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">C5</span> <span class="o">*</span> <span class="mi">2</span><span class="o">**</span><span class="mi">8</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temp</span> <span class="o">=</span> <span class="mi">2000</span> <span class="o">+</span> <span class="n">dT</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">C6</span> <span class="o">/</span> <span class="mi">2</span><span class="o">**</span><span class="mi">23</span>
+
+        <span class="n">OFF</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">C2</span> <span class="o">*</span> <span class="mi">2</span><span class="o">**</span><span class="mi">16</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">C4</span> <span class="o">*</span> <span class="n">dT</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="o">**</span><span class="mi">7</span>
+        <span class="n">SENS</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">C1</span> <span class="o">*</span> <span class="mi">2</span><span class="o">**</span><span class="mi">15</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">C3</span> <span class="o">*</span> <span class="n">dT</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="o">**</span><span class="mi">8</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp</span> <span class="o">&gt;=</span> <span class="mi">2000</span><span class="p">):</span>
+            <span class="n">T2</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">OFF2</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">SENS2</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp</span> <span class="o">&lt;</span> <span class="mi">2000</span><span class="p">):</span>
+            <span class="n">T2</span> <span class="o">=</span> <span class="n">dT</span> <span class="o">*</span> <span class="n">dT</span> <span class="o">/</span> <span class="mi">2</span><span class="o">**</span><span class="mi">31</span>
+            <span class="n">OFF2</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">temp</span> <span class="o">-</span> <span class="mi">2000</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="n">SENS2</span> <span class="o">=</span> <span class="n">OFF2</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">1500</span><span class="p">):</span>
+            <span class="n">OFF2</span> <span class="o">=</span> <span class="n">OFF2</span> <span class="o">+</span> <span class="mi">7</span> <span class="o">*</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">temp</span> <span class="o">+</span> <span class="mi">1500</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">SENS2</span> <span class="o">=</span> <span class="n">SENS2</span> <span class="o">+</span> <span class="mi">11</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp</span> <span class="o">+</span> <span class="mi">1500</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp</span> <span class="o">-</span> <span class="n">T2</span>
+        <span class="n">OFF</span> <span class="o">=</span> <span class="n">OFF</span> <span class="o">-</span> <span class="n">OFF2</span>
+        <span class="n">SENS</span> <span class="o">=</span> <span class="n">SENS</span> <span class="o">-</span> <span class="n">SENS2</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pres</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D1</span> <span class="o">*</span> <span class="n">SENS</span> <span class="o">/</span> <span class="mi">2</span><span class="o">**</span><span class="mi">21</span> <span class="o">-</span> <span class="n">OFF</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="o">**</span><span class="mi">15</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp</span> <span class="o">/</span> <span class="mi">100</span>  <span class="c1"># Temperature updated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pres</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pres</span> <span class="o">/</span> <span class="mi">100</span>  <span class="c1"># Pressure updated</span></div>
+
+<div class="viewcode-block" id="Barometro.getPressao"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.barometrolib.Barometro.getPressao">[docs]</a>    <span class="k">def</span> <span class="nf">getPressao</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">um</span><span class="o">=</span><span class="s2">&quot;PA&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retorna valor da pressão atual</span>
+<span class="sd">        :returns: Pressão atual</span>
+<span class="sd">        :param um: Unidade de medida.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">um</span> <span class="o">==</span> <span class="s2">&quot;PA&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pres</span> <span class="o">*</span> <span class="mi">100</span>
+        <span class="k">elif</span> <span class="n">um</span> <span class="o">==</span> <span class="s2">&quot;hPA&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pres</span>
+        <span class="k">elif</span> <span class="n">um</span> <span class="o">==</span> <span class="s2">&quot;mBar&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pres</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pres</span></div>
+
+<div class="viewcode-block" id="Barometro.getTemperatura"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.barometrolib.Barometro.getTemperatura">[docs]</a>    <span class="k">def</span> <span class="nf">getTemperatura</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retorna valor de temperatura</span>
+<span class="sd">        :returns: Temperatura (ºC)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp</span></div>
+
+<div class="viewcode-block" id="Barometro.getDensidadeAr"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.barometrolib.Barometro.getDensidadeAr">[docs]</a>    <span class="k">def</span> <span class="nf">getDensidadeAr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retorna Densidade do ar</span>
+<span class="sd">        :returns: Densidade</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">densidadeAr</span></div>
+
+<div class="viewcode-block" id="Barometro.getAltitudeRelativa"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.barometrolib.Barometro.getAltitudeRelativa">[docs]</a>    <span class="k">def</span> <span class="nf">getAltitudeRelativa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">um</span><span class="o">=</span><span class="s2">&quot;m&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retorna altitude em relação ao lugar de calibração (solo)</span>
+<span class="sd">        :param um: Unidade de medida.</span>
+<span class="sd">        :returns: Altitude em relação ao solo</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">um</span> <span class="o">==</span> <span class="s2">&quot;m&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">altitudeRelativa</span>
+        <span class="k">elif</span> <span class="n">um</span> <span class="o">==</span> <span class="s2">&quot;ft&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">altitudeRelativa</span> <span class="o">*</span> <span class="mf">3.28084</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># retorna metros</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">altitudeRelativa</span></div>
+
+<div class="viewcode-block" id="Barometro.getAltitudePressao"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.barometrolib.Barometro.getAltitudePressao">[docs]</a>    <span class="k">def</span> <span class="nf">getAltitudePressao</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">um</span><span class="o">=</span><span class="s2">&quot;m&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retorna altitude-pressão. Altitude pressão é o valor da</span>
+<span class="sd">        pressão de atmosfera padrão 101325 pascal</span>
+<span class="sd">        :param um: Unidade de medida.</span>
+<span class="sd">        :returns: Altitude-pressão em relação a atmosfera padrão</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">um</span> <span class="o">==</span> <span class="s2">&quot;m&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">altitudePressao</span>
+        <span class="k">elif</span> <span class="n">um</span> <span class="o">==</span> <span class="s2">&quot;ft&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">altitudePressao</span> <span class="o">*</span> <span class="mf">3.28084</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># retorna metros</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">altitudePressao</span></div>
+
+<div class="viewcode-block" id="Barometro.atualiza"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.barometrolib.Barometro.atualiza">[docs]</a>    <span class="k">def</span> <span class="nf">atualiza</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Pega mais uma amostra dos parâmetros relacionados ao</span>
+<span class="sd">        barômetro e armazena-os nas variáveis da classe.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">somaTemp</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">somaPressao</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">samples</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">usePressao</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">refreshPressure</span><span class="p">()</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>  <span class="c1"># Waiting for pressure data ready</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">readPressure</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">useTemp</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">refreshTemperature</span><span class="p">()</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>  <span class="c1"># Waiting for temperature data ready</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">readTemperature</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">calculatePressureAndTemperature</span><span class="p">()</span>
+            <span class="n">somaTemp</span> <span class="o">=</span> <span class="n">somaTemp</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp</span>
+            <span class="n">somaPressao</span> <span class="o">=</span> <span class="n">somaPressao</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">pres</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temp</span> <span class="o">=</span> <span class="n">somaTemp</span> <span class="o">/</span> <span class="n">samples</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pres</span> <span class="o">=</span> <span class="n">somaPressao</span> <span class="o">/</span> <span class="n">samples</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">useTemp</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">usePressao</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">densidadeAr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pres</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">/</span> \
+                    <span class="p">(</span><span class="mf">287.05</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp</span> <span class="o">+</span> <span class="mf">273.15</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">usePressao</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pressaoReferencia</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">altitudeRelativa</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="mf">44330.0</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="nb">pow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pres</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pressaoReferencia</span><span class="p">),</span> <span class="mf">0.1902949</span><span class="p">)))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">altitudePressao</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="mf">44330.0</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="nb">pow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pres</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">pressaoAtmosfericaPadrao</span><span class="p">,</span> <span class="mf">0.1902949</span><span class="p">)))</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Leonardo Mariga and Rafael Araujo Lehmkuhl.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

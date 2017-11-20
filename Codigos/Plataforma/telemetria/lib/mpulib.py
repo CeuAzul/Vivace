@@ -1,5 +1,9 @@
 #!/usr/bin/python
-import smbus
+# -*- coding: utf-8 -*-
+
+import os
+if os.uname()[1] == 'raspberrypi':
+    import smbus
 import math
 
 

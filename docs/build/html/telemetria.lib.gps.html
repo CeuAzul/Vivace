@@ -1,0 +1,421 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>telemetria.lib.gps package &mdash; Vivace 2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Vivace 2.0 documentation" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Vivace
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">telemetria.lib.gps package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-telemetria.lib.gps.client">telemetria.lib.gps.client module</a></li>
+<li><a class="reference internal" href="#telemetria-lib-gps-fake-module">telemetria.lib.gps.fake module</a></li>
+<li><a class="reference internal" href="#module-telemetria.lib.gps.gps">telemetria.lib.gps.gps module</a></li>
+<li><a class="reference internal" href="#module-telemetria.lib.gps.misc">telemetria.lib.gps.misc module</a></li>
+<li><a class="reference internal" href="#module-telemetria.lib.gps">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Vivace</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>telemetria.lib.gps package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/telemetria.lib.gps.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="telemetria-lib-gps-package">
+<h1>telemetria.lib.gps package<a class="headerlink" href="#telemetria-lib-gps-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-telemetria.lib.gps.client">
+<span id="telemetria-lib-gps-client-module"></span><h2>telemetria.lib.gps.client module<a class="headerlink" href="#module-telemetria.lib.gps.client" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="telemetria.lib.gps.client.DictWrapper">
+<em class="property">class </em><code class="descclassname">telemetria.lib.gps.client.</code><code class="descname">DictWrapper</code><span class="sig-paren">(</span><em>ddict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gps/client.html#DictWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.client.DictWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper that yields both class and dictionary behavior</p>
+<dl class="method">
+<dt id="telemetria.lib.gps.client.DictWrapper.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>k</em>, <em>d=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gps/client.html#DictWrapper.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.client.DictWrapper.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gps.client.DictWrapper.json_encode">
+<code class="descname">json_encode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gps/client.html#DictWrapper.json_encode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.client.DictWrapper.json_encode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a JSON compatible dictionary representation of the object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gps.client.DictWrapper.keys">
+<code class="descname">keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gps/client.html#DictWrapper.keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.client.DictWrapper.keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="telemetria.lib.gps.client.GPSCommon">
+<em class="property">class </em><code class="descclassname">telemetria.lib.gps.client.</code><code class="descname">GPSCommon</code><span class="sig-paren">(</span><em>host='127.0.0.1'</em>, <em>port='2947'</em>, <em>verbose=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gps/client.html#GPSCommon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.client.GPSCommon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Isolate socket handling and buffering from the protocol interpretation.</p>
+<dl class="method">
+<dt id="telemetria.lib.gps.client.GPSCommon.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gps/client.html#GPSCommon.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.client.GPSCommon.close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gps.client.GPSCommon.connect">
+<code class="descname">connect</code><span class="sig-paren">(</span><em>host</em>, <em>port</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gps/client.html#GPSCommon.connect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.client.GPSCommon.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect to a host on a given port.
+If the hostname ends with a colon (<a href="#id1"><span class="problematic" id="id2">`</span></a>:’) followed by a number, and
+there is no port specified, that suffix will be stripped off and the
+number interpreted as the port number to use.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gps.client.GPSCommon.data">
+<code class="descname">data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gps/client.html#GPSCommon.data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.client.GPSCommon.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the client data buffer.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gps.client.GPSCommon.read">
+<code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gps/client.html#GPSCommon.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.client.GPSCommon.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait for and read data being streamed from the daemon.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gps.client.GPSCommon.send">
+<code class="descname">send</code><span class="sig-paren">(</span><em>commands</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gps/client.html#GPSCommon.send"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.client.GPSCommon.send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ship commands to the daemon.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gps.client.GPSCommon.waiting">
+<code class="descname">waiting</code><span class="sig-paren">(</span><em>timeout=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gps/client.html#GPSCommon.waiting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.client.GPSCommon.waiting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if data is ready for the client.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="telemetria.lib.gps.client.GPSJson">
+<em class="property">class </em><code class="descclassname">telemetria.lib.gps.client.</code><code class="descname">GPSJson</code><a class="reference internal" href="_modules/telemetria/lib/gps/client.html#GPSJson"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.client.GPSJson" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basic JSON decoding.</p>
+<dl class="method">
+<dt id="telemetria.lib.gps.client.GPSJson.stream">
+<code class="descname">stream</code><span class="sig-paren">(</span><em>flags=0</em>, <em>devpath=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gps/client.html#GPSJson.stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.client.GPSJson.stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Control streaming reports from the daemon</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gps.client.GPSJson.unpack">
+<code class="descname">unpack</code><span class="sig-paren">(</span><em>buf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gps/client.html#GPSJson.unpack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.client.GPSJson.unpack" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="telemetria.lib.gps.client.JsonError">
+<em class="property">exception </em><code class="descclassname">telemetria.lib.gps.client.</code><code class="descname">JsonError</code><span class="sig-paren">(</span><em>data</em>, <em>explanation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gps/client.html#JsonError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.client.JsonError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.Exception" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="telemetria-lib-gps-fake-module">
+<h2>telemetria.lib.gps.fake module<a class="headerlink" href="#telemetria-lib-gps-fake-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-telemetria.lib.gps.gps">
+<span id="telemetria-lib-gps-gps-module"></span><h2>telemetria.lib.gps.gps module<a class="headerlink" href="#module-telemetria.lib.gps.gps" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="telemetria.lib.gps.gps.GPS">
+<em class="property">class </em><code class="descclassname">telemetria.lib.gps.gps.</code><code class="descname">GPS</code><span class="sig-paren">(</span><em>host='127.0.0.1'</em>, <em>port='2947'</em>, <em>verbose=0</em>, <em>mode=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gps/gps.html#GPS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.gps.GPS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#telemetria.lib.gps.client.GPSCommon" title="telemetria.lib.gps.client.GPSCommon"><code class="xref py py-class docutils literal"><span class="pre">telemetria.lib.gps.client.GPSCommon</span></code></a>, <a class="reference internal" href="#telemetria.lib.gps.gps.GPSData" title="telemetria.lib.gps.gps.GPSData"><code class="xref py py-class docutils literal"><span class="pre">telemetria.lib.gps.gps.GPSData</span></code></a>, <a class="reference internal" href="#telemetria.lib.gps.client.GPSJson" title="telemetria.lib.gps.client.GPSJson"><code class="xref py py-class docutils literal"><span class="pre">telemetria.lib.gps.client.GPSJson</span></code></a></p>
+<p>Client interface to a running gpsd instance.</p>
+<dl class="method">
+<dt id="telemetria.lib.gps.gps.GPS.next">
+<code class="descname">next</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gps/gps.html#GPS.next"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.gps.GPS.next" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gps.gps.GPS.read">
+<code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gps/gps.html#GPS.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.gps.GPS.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read and interpret data from the daemon.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gps.gps.GPS.stream">
+<code class="descname">stream</code><span class="sig-paren">(</span><em>flags=0</em>, <em>devpath=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gps/gps.html#GPS.stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.gps.GPS.stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask gpsd to stream reports at your client.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="telemetria.lib.gps.gps.GPSData">
+<em class="property">class </em><code class="descclassname">telemetria.lib.gps.gps.</code><code class="descname">GPSData</code><a class="reference internal" href="_modules/telemetria/lib/gps/gps.html#GPSData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.gps.GPSData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Position, track, velocity and status information returned by a GPS.</p>
+<dl class="class">
+<dt id="telemetria.lib.gps.gps.GPSData.Satellite">
+<em class="property">class </em><code class="descname">Satellite</code><span class="sig-paren">(</span><em>PRN</em>, <em>elevation</em>, <em>azimuth</em>, <em>ss</em>, <em>used=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gps/gps.html#GPSData.Satellite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.gps.GPSData.Satellite" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="telemetria.lib.gps.gps.GPSFix">
+<em class="property">class </em><code class="descclassname">telemetria.lib.gps.gps.</code><code class="descname">GPSFix</code><a class="reference internal" href="_modules/telemetria/lib/gps/gps.html#GPSFix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.gps.GPSFix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="telemetria.lib.gps.gps.isnan">
+<code class="descclassname">telemetria.lib.gps.gps.</code><code class="descname">isnan</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gps/gps.html#isnan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.gps.isnan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-telemetria.lib.gps.misc">
+<span id="telemetria-lib-gps-misc-module"></span><h2>telemetria.lib.gps.misc module<a class="headerlink" href="#module-telemetria.lib.gps.misc" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="telemetria.lib.gps.misc.calc_rad">
+<code class="descclassname">telemetria.lib.gps.misc.</code><code class="descname">calc_rad</code><span class="sig-paren">(</span><em>lat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gps/misc.html#calc_rad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.misc.calc_rad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Radius of curvature in meters at specified latitude.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="telemetria.lib.gps.misc.degree_to_radian">
+<code class="descclassname">telemetria.lib.gps.misc.</code><code class="descname">degree_to_radian</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gps/misc.html#degree_to_radian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.misc.degree_to_radian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Degrees to radians.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="telemetria.lib.gps.misc.earth_distance">
+<code class="descclassname">telemetria.lib.gps.misc.</code><code class="descname">earth_distance</code><span class="sig-paren">(</span><em>lat1</em>, <em>lon1</em>, <em>lat2</em>, <em>lon2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gps/misc.html#earth_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.misc.earth_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Distance in meters between two points specified in degrees.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="telemetria.lib.gps.misc.iso_time">
+<code class="descclassname">telemetria.lib.gps.misc.</code><code class="descname">iso_time</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gps/misc.html#iso_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.misc.iso_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert timestamps in ISO8661 format to and from Unix time.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="telemetria.lib.gps.misc.meter_offset">
+<code class="descclassname">telemetria.lib.gps.misc.</code><code class="descname">meter_offset</code><span class="sig-paren">(</span><em>lat1</em>, <em>lon1</em>, <em>lat2</em>, <em>lon2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gps/misc.html#meter_offset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.misc.meter_offset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return offset in meters of second arg from first.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="telemetria.lib.gps.misc.radian_to_degree">
+<code class="descclassname">telemetria.lib.gps.misc.</code><code class="descname">radian_to_degree</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gps/misc.html#radian_to_degree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gps.misc.radian_to_degree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Radians to degrees.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-telemetria.lib.gps">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-telemetria.lib.gps" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Leonardo Mariga and Rafael Araujo Lehmkuhl.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

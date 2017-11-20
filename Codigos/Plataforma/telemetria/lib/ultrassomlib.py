@@ -1,4 +1,9 @@
-import RPi.GPIO as GPIO
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import os
+if os.uname()[1] == 'raspberrypi':
+    import RPi.GPIO as GPIO
 import time
 import datetime
 

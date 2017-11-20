@@ -1,0 +1,884 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>telemetria.codigo_global &mdash; Vivace 2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="Vivace 2.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Vivace
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Vivace</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>telemetria.codigo_global</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for telemetria.codigo_global</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;FUNÇÃO GLOBAL</span>
+<span class="sd">Código que cria objeto de todos os sensore e faz com que eles</span>
+<span class="sd">trabalhem em harmonia usando as threads.</span>
+
+<span class="sd">Neste código é utilizado a MPU, Barômetro e o GPS</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">from</span> <span class="nn">lib.dado</span> <span class="k">import</span> <span class="n">Dado</span>
+<span class="kn">from</span> <span class="nn">lib.mpulib</span> <span class="k">import</span> <span class="n">MPU</span>
+<span class="kn">from</span> <span class="nn">lib.datilografo</span> <span class="k">import</span> <span class="n">Escritor</span>
+<span class="kn">from</span> <span class="nn">lib.telepatia</span> <span class="k">import</span> <span class="n">Transmissor</span>
+<span class="kn">from</span> <span class="nn">lib.barometrolib</span> <span class="k">import</span> <span class="n">Barometro</span>
+<span class="kn">from</span> <span class="nn">lib.gpslib</span> <span class="k">import</span> <span class="n">Gps</span>
+<span class="kn">from</span> <span class="nn">lib.pitot8b</span> <span class="k">import</span> <span class="n">Pitot8b</span>
+<span class="kn">from</span> <span class="nn">lib.nanolib</span> <span class="k">import</span> <span class="n">Nano</span>
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../telemetria.html#telemetria.codigo_global.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+
+    <span class="n">NaN</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>
+
+
+    <span class="c1"># Cria objeto dos sensores</span>
+    <span class="n">mpu</span> <span class="o">=</span> <span class="n">MPU</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">barometro</span> <span class="o">=</span> <span class="n">Barometro</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">gps</span> <span class="o">=</span> <span class="n">Gps</span><span class="p">()</span>
+    <span class="n">pitot8b</span> <span class="o">=</span> <span class="n">Pitot8b</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">pitot8bRPMD</span> <span class="o">=</span> <span class="n">Pitot8b</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">pitot8bRPME</span> <span class="o">=</span> <span class="n">Pitot8b</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">nano</span> <span class="o">=</span> <span class="n">Nano</span><span class="p">()</span>
+
+    <span class="c1"># Cria escritor e transmissor</span>
+    <span class="n">escritor</span> <span class="o">=</span> <span class="n">Escritor</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;Global - &quot;</span><span class="p">,</span> <span class="s2">&quot;.txt&quot;</span><span class="p">)</span>
+    <span class="n">transmissor</span> <span class="o">=</span> <span class="n">Transmissor</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">57600</span><span class="p">,</span> <span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Dados da MPU</span>
+    <span class="n">tempo</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Tempo&quot;</span><span class="p">,</span> <span class="s2">&quot;seg&quot;</span><span class="p">,</span> <span class="s2">&quot;tmp&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="n">taxaGiroX</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Taxa de giro em X&quot;</span><span class="p">,</span> <span class="s2">&quot;º/s&quot;</span><span class="p">,</span> <span class="s2">&quot;gyx&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">taxaGiroY</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Taxa de giro em Y&quot;</span><span class="p">,</span> <span class="s2">&quot;º/s&quot;</span><span class="p">,</span> <span class="s2">&quot;gyy&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">taxaGiroZ</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Taxa de giro em Z&quot;</span><span class="p">,</span> <span class="s2">&quot;º/s&quot;</span><span class="p">,</span> <span class="s2">&quot;gyz&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">aceleracaoX</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Aceleração em X&quot;</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="s2">&quot;acx&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">aceleracaoY</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Aceleração em Y&quot;</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="s2">&quot;acy&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">aceleracaoZ</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Aceleração em Z&quot;</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="s2">&quot;acz&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">pitch</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Pitch&quot;</span><span class="p">,</span> <span class="s2">&quot;º&quot;</span><span class="p">,</span> <span class="s2">&quot;pit&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">roll</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Roll&quot;</span><span class="p">,</span> <span class="s2">&quot;º&quot;</span><span class="p">,</span> <span class="s2">&quot;rol&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># Dados do barômetro</span>
+    <span class="n">pressaoTotal</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Pressao total&quot;</span><span class="p">,</span> <span class="s2">&quot;PA&quot;</span><span class="p">,</span> <span class="s2">&quot;ptt&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">pressaoEstatica</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Pressao estática&quot;</span><span class="p">,</span> <span class="s2">&quot;PA&quot;</span><span class="p">,</span> <span class="s2">&quot;pts&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">pressaoTotalr</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;PTtotal&quot;</span><span class="p">,</span> <span class="s2">&quot;PA&quot;</span><span class="p">,</span> <span class="s2">&quot;ptt&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">pressaoEstaticar</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;PTstatic&quot;</span><span class="p">,</span> <span class="s2">&quot;PA&quot;</span><span class="p">,</span> <span class="s2">&quot;psr&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">temperaturaBar</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Temperatura&quot;</span><span class="p">,</span> <span class="s2">&quot;ºC&quot;</span><span class="p">,</span> <span class="s2">&quot;tem&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">densidadeAr</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Densidade do ar&quot;</span><span class="p">,</span> <span class="s2">&quot;Kg/m³&quot;</span><span class="p">,</span> <span class="s2">&quot;den&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">altitudeRelativa</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Altitude relativa&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;alt&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">altitudePressao</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;HP&quot;</span><span class="p">,</span> <span class="s2">&quot;ft&quot;</span><span class="p">,</span> <span class="s2">&quot;hps&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="c1"># Dados do Gps</span>
+    <span class="n">dadoTempoGPS</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Tempo GPS&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;tmg&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">latitude</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;º&quot;</span><span class="p">,</span> <span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+    <span class="n">longitude</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Longitude&quot;</span><span class="p">,</span> <span class="s2">&quot;º&quot;</span><span class="p">,</span> <span class="s2">&quot;lng&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+    <span class="n">altitude</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;ZGPS&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;atg&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">direcaoCurso</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Direção de curso&quot;</span><span class="p">,</span> <span class="s2">&quot;º&quot;</span><span class="p">,</span> <span class="s2">&quot;cog&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">velocidade</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Velocidade GPS&quot;</span><span class="p">,</span> <span class="s2">&quot;m/s&quot;</span><span class="p">,</span> <span class="s2">&quot;vel&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">velocidadeSubida</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Velocidade de subida&quot;</span><span class="p">,</span> <span class="s2">&quot;m/s&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;ves&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">erroX</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Erro em X&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;erx&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">erroY</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Erro em Y&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;ery&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">erroAltitude</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Erro da altitude&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;era&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">erroVelocidade</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Erro de velocidade&quot;</span><span class="p">,</span> <span class="s2">&quot;nós&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;ers&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">erroVelocidadeSubida</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span>
+        <span class="s2">&quot;Erro da velocidade de subida&quot;</span><span class="p">,</span> <span class="s2">&quot;m/s&quot;</span><span class="p">,</span> <span class="s2">&quot;ves&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">nivelFixacao</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Nivel de fixação GPS&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;nfx&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">latitudeRef</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Latitude de referência&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;ltr&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+    <span class="n">longitudeRef</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Longitude de referência&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;lgr&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+    <span class="n">posicaoX</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;XGPS&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;gpx&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">posicaoY</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;YGPS&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;gpy&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">distanciaAbsoluta</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Distancia absoluta&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;dtr&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># Dados do pitot</span>
+    <span class="n">pressADC</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Valor ADC&quot;</span><span class="p">,</span> <span class="s2">&quot;Int&quot;</span><span class="p">,</span> <span class="s2">&quot;ppa&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">pressTensao</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Tensao&quot;</span><span class="p">,</span> <span class="s2">&quot;V&quot;</span><span class="p">,</span> <span class="s2">&quot;ppv&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+    <span class="n">pressaoDin</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Pressao Dinamica&quot;</span><span class="p">,</span> <span class="s2">&quot;PA&quot;</span><span class="p">,</span> <span class="s2">&quot;ppp&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">velCas</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;VCAS&quot;</span><span class="p">,</span> <span class="s2">&quot;m/s&quot;</span><span class="p">,</span> <span class="s2">&quot;vcs&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+
+    <span class="c1"># Dados do Nano</span>
+    <span class="n">rpmD</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;RPM&quot;</span><span class="p">,</span> <span class="s2">&quot;rpm&quot;</span><span class="p">,</span> <span class="s2">&quot;rpm&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">rpmE</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;RPME&quot;</span><span class="p">,</span> <span class="s2">&quot;Rpd&quot;</span><span class="p">,</span> <span class="s2">&quot;rpd&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">wow</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;WOW&quot;</span><span class="p">,</span> <span class="s2">&quot;bit&quot;</span><span class="p">,</span> <span class="s2">&quot;wow&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">wowRaw</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Wow raw&quot;</span><span class="p">,</span> <span class="s2">&quot;bit&quot;</span><span class="p">,</span> <span class="s2">&quot;wop&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">tempoVoo</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Tempo de voo&quot;</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="s2">&quot;tpv&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">distancia</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Distância&quot;</span><span class="p">,</span> <span class="s2">&quot;cm&quot;</span><span class="p">,</span> <span class="s2">&quot;tpv&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">distRef</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Distancia referência&quot;</span><span class="p">,</span> <span class="s2">&quot;cm&quot;</span><span class="p">,</span> <span class="s2">&quot;dsr&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Grava transmissão de mensagem</span>
+    <span class="n">ultimoTransmitido</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Mensagem&quot;</span><span class="p">,</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Variavel para confirmação de telecomando</span>
+    <span class="n">teleconfirm</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># Flags de saúde do sistema</span>
+
+    <span class="n">sinaldo</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Sinaldo&quot;</span><span class="p">,</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span> <span class="s2">&quot;sin&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># Funcionamento do Sinaldo</span>
+    <span class="c1"># 0 = Plataforma ligada, sistema calibrando...</span>
+    <span class="c1"># 1 = Sistema calibrado e horário atualizado, aguardando inicio de gravação...</span>
+    <span class="c1"># 2 = Apenas transmitindo tempo, Vcas, HP, RPM e altitude(gps)</span>
+    <span class="c1"># 3 = Apenas transmissão de dados no modo normal</span>
+    <span class="c1"># 4 = Transmitindo e gravando dados no modo normal</span>
+
+    <span class="n">agravante</span> <span class="o">=</span> <span class="n">Dado</span><span class="p">(</span><span class="s2">&quot;Agravante&quot;</span><span class="p">,</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span> <span class="s2">&quot;agr&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="c1"># Tamanho do arquivo</span>
+
+    <span class="n">sinaldo</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">tempoGPS</span> <span class="o">=</span> <span class="n">NaN</span>
+    <span class="n">utc</span> <span class="o">=</span> <span class="n">NaN</span>
+
+    <span class="c1"># Cria indicador para, quando quisermos, parar de executar as threads</span>
+    <span class="n">threadsRodando</span> <span class="o">=</span> <span class="kc">True</span>
+
+
+    <span class="n">atualizaRefBar</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">agora</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">inicioDia</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">agora</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">agora</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">agora</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">atualizaVetorDados</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;Função responsável por atualizar o vetor de dados</span>
+<span class="sd">        com os dados atualizados pelas funções, vale dizer que essa função</span>
+<span class="sd">        funciona como se fosse um &quot;empacotador&quot; para poder enviar todos os</span>
+<span class="sd">        dados ao mesmo tempo para o Escritor e para o Transmissor.</span>
+
+<span class="sd">        :returns: Vetor com os dados atualizados com as ultimas aquisições.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">tempo</span><span class="p">,</span>
+                <span class="n">wow</span><span class="p">,</span>
+                <span class="n">altitudePressao</span><span class="p">,</span>
+                <span class="n">velCas</span><span class="p">,</span>
+                <span class="n">pressaoEstaticar</span><span class="p">,</span>
+                <span class="n">pressaoTotalr</span><span class="p">,</span>
+                <span class="n">rpmD</span><span class="p">,</span>
+                <span class="n">posicaoX</span><span class="p">,</span>
+                <span class="n">posicaoY</span><span class="p">,</span>
+                <span class="n">altitude</span><span class="p">,</span>
+                <span class="n">rpmE</span><span class="p">,</span>
+                <span class="n">taxaGiroX</span><span class="p">,</span>
+                <span class="n">taxaGiroY</span><span class="p">,</span>
+                <span class="n">taxaGiroZ</span><span class="p">,</span>
+                <span class="n">aceleracaoX</span><span class="p">,</span>
+                <span class="n">aceleracaoY</span><span class="p">,</span>
+                <span class="n">aceleracaoZ</span><span class="p">,</span>
+                <span class="n">pitch</span><span class="p">,</span>
+                <span class="n">roll</span><span class="p">,</span>
+                <span class="n">pressaoEstatica</span><span class="p">,</span>
+                <span class="n">pressaoTotal</span><span class="p">,</span>
+                <span class="n">temperaturaBar</span><span class="p">,</span>
+                <span class="n">densidadeAr</span><span class="p">,</span>
+                <span class="n">altitudeRelativa</span><span class="p">,</span>
+                <span class="n">dadoTempoGPS</span><span class="p">,</span>
+                <span class="n">latitude</span><span class="p">,</span>
+                <span class="n">longitude</span><span class="p">,</span>
+                <span class="n">direcaoCurso</span><span class="p">,</span>
+                <span class="n">velocidade</span><span class="p">,</span>
+                <span class="n">velocidadeSubida</span><span class="p">,</span>
+                <span class="n">erroX</span><span class="p">,</span>
+                <span class="n">erroY</span><span class="p">,</span>
+                <span class="n">erroAltitude</span><span class="p">,</span>
+                <span class="n">erroVelocidade</span><span class="p">,</span>
+                <span class="n">erroVelocidadeSubida</span><span class="p">,</span>
+                <span class="n">nivelFixacao</span><span class="p">,</span>
+                <span class="n">latitudeRef</span><span class="p">,</span>
+                <span class="n">longitudeRef</span><span class="p">,</span>
+                <span class="n">distanciaAbsoluta</span><span class="p">,</span>
+                <span class="n">pressADC</span><span class="p">,</span>
+                <span class="n">pressTensao</span><span class="p">,</span>
+                <span class="n">pressaoDin</span><span class="p">,</span>
+                <span class="n">wowRaw</span><span class="p">,</span>
+                <span class="n">tempoVoo</span><span class="p">,</span>
+                <span class="n">distancia</span><span class="p">,</span>
+                <span class="n">distRef</span><span class="p">,</span>
+                <span class="n">sinaldo</span><span class="p">,</span>
+                <span class="n">agravante</span><span class="p">,</span>
+                <span class="n">ultimoTransmitido</span><span class="p">]</span>
+
+
+    <span class="k">def</span> <span class="nf">modoDeTransmissao</span><span class="p">(</span><span class="n">modo</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Função responsável por setar o modo de tranmissao de dados.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sinaldo</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">modo</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">modo</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">modo</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">tempo</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">altitudePressao</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">wow</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">velCas</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">pressaoEstaticar</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">pressaoTotalr</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">rpmD</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">posicaoX</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">posicaoY</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">altitude</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">rpmE</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">taxaGiroX</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">taxaGiroY</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">taxaGiroZ</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">aceleracaoX</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">aceleracaoY</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">aceleracaoZ</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">pitch</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">roll</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">pressaoEstatica</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">pressaoTotal</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">temperaturaBar</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">densidadeAr</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">altitudeRelativa</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">dadoTempoGPS</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">latitude</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">longitude</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">direcaoCurso</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">velocidade</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">velocidadeSubida</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">erroX</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">erroY</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">erroAltitude</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">erroVelocidade</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">erroVelocidadeSubida</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">latitudeRef</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">longitudeRef</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">distanciaAbsoluta</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">pressADC</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">pressTensao</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">pressaoDin</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">wowRaw</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">tempoVoo</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">distancia</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">distRef</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">sinaldo</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">nivelFixacao</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">agravante</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">ultimoTransmitido</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="c1"># 2 = Apenas transmitindo tempo, Vcas, HP, RPM e altitude(gps)</span>
+        <span class="k">elif</span> <span class="n">modo</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">tempo</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">altitudePressao</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">wow</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">velCas</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">pressaoEstaticar</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">pressaoTotalr</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">rpmD</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">posicaoX</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">posicaoY</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">altitude</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">rpmE</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">taxaGiroX</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">taxaGiroY</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">taxaGiroZ</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">aceleracaoX</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">aceleracaoY</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">aceleracaoZ</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">pitch</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">roll</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">pressaoEstatica</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">pressaoTotal</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">temperaturaBar</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">densidadeAr</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">altitudeRelativa</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">dadoTempoGPS</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">latitude</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">longitude</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">direcaoCurso</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">velocidade</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">velocidadeSubida</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">erroX</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">erroY</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">erroAltitude</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">erroVelocidade</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">erroVelocidadeSubida</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">latitudeRef</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">longitudeRef</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">distanciaAbsoluta</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">pressADC</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">pressTensao</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">pressaoDin</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">wowRaw</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">tempoVoo</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">distancia</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">distRef</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">sinaldo</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">nivelFixacao</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">agravante</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">ultimoTransmitido</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">modo</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">modo</span> <span class="o">==</span> <span class="mi">4</span><span class="p">):</span>
+            <span class="n">tempo</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">altitudePressao</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">wow</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">velCas</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">pressaoEstaticar</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">pressaoTotalr</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">rpmD</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">posicaoX</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">posicaoY</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">altitude</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">rpmE</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">taxaGiroX</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">taxaGiroY</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">taxaGiroZ</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">aceleracaoX</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">aceleracaoY</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">aceleracaoZ</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">pitch</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">roll</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">pressaoEstatica</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">pressaoTotal</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">temperaturaBar</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">densidadeAr</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">altitudeRelativa</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">dadoTempoGPS</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">latitude</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">longitude</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">direcaoCurso</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">velocidade</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">velocidadeSubida</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">erroX</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">erroY</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">erroAltitude</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">erroVelocidade</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">erroVelocidadeSubida</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">latitudeRef</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">longitudeRef</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">distanciaAbsoluta</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">pressADC</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">pressTensao</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">pressaoDin</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">wowRaw</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">tempoVoo</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">distancia</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">distRef</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">sinaldo</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">nivelFixacao</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">agravante</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">ultimoTransmitido</span><span class="o">.</span><span class="n">setTransmissao</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">atualizaEscritor</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;Função que atualiza os dados do Escritor, com o vetor de dados atualizados.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">atualizaVetorDados</span><span class="p">()</span>
+        <span class="n">escritor</span><span class="o">.</span><span class="n">setDados</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">transmiteDado</span><span class="p">(</span><span class="n">delay</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Esta função é utilizada como o processo periódico que</span>
+<span class="sd">        transmitirá os dados.</span>
+
+<span class="sd">        :param delay: Valor com o tempo entre cada atualização de envio.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="n">threadsRodando</span><span class="p">:</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">atualizaVetorDados</span><span class="p">()</span>
+            <span class="n">transmissor</span><span class="o">.</span><span class="n">setDados</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+            <span class="n">transmissor</span><span class="o">.</span><span class="n">transmiteLinha</span><span class="p">()</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">leTelecomando</span><span class="p">(</span><span class="n">delay</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Esta função irá periodicamente ler o telecomando recebido</span>
+
+<span class="sd">        :param delay: Valor com o tempo entre cada atualização.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">global</span> <span class="n">teleconfirm</span>
+        <span class="k">global</span> <span class="n">atualizaRefBar</span>
+        <span class="k">while</span> <span class="n">threadsRodando</span><span class="p">:</span>
+            <span class="n">agravante</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">escritor</span><span class="o">.</span><span class="n">verificaTamanhoArquivo</span><span class="p">())</span>
+            <span class="n">receb</span> <span class="o">=</span> <span class="n">transmissor</span><span class="o">.</span><span class="n">leLinha</span><span class="p">()</span>
+            <span class="n">ultimoTransmitido</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">receb</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">receb</span> <span class="o">==</span> <span class="s2">&quot;@t#c%$0#1$&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">teleconfirm</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">teleconfirm</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="c1"># Inicia gravação + recepção normal</span>
+                    <span class="n">modoDeTransmissao</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">teleconfirm</span> <span class="o">=</span> <span class="mi">1</span>
+
+            <span class="k">if</span> <span class="n">receb</span> <span class="o">==</span> <span class="s2">&quot;@%&amp;*v##&amp;(@&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">teleconfirm</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">teleconfirm</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="c1"># Transmitir apenas Vcas, hp, RPM e altitude gps</span>
+                    <span class="n">modoDeTransmissao</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+                    <span class="n">gps</span><span class="o">.</span><span class="n">setReferenciaAqui</span><span class="p">()</span>
+                    <span class="n">gps</span><span class="o">.</span><span class="n">resetaAtualizacaoHorario</span><span class="p">()</span>
+                    <span class="n">pitot8b</span><span class="o">.</span><span class="n">setReferenciaAqui</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+                    <span class="n">pitot8bRPMD</span><span class="o">.</span><span class="n">setReferenciaAqui</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+                    <span class="n">pitot8bRPME</span><span class="o">.</span><span class="n">setReferenciaAqui</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+                    <span class="n">atualizaRefBar</span> <span class="o">=</span> <span class="kc">True</span>
+
+                    <span class="c1"># pitot8bRPMD.setReferenciaAqui(20)</span>
+                    <span class="c1"># pitot8bRPME.setReferenciaAqui(20)</span>
+
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">teleconfirm</span> <span class="o">=</span> <span class="mi">2</span>
+
+            <span class="k">if</span> <span class="n">receb</span> <span class="o">==</span> <span class="s2">&quot;&amp;*$$%#!@&amp;_&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">teleconfirm</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                    <span class="n">teleconfirm</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">modoDeTransmissao</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+                    <span class="c1"># Apenas transmissão</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">teleconfirm</span> <span class="o">=</span> <span class="mi">3</span>
+
+            <span class="k">if</span> <span class="n">receb</span> <span class="o">==</span> <span class="s2">&quot;*)(#$%@!&amp;*&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">teleconfirm</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                    <span class="n">teleconfirm</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">modoDeTransmissao</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                    <span class="c1"># Pausa gravação</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">teleconfirm</span> <span class="o">=</span> <span class="mi">4</span>
+
+            <span class="k">if</span> <span class="n">receb</span> <span class="o">==</span> <span class="s2">&quot;AqT%$BNy*(&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">teleconfirm</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+                    <span class="n">teleconfirm</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="c1"># Novo arquivo</span>
+                    <span class="n">novoArquivo</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">teleconfirm</span> <span class="o">=</span> <span class="mi">5</span>
+
+            <span class="k">if</span> <span class="n">receb</span> <span class="o">==</span> <span class="s2">&quot;Tc*B+@F&amp;5v&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">teleconfirm</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+                    <span class="n">teleconfirm</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">escritor</span><span class="o">.</span><span class="n">passaProPendrive</span><span class="p">()</span>
+                    <span class="c1"># Passa para o pendrive</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">teleconfirm</span> <span class="o">=</span> <span class="mi">6</span>
+
+            <span class="k">if</span> <span class="n">receb</span> <span class="o">==</span> <span class="s2">&quot;!$@f#_a*(%&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">teleconfirm</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+                    <span class="n">teleconfirm</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;sudo reboot&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">teleconfirm</span> <span class="o">=</span> <span class="mi">7</span>
+
+            <span class="k">if</span> <span class="n">receb</span> <span class="o">==</span> <span class="s2">&quot;d&amp;y?%(+#((&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">teleconfirm</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
+                    <span class="n">teleconfirm</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;sudo shutdown now&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">teleconfirm</span> <span class="o">=</span> <span class="mi">8</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">atualizaIMU</span><span class="p">(</span><span class="n">delay</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Esta função é utilizada como o processo periódico que</span>
+<span class="sd">        irá adquirir os dados da IMU.</span>
+
+<span class="sd">        :param delay: Valor com o tempo entre cada atualização.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="n">threadsRodando</span><span class="p">:</span>
+            <span class="n">mpu</span><span class="o">.</span><span class="n">atualiza</span><span class="p">()</span>
+            <span class="n">taxaGiroX</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">mpu</span><span class="o">.</span><span class="n">getGyx</span><span class="p">())</span>
+            <span class="n">taxaGiroY</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">mpu</span><span class="o">.</span><span class="n">getGyy</span><span class="p">())</span>
+            <span class="n">taxaGiroZ</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">mpu</span><span class="o">.</span><span class="n">getGyz</span><span class="p">())</span>
+            <span class="n">aceleracaoX</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">mpu</span><span class="o">.</span><span class="n">getAcx</span><span class="p">())</span>
+            <span class="n">aceleracaoY</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">mpu</span><span class="o">.</span><span class="n">getAcy</span><span class="p">())</span>
+            <span class="n">aceleracaoZ</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">mpu</span><span class="o">.</span><span class="n">getAcz</span><span class="p">())</span>
+            <span class="n">pitch</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">mpu</span><span class="o">.</span><span class="n">getPitch</span><span class="p">())</span>
+            <span class="n">roll</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">mpu</span><span class="o">.</span><span class="n">getRoll</span><span class="p">())</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">atualizaBarometro</span><span class="p">(</span><span class="n">delay</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Esta função é utilizada como o processo periódico que</span>
+<span class="sd">        irá adquirir dados do barômetro.</span>
+
+<span class="sd">        :param delay: Valor com o tempo entre cada atualização.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">global</span> <span class="n">atualizaRefBar</span>
+        <span class="k">while</span> <span class="n">threadsRodando</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">atualizaRefBar</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">barometro</span><span class="o">.</span><span class="n">atualizaReferencia</span><span class="p">()</span>
+                <span class="n">atualizaRefBar</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">barometro</span><span class="o">.</span><span class="n">atualiza</span><span class="p">()</span>
+            <span class="n">pressaoEstatica</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">barometro</span><span class="o">.</span><span class="n">getPressao</span><span class="p">(</span><span class="s2">&quot;PA&quot;</span><span class="p">))</span>
+            <span class="n">pressaoEstaticar</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">barometro</span><span class="o">.</span><span class="n">getPressao</span><span class="p">(</span><span class="s2">&quot;PA&quot;</span><span class="p">))</span>
+            <span class="n">pressaoTotal</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">barometro</span><span class="o">.</span><span class="n">getPressao</span><span class="p">(</span>
+                <span class="s2">&quot;PA&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">pitot8b</span><span class="o">.</span><span class="n">getPressaoDinamica</span><span class="p">(</span><span class="s2">&quot;PA&quot;</span><span class="p">))</span>
+            <span class="n">pressaoTotalr</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">barometro</span><span class="o">.</span><span class="n">getPressao</span><span class="p">(</span>
+                <span class="s2">&quot;PA&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">pitot8b</span><span class="o">.</span><span class="n">getPressaoDinamica</span><span class="p">(</span><span class="s2">&quot;PA&quot;</span><span class="p">))</span>
+            <span class="n">temperaturaBar</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">barometro</span><span class="o">.</span><span class="n">getTemperatura</span><span class="p">())</span>
+            <span class="n">densidadeAr</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">barometro</span><span class="o">.</span><span class="n">getDensidadeAr</span><span class="p">())</span>
+            <span class="n">altitudeRelativa</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">barometro</span><span class="o">.</span><span class="n">getAltitudeRelativa</span><span class="p">(</span><span class="s2">&quot;m&quot;</span><span class="p">))</span>
+            <span class="n">altitudePressao</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">barometro</span><span class="o">.</span><span class="n">getAltitudePressao</span><span class="p">(</span><span class="s2">&quot;ft&quot;</span><span class="p">))</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">atualizaGps</span><span class="p">(</span><span class="n">delay</span><span class="p">):</span>
+        <span class="k">global</span> <span class="n">inicioDia</span>
+        <span class="sd">&quot;&quot;&quot;Esta função é utilizada como o processo periódico que</span>
+<span class="sd">        irá adquirir dados do gps.</span>
+
+<span class="sd">        :param delay: Valor com o tempo entre cada atualização.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="n">threadsRodando</span><span class="p">:</span>
+            <span class="n">gps</span><span class="o">.</span><span class="n">atualiza</span><span class="p">()</span>
+            <span class="n">latitude</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">gps</span><span class="o">.</span><span class="n">getLatitude</span><span class="p">())</span>
+            <span class="n">longitude</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">gps</span><span class="o">.</span><span class="n">getLongitude</span><span class="p">())</span>
+            <span class="n">altitude</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">gps</span><span class="o">.</span><span class="n">getAltitude</span><span class="p">())</span>
+            <span class="n">direcaoCurso</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">gps</span><span class="o">.</span><span class="n">getDirecaoCurso</span><span class="p">())</span>
+            <span class="n">velocidade</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">gps</span><span class="o">.</span><span class="n">getVelocidade</span><span class="p">())</span>
+            <span class="n">velocidadeSubida</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">gps</span><span class="o">.</span><span class="n">getVelSubida</span><span class="p">())</span>
+            <span class="n">erroX</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">gps</span><span class="o">.</span><span class="n">getErroX</span><span class="p">())</span>
+            <span class="n">erroY</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">gps</span><span class="o">.</span><span class="n">getErroY</span><span class="p">())</span>
+            <span class="n">erroAltitude</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">gps</span><span class="o">.</span><span class="n">getErroAltitude</span><span class="p">())</span>
+            <span class="n">erroVelocidade</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">gps</span><span class="o">.</span><span class="n">getErroVelocidade</span><span class="p">())</span>
+            <span class="n">erroVelocidadeSubida</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">gps</span><span class="o">.</span><span class="n">getErroVelSubida</span><span class="p">())</span>
+            <span class="n">nivelFixacao</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">gps</span><span class="o">.</span><span class="n">getNivelFixacao</span><span class="p">())</span>
+            <span class="n">latitudeRef</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">gps</span><span class="o">.</span><span class="n">getLatitudeRef</span><span class="p">())</span>
+            <span class="n">longitudeRef</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">gps</span><span class="o">.</span><span class="n">getLongitudeRef</span><span class="p">())</span>
+            <span class="n">posicaoX</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">gps</span><span class="o">.</span><span class="n">getPosicaoX</span><span class="p">())</span>
+            <span class="n">posicaoY</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">gps</span><span class="o">.</span><span class="n">getPosicaoY</span><span class="p">())</span>
+            <span class="n">distanciaAbsoluta</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">gps</span><span class="o">.</span><span class="n">getDistanciaAbsoluta</span><span class="p">())</span>
+            <span class="n">tempoGps</span> <span class="o">=</span> <span class="n">gps</span><span class="o">.</span><span class="n">getTempo</span><span class="p">()</span>
+            <span class="n">dadoTempoGPS</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">tempoGps</span><span class="p">)</span>
+
+            <span class="n">agora</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+            <span class="n">inicioDia</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">agora</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">agora</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">agora</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">gps</span><span class="o">.</span><span class="n">verificaAtualizacaoHorario</span><span class="p">())</span> <span class="ow">and</span> <span class="p">(</span><span class="n">sinaldo</span><span class="o">.</span><span class="n">getValor</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="n">modoDeTransmissao</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+        <span class="n">gps</span><span class="o">.</span><span class="n">finaliza</span><span class="p">()</span>
+
+
+    <span class="k">def</span> <span class="nf">atualizaPitot</span><span class="p">(</span><span class="n">delay</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Esta função é utilizada como o processo periódico que</span>
+<span class="sd">        irá adquirir dados do pitot.</span>
+
+<span class="sd">        :param delay: Valor com o tempo entre cada atualização.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="n">threadsRodando</span><span class="p">:</span>
+            <span class="n">pitot8b</span><span class="o">.</span><span class="n">atualiza</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mf">1.218</span><span class="p">)</span>
+            <span class="n">pressADC</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">pitot8b</span><span class="o">.</span><span class="n">getValADC</span><span class="p">())</span>
+            <span class="n">pressTensao</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">pitot8b</span><span class="o">.</span><span class="n">getValTensao</span><span class="p">())</span>
+            <span class="n">pressaoDin</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">pitot8b</span><span class="o">.</span><span class="n">getPressaoDinamica</span><span class="p">(</span><span class="s2">&quot;PA&quot;</span><span class="p">))</span>
+            <span class="n">velCas</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">pitot8b</span><span class="o">.</span><span class="n">getVelocidade</span><span class="p">(</span><span class="s2">&quot;m/s&quot;</span><span class="p">))</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">atualizaNano</span><span class="p">(</span><span class="n">delay</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Esta função é utilizada como o processo periódico que</span>
+<span class="sd">        irá adquirir dados do nano.</span>
+
+<span class="sd">        :param delay: Valor com o tempo entre cada atualização.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="n">threadsRodando</span><span class="p">:</span>
+            <span class="n">pitot8bRPMD</span><span class="o">.</span><span class="n">atualiza</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mf">1.218</span><span class="p">)</span>
+            <span class="n">pitot8bRPME</span><span class="o">.</span><span class="n">atualiza</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mf">1.218</span><span class="p">)</span>
+            <span class="n">nano</span><span class="o">.</span><span class="n">atualiza</span><span class="p">()</span>
+            <span class="n">rpmD</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">pitot8bRPMD</span><span class="o">.</span><span class="n">getVelocidade</span><span class="p">())</span>
+            <span class="n">rpmE</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">pitot8bRPME</span><span class="o">.</span><span class="n">getVelocidade</span><span class="p">())</span>
+            <span class="n">wow</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">nano</span><span class="o">.</span><span class="n">getWow</span><span class="p">())</span>
+            <span class="n">wowRaw</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">nano</span><span class="o">.</span><span class="n">getWowRaw</span><span class="p">())</span>
+            <span class="n">tempoVoo</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">nano</span><span class="o">.</span><span class="n">getTempoVoo</span><span class="p">())</span>
+            <span class="n">distancia</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">nano</span><span class="o">.</span><span class="n">getDistancia</span><span class="p">())</span>
+            <span class="n">distRef</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">nano</span><span class="o">.</span><span class="n">getDistRef</span><span class="p">())</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">fazCabecalho</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;Função que manda o comando para gerar o cabeçalho no arquivo de texto.</span>
+<span class="sd">        Nisso, o arquivo colocará o nome do dado na primeira linha e a unidade de</span>
+<span class="sd">        medida na segunda linha (caso o usuário tenha decidido isso na criação do Escritor).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">atualizaEscritor</span><span class="p">()</span>
+        <span class="n">escritor</span><span class="o">.</span><span class="n">fazCabecalho</span><span class="p">()</span>
+
+
+    <span class="k">def</span> <span class="nf">novoArquivo</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;Função cria um novo arquivo de dados caso for chamada.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">global</span> <span class="n">escritor</span>
+        <span class="n">modoAtual</span> <span class="o">=</span> <span class="n">sinaldo</span><span class="o">.</span><span class="n">getValor</span><span class="p">()</span>
+        <span class="n">modoDeTransmissao</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">del</span> <span class="n">escritor</span>
+        <span class="n">escritor</span> <span class="o">=</span> <span class="n">Escritor</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;Global - &quot;</span><span class="p">,</span> <span class="s2">&quot;.txt&quot;</span><span class="p">)</span>
+        <span class="n">fazCabecalho</span><span class="p">()</span>
+        <span class="n">modoDeTransmissao</span><span class="p">(</span><span class="n">modoAtual</span><span class="p">)</span>
+
+
+    <span class="n">fazCabecalho</span><span class="p">()</span>
+    <span class="n">tempoAgora</span> <span class="o">=</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">inicioDia</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+
+
+    <span class="k">def</span> <span class="nf">atualizaLinhaEscritor</span><span class="p">(</span><span class="n">delay</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Esta função é utilizada como o processo periódico que</span>
+<span class="sd">        escrever uma linha de dado no arquivo, utilizando o objeto Escritor.</span>
+
+<span class="sd">        :param delay: Valor com o tempo entre cada atualização.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="n">threadsRodando</span><span class="p">:</span>
+            <span class="n">tempoAgora</span> <span class="o">=</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">inicioDia</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+            <span class="n">tempo</span><span class="o">.</span><span class="n">setValor</span><span class="p">(</span><span class="n">tempoAgora</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">sinaldo</span><span class="o">.</span><span class="n">getValor</span><span class="p">()</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="n">atualizaEscritor</span><span class="p">()</span>
+                <span class="n">escritor</span><span class="o">.</span><span class="n">escreveLinhaDado</span><span class="p">()</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+
+
+    <span class="n">modoDeTransmissao</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># Inicializa thread de transmissão</span>
+    <span class="n">tTransmit</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">transmiteDado</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,))</span>
+    <span class="n">tTransmit</span><span class="o">.</span><span class="n">setDaemon</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">tTransmit</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="c1"># Inicializa thread da MPU</span>
+    <span class="n">tMpu</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">atualizaIMU</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mf">0.03</span><span class="p">,))</span>
+    <span class="n">tMpu</span><span class="o">.</span><span class="n">setDaemon</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">tMpu</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="c1"># Inicializa thread do barômetro</span>
+    <span class="n">tBarometro</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">atualizaBarometro</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,))</span>
+    <span class="n">tBarometro</span><span class="o">.</span><span class="n">setDaemon</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">tBarometro</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="c1"># Inicializa thread do GPS</span>
+    <span class="n">tGps</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">atualizaGps</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,))</span>
+    <span class="n">tGps</span><span class="o">.</span><span class="n">setDaemon</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">tGps</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="c1"># Inicializa thread do Pitot</span>
+    <span class="n">tPitot</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">atualizaPitot</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,))</span>
+    <span class="n">tPitot</span><span class="o">.</span><span class="n">setDaemon</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">tPitot</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="c1"># Inicializa thread do Nano</span>
+    <span class="n">tNano</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">atualizaNano</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,))</span>
+    <span class="n">tNano</span><span class="o">.</span><span class="n">setDaemon</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">tNano</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="c1"># Inicializa thread de escrita do dado no arquivo</span>
+    <span class="n">tLinhaDado</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">atualizaLinhaEscritor</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mf">0.02</span><span class="p">,))</span>
+    <span class="n">tLinhaDado</span><span class="o">.</span><span class="n">setDaemon</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">tLinhaDado</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="c1"># Inicializa thread de escrita do dado no arquivo</span>
+    <span class="n">tTelecomando</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">leTelecomando</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
+    <span class="n">tTelecomando</span><span class="o">.</span><span class="n">setDaemon</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">tTelecomando</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+
+    <span class="k">def</span> <span class="nf">f</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;Função finaliza as threads.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">threadsRodando</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Leonardo Mariga and Rafael Araujo Lehmkuhl.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

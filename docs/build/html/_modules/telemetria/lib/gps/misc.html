@@ -1,0 +1,341 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>telemetria.lib.gps.misc &mdash; Vivace 2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="Vivace 2.0 documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Vivace
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Vivace</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>telemetria.lib.gps.misc</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for telemetria.lib.gps.misc</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="c1"># misc.py - miscellaneous geodesy and time functions</span>
+<span class="c1">#</span>
+<span class="c1"># This file is Copyright (c) 2010 by the GPSD project</span>
+<span class="c1"># BSD terms apply: see the file COPYING in the distribution root for details.</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">calendar</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="c1"># some multipliers for interpreting GPS output</span>
+<span class="n">METERS_TO_FEET</span> <span class="o">=</span> <span class="mf">3.2808399</span>  	 <span class="c1"># Meters to U.S./British feet</span>
+<span class="n">METERS_TO_MILES</span> <span class="o">=</span> <span class="mf">0.00062137119</span>	 <span class="c1"># Meters to miles</span>
+<span class="n">METERS_TO_FATHOMS</span> <span class="o">=</span> <span class="mf">0.54680665</span>	 <span class="c1"># Meters to fathoms</span>
+<span class="n">KNOTS_TO_MPH</span> <span class="o">=</span> <span class="mf">1.1507794</span>	     <span class="c1"># Knots to miles per hour</span>
+<span class="n">KNOTS_TO_KPH</span> <span class="o">=</span> <span class="mf">1.852</span>		     <span class="c1"># Knots to kilometers per hour</span>
+<span class="n">KNOTS_TO_MPS</span> <span class="o">=</span> <span class="mf">0.51444444</span>	     <span class="c1"># Knots to meters per second</span>
+<span class="n">MPS_TO_KPH</span> <span class="o">=</span> <span class="mf">3.6</span>		         <span class="c1"># Meters per second to klicks/hr</span>
+<span class="n">MPS_TO_MPH</span> <span class="o">=</span> <span class="mf">2.2369363</span>	         <span class="c1"># Meters/second to miles per hour</span>
+<span class="n">MPS_TO_KNOTS</span> <span class="o">=</span> <span class="mf">1.9438445</span>	     <span class="c1"># Meters per second to knots</span>
+
+<span class="c1"># EarthDistance code swiped from Kismet and corrected</span>
+
+
+<div class="viewcode-block" id="degree_to_radian"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.misc.degree_to_radian">[docs]</a><span class="k">def</span> <span class="nf">degree_to_radian</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Degrees to radians. &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="radian_to_degree"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.misc.radian_to_degree">[docs]</a><span class="k">def</span> <span class="nf">radian_to_degree</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Radians to degrees. &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="mi">180</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="calc_rad"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.misc.calc_rad">[docs]</a><span class="k">def</span> <span class="nf">calc_rad</span><span class="p">(</span><span class="n">lat</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Radius of curvature in meters at specified latitude. &quot;&quot;&quot;</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mf">6378.137</span>
+    <span class="n">e2</span> <span class="o">=</span> <span class="mf">0.081082</span> <span class="o">*</span> <span class="mf">0.081082</span>
+    <span class="c1"># the radius of curvature of an ellipsoidal Earth in the plane of a</span>
+    <span class="c1"># meridian of latitude is given by</span>
+    <span class="c1">#</span>
+    <span class="c1"># R&#39; = a * (1 - e^2) / (1 - e^2 * (sin(lat))^2)^(3/2)</span>
+    <span class="c1">#</span>
+    <span class="c1"># where a is the equatorial radius,</span>
+    <span class="c1"># b is the polar radius, and</span>
+    <span class="c1"># e is the eccentricity of the ellipsoid = sqrt(1 - b^2/a^2)</span>
+    <span class="c1">#</span>
+    <span class="c1"># a = 6378 km (3963 mi) Equatorial radius (surface to center distance)</span>
+    <span class="c1"># b = 6356.752 km (3950 mi) Polar radius (surface to center distance)</span>
+    <span class="c1"># e = 0.081082 Eccentricity</span>
+    <span class="n">sc</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">degree_to_radian</span><span class="p">(</span><span class="n">lat</span><span class="p">))</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">e2</span><span class="p">)</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">e2</span> <span class="o">*</span> <span class="n">sc</span> <span class="o">*</span> <span class="n">sc</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">x</span> <span class="o">/</span> <span class="n">y</span>
+
+    <span class="n">r</span> <span class="o">*=</span> <span class="mf">1000.0</span>      <span class="c1"># Convert to meters</span>
+    <span class="k">return</span> <span class="n">r</span></div>
+
+
+<div class="viewcode-block" id="earth_distance"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.misc.earth_distance">[docs]</a><span class="k">def</span> <span class="nf">earth_distance</span><span class="p">(</span><span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Distance in meters between two points specified in degrees. &quot;&quot;&quot;</span>
+    <span class="n">x1</span> <span class="o">=</span> <span class="n">calc_rad</span><span class="p">(</span><span class="n">lat1</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">degree_to_radian</span><span class="p">(</span><span class="n">lon1</span><span class="p">))</span> <span class="o">*</span> \
+        <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">degree_to_radian</span><span class="p">(</span><span class="mi">90</span> <span class="o">-</span> <span class="n">lat1</span><span class="p">))</span>
+    <span class="n">x2</span> <span class="o">=</span> <span class="n">calc_rad</span><span class="p">(</span><span class="n">lat2</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">degree_to_radian</span><span class="p">(</span><span class="n">lon2</span><span class="p">))</span> <span class="o">*</span> \
+        <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">degree_to_radian</span><span class="p">(</span><span class="mi">90</span> <span class="o">-</span> <span class="n">lat2</span><span class="p">))</span>
+    <span class="n">y1</span> <span class="o">=</span> <span class="n">calc_rad</span><span class="p">(</span><span class="n">lat1</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">degree_to_radian</span><span class="p">(</span><span class="n">lon1</span><span class="p">))</span> <span class="o">*</span> \
+        <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">degree_to_radian</span><span class="p">(</span><span class="mi">90</span> <span class="o">-</span> <span class="n">lat1</span><span class="p">))</span>
+    <span class="n">y2</span> <span class="o">=</span> <span class="n">calc_rad</span><span class="p">(</span><span class="n">lat2</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">degree_to_radian</span><span class="p">(</span><span class="n">lon2</span><span class="p">))</span> <span class="o">*</span> \
+        <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">degree_to_radian</span><span class="p">(</span><span class="mi">90</span> <span class="o">-</span> <span class="n">lat2</span><span class="p">))</span>
+    <span class="n">z1</span> <span class="o">=</span> <span class="n">calc_rad</span><span class="p">(</span><span class="n">lat1</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">degree_to_radian</span><span class="p">(</span><span class="mi">90</span> <span class="o">-</span> <span class="n">lat1</span><span class="p">))</span>
+    <span class="n">z2</span> <span class="o">=</span> <span class="n">calc_rad</span><span class="p">(</span><span class="n">lat2</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">degree_to_radian</span><span class="p">(</span><span class="mi">90</span> <span class="o">-</span> <span class="n">lat2</span><span class="p">))</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1</span> <span class="o">*</span> <span class="n">x2</span> <span class="o">+</span> <span class="n">y1</span> <span class="o">*</span> <span class="n">y2</span> <span class="o">+</span> <span class="n">z1</span> <span class="o">*</span> <span class="n">z2</span><span class="p">)</span> <span class="o">/</span> <span class="nb">pow</span><span class="p">(</span><span class="n">calc_rad</span><span class="p">((</span><span class="n">lat1</span> <span class="o">+</span> <span class="n">lat2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="c1"># a should be in [1, -1] but can sometimes fall outside it by</span>
+    <span class="c1"># a very small amount due to rounding errors in the preceding</span>
+    <span class="c1"># calculations (this is prone to happen when the argument points</span>
+    <span class="c1"># are very close together).  Thus we constrain it here.</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">return</span> <span class="n">calc_rad</span><span class="p">((</span><span class="n">lat1</span> <span class="o">+</span> <span class="n">lat2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">acos</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="meter_offset"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.misc.meter_offset">[docs]</a><span class="k">def</span> <span class="nf">meter_offset</span><span class="p">(</span><span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Return offset in meters of second arg from first. &quot;&quot;&quot;</span>
+    <span class="n">dx</span> <span class="o">=</span> <span class="n">earth_distance</span><span class="p">(</span><span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat1</span><span class="p">,</span> <span class="n">lon2</span><span class="p">)</span>
+    <span class="n">dy</span> <span class="o">=</span> <span class="n">earth_distance</span><span class="p">(</span><span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">lon1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">lat1</span> <span class="o">&lt;</span> <span class="n">lat2</span><span class="p">:</span>
+        <span class="n">dy</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">if</span> <span class="n">lon1</span> <span class="o">&lt;</span> <span class="n">lon2</span><span class="p">:</span>
+        <span class="n">dx</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">return</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span></div>
+
+
+<div class="viewcode-block" id="iso_time"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.misc.iso_time">[docs]</a><span class="k">def</span> <span class="nf">iso_time</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Convert timestamps in ISO8661 format to and from Unix time. &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>      <span class="c1"># changed from type(s) == type(1)</span>
+        <span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>  <span class="c1"># changed from type(s) == type(1.0)</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="n">msec</span> <span class="o">=</span> <span class="n">s</span> <span class="o">-</span> <span class="n">date</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">date</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="nb">repr</span><span class="p">(</span><span class="n">msec</span><span class="p">)[</span><span class="mi">3</span><span class="p">:]</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>  <span class="c1"># changed from type(s) == type(&quot;&quot;)</span>
+        <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Z&quot;</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;.&quot;</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">msec</span><span class="p">)</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">date</span> <span class="o">=</span> <span class="n">s</span>
+            <span class="n">msec</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
+        <span class="c1"># Note: no leap-second correction!</span>
+        <span class="k">return</span> <span class="n">calendar</span><span class="o">.</span><span class="n">timegm</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S&quot;</span><span class="p">))</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;0.&quot;</span> <span class="o">+</span> <span class="n">msec</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span></div>
+
+<span class="c1"># End</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Leonardo Mariga and Rafael Araujo Lehmkuhl.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
