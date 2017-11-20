@@ -1,0 +1,284 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>telemetria.lib.dado &mdash; Vivace 2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="Vivace 2.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Vivace
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Vivace</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>telemetria.lib.dado</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for telemetria.lib.dado</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<div class="viewcode-block" id="Dado"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.dado.Dado">[docs]</a><span class="k">class</span> <span class="nc">Dado</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Esta classe é criada com o objetivo de servir como objeto para um dado.</span>
+<span class="sd">    Cada dado será uma instância dessa classe e terá o mesmo padrão de atributos.</span>
+
+<span class="sd">    Cada vez que atualizarmos os sensores, iremos setar o valor do dado para</span>
+<span class="sd">    o ultimo valor captado pelo sensor, dessa forma, sabemos exatamente o valor</span>
+<span class="sd">    atual do dado.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nome</span><span class="p">,</span> <span class="n">unidadeMedida</span><span class="p">,</span> <span class="n">apelido</span><span class="p">,</span> <span class="n">gravaDado</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transmiteDado</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">printaDado</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">casasDecimais</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construtor: Inicializa variáveis necessárias</span>
+<span class="sd">        :param name: Nome completo do dado</span>
+<span class="sd">        :param unidadeMedida: Unidade de medida do dado</span>
+<span class="sd">        :param apelido: Identificado de  letras utilizado na transmissão de dados</span>
+<span class="sd">        :param gravaDado: Indicador se o dado deve ser gravado no arquivo ou não</span>
+<span class="sd">        :param transmiteDado: Indicador se o dado deve ser transmitido ou não</span>
+<span class="sd">        :param printaDado: Indicador se o dado deve ser exibido na tela ou não</span>
+<span class="sd">        :param casasDecimais: Indica quantas casas decimais o número deve ter depois da virgula para ser escrito e transmitido</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nome</span> <span class="o">=</span> <span class="n">nome</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unidadeMedida</span> <span class="o">=</span> <span class="n">unidadeMedida</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">apelido</span> <span class="o">=</span> <span class="n">apelido</span>  <span class="c1"># Deve conter 3 letras/numeros</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gravaDado</span> <span class="o">=</span> <span class="n">gravaDado</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transmiteDado</span> <span class="o">=</span> <span class="n">transmiteDado</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">printaDado</span> <span class="o">=</span> <span class="n">printaDado</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">valor</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">casasDecimais</span> <span class="o">=</span> <span class="n">casasDecimais</span>
+
+<div class="viewcode-block" id="Dado.setValor"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.dado.Dado.setValor">[docs]</a>    <span class="k">def</span> <span class="nf">setValor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valor</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Função seta o valor atual da variável para a especificada no parâmetro</span>
+<span class="sd">        :param valor: Valor atual do dado</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Filtrar dado aqui</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">valor</span> <span class="o">=</span> <span class="n">valor</span></div>
+
+<div class="viewcode-block" id="Dado.getValor"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.dado.Dado.getValor">[docs]</a>    <span class="k">def</span> <span class="nf">getValor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Pega o valor atual do dado</span>
+<span class="sd">        :returns: Valor atual do dado</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">valor</span></div>
+
+<div class="viewcode-block" id="Dado.setTransmissao"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.dado.Dado.setTransmissao">[docs]</a>    <span class="k">def</span> <span class="nf">setTransmissao</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Indica se dado deve ser transmitido ou não.</span>
+<span class="sd">        :param mode: Boolean indicando se deve ser transmitido ou não</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transmiteDado</span> <span class="o">=</span> <span class="n">mode</span></div>
+
+<div class="viewcode-block" id="Dado.setGravacao"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.dado.Dado.setGravacao">[docs]</a>    <span class="k">def</span> <span class="nf">setGravacao</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Indica se dado deve ser gravado ou não.</span>
+<span class="sd">        :param mode: Boolean indicando se deve ser gravado ou não</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gravaDado</span> <span class="o">=</span> <span class="n">mode</span></div>
+
+<div class="viewcode-block" id="Dado.setPrintDado"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.dado.Dado.setPrintDado">[docs]</a>    <span class="k">def</span> <span class="nf">setPrintDado</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Indica se dado deve ser exibido na tela ou não.</span>
+<span class="sd">        :param mode: Boolean indicando se deve ser exibido ou não</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">printDado</span> <span class="o">=</span> <span class="n">mode</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Leonardo Mariga and Rafael Araujo Lehmkuhl.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

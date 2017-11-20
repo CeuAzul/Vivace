@@ -1,0 +1,695 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>telemetria.lib package &mdash; Vivace 2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Vivace 2.0 documentation" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Vivace
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">telemetria.lib package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-telemetria.lib.GPSController">telemetria.lib.GPSController module</a></li>
+<li><a class="reference internal" href="#telemetria-lib-adc8-module">telemetria.lib.adc8 module</a></li>
+<li><a class="reference internal" href="#telemetria-lib-barometrolib-module">telemetria.lib.barometrolib module</a></li>
+<li><a class="reference internal" href="#module-telemetria.lib.dado">telemetria.lib.dado module</a></li>
+<li><a class="reference internal" href="#module-telemetria.lib.datilografo">telemetria.lib.datilografo module</a></li>
+<li><a class="reference internal" href="#module-telemetria.lib.gpslib">telemetria.lib.gpslib module</a></li>
+<li><a class="reference internal" href="#telemetria-lib-mpulib-module">telemetria.lib.mpulib module</a></li>
+<li><a class="reference internal" href="#telemetria-lib-nanolib-module">telemetria.lib.nanolib module</a></li>
+<li><a class="reference internal" href="#telemetria-lib-pitot8b-module">telemetria.lib.pitot8b module</a></li>
+<li><a class="reference internal" href="#telemetria-lib-telepatia-module">telemetria.lib.telepatia module</a></li>
+<li><a class="reference internal" href="#telemetria-lib-ultrassomlib-module">telemetria.lib.ultrassomlib module</a></li>
+<li><a class="reference internal" href="#module-telemetria.lib">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Vivace</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>telemetria.lib package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/telemetria.lib.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="telemetria-lib-package">
+<h1>telemetria.lib package<a class="headerlink" href="#telemetria-lib-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="telemetria.lib.gps.html">telemetria.lib.gps package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="telemetria.lib.gps.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetria.lib.gps.html#module-telemetria.lib.gps.client">telemetria.lib.gps.client module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetria.lib.gps.html#telemetria-lib-gps-fake-module">telemetria.lib.gps.fake module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetria.lib.gps.html#module-telemetria.lib.gps.gps">telemetria.lib.gps.gps module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetria.lib.gps.html#module-telemetria.lib.gps.misc">telemetria.lib.gps.misc module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetria.lib.gps.html#module-telemetria.lib.gps">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-telemetria.lib.GPSController">
+<span id="telemetria-lib-gpscontroller-module"></span><h2>telemetria.lib.GPSController module<a class="headerlink" href="#module-telemetria.lib.GPSController" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="telemetria.lib.GPSController.GpsController">
+<em class="property">class </em><code class="descclassname">telemetria.lib.GPSController.</code><code class="descname">GpsController</code><a class="reference internal" href="_modules/telemetria/lib/GPSController.html#GpsController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.GPSController.GpsController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/threading.html#threading.Thread" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">threading.Thread</span></code></a></p>
+<dl class="attribute">
+<dt id="telemetria.lib.GPSController.GpsController.fix">
+<code class="descname">fix</code><a class="headerlink" href="#telemetria.lib.GPSController.GpsController.fix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.GPSController.GpsController.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/GPSController.html#GpsController.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.GPSController.GpsController.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="telemetria.lib.GPSController.GpsController.satellites">
+<code class="descname">satellites</code><a class="headerlink" href="#telemetria.lib.GPSController.GpsController.satellites" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.GPSController.GpsController.stopController">
+<code class="descname">stopController</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/GPSController.html#GpsController.stopController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.GPSController.GpsController.stopController" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="telemetria.lib.GPSController.GpsController.utc">
+<code class="descname">utc</code><a class="headerlink" href="#telemetria.lib.GPSController.GpsController.utc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="telemetria-lib-adc8-module">
+<h2>telemetria.lib.adc8 module<a class="headerlink" href="#telemetria-lib-adc8-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="telemetria-lib-barometrolib-module">
+<h2>telemetria.lib.barometrolib module<a class="headerlink" href="#telemetria-lib-barometrolib-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-telemetria.lib.dado">
+<span id="telemetria-lib-dado-module"></span><h2>telemetria.lib.dado module<a class="headerlink" href="#module-telemetria.lib.dado" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="telemetria.lib.dado.Dado">
+<em class="property">class </em><code class="descclassname">telemetria.lib.dado.</code><code class="descname">Dado</code><span class="sig-paren">(</span><em>nome</em>, <em>unidadeMedida</em>, <em>apelido</em>, <em>gravaDado=True</em>, <em>transmiteDado=False</em>, <em>printaDado=False</em>, <em>casasDecimais=3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/dado.html#Dado"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.dado.Dado" title="Permalink to this definition">¶</a></dt>
+<dd><p>Esta classe é criada com o objetivo de servir como objeto para um dado.
+Cada dado será uma instância dessa classe e terá o mesmo padrão de atributos.</p>
+<p>Cada vez que atualizarmos os sensores, iremos setar o valor do dado para
+o ultimo valor captado pelo sensor, dessa forma, sabemos exatamente o valor
+atual do dado.</p>
+<dl class="method">
+<dt id="telemetria.lib.dado.Dado.getValor">
+<code class="descname">getValor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/dado.html#Dado.getValor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.dado.Dado.getValor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pega o valor atual do dado
+:returns: Valor atual do dado</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.dado.Dado.setGravacao">
+<code class="descname">setGravacao</code><span class="sig-paren">(</span><em>mode</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/dado.html#Dado.setGravacao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.dado.Dado.setGravacao" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indica se dado deve ser gravado ou não.
+:param mode: Boolean indicando se deve ser gravado ou não</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.dado.Dado.setPrintDado">
+<code class="descname">setPrintDado</code><span class="sig-paren">(</span><em>mode</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/dado.html#Dado.setPrintDado"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.dado.Dado.setPrintDado" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indica se dado deve ser exibido na tela ou não.
+:param mode: Boolean indicando se deve ser exibido ou não</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.dado.Dado.setTransmissao">
+<code class="descname">setTransmissao</code><span class="sig-paren">(</span><em>mode</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/dado.html#Dado.setTransmissao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.dado.Dado.setTransmissao" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indica se dado deve ser transmitido ou não.
+:param mode: Boolean indicando se deve ser transmitido ou não</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.dado.Dado.setValor">
+<code class="descname">setValor</code><span class="sig-paren">(</span><em>valor</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/dado.html#Dado.setValor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.dado.Dado.setValor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Função seta o valor atual da variável para a especificada no parâmetro
+:param valor: Valor atual do dado</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-telemetria.lib.datilografo">
+<span id="telemetria-lib-datilografo-module"></span><h2>telemetria.lib.datilografo module<a class="headerlink" href="#module-telemetria.lib.datilografo" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="telemetria.lib.datilografo.Escritor">
+<em class="property">class </em><code class="descclassname">telemetria.lib.datilografo.</code><code class="descname">Escritor</code><span class="sig-paren">(</span><em>separador='</em>, <em>'</em>, <em>printaNome=True</em>, <em>printaUM=True</em>, <em>nomeArquivo='Telemetria - '</em>, <em>extensao='.csv'</em>, <em>pasta='/home/pi/Telemetria/Codigos/Plataforma/telemetria/Dados'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/datilografo.html#Escritor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.datilografo.Escritor" title="Permalink to this definition">¶</a></dt>
+<dd><p>É responsável pela escrita dos dados em um arquivo de texto.
+Esta classe será chamada toda vez que queremos gravar os valores
+que estão sendo adquirido pelos sensores em um arquivo de texto.</p>
+<p>A classe pode ser modificada das seguintes maneiras:
+- Indicar o tipo de separador dos dados (virgula, espaço, tabulação etc..)
+- Se deve colocar o nome dos dados na primeira linha.
+- Se deve colocar a unidade de medida na segunda linha
+- Nome do arquivo
+- Extensão do arquivo</p>
+<p>Para utilizar a classe seguimos os seguintes passos:
+1- Inicializamos a classe configurando o escritor para criar o arquivo do jeito que quisermo.
+2- Chamamos a função setDado com um vetor de objetos criados da classe “Dado”, já com nome e unidade de medida.
+3- Quando quisermos que a gravação de dados inicie, devemos chamar “fazCabecalho()”
+4- Cada vez que quiser que o Escritor grave uma linha dado, primeiro atualize o vetor de dados “setDados()” e depois invoque “escreveLinhaDado(self)”
+5- Veja o dado sendo gravado e corra para o abraço!</p>
+<p>Multiplos inicializações são criadas arquivos com o mesmo nome, mas com número diferente ex:
+Nome arquivo - 01
+Nome arquivo - 02
+Nome arquivo - 03
+…</p>
+<dl class="method">
+<dt id="telemetria.lib.datilografo.Escritor.addDado">
+<code class="descname">addDado</code><span class="sig-paren">(</span><em>d</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/datilografo.html#Escritor.addDado"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.datilografo.Escritor.addDado" title="Permalink to this definition">¶</a></dt>
+<dd><p>Função que adiciona um dado no vetor de dados.
+NÃO UTILIZAR ESSA FUNÇÃO A MENOS QUE VOCÊ SAIBA O QUE TA FAZENDO.
+:param d: Dado a ser adicionado.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.datilografo.Escritor.escreveLinhaDado">
+<code class="descname">escreveLinhaDado</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/datilografo.html#Escritor.escreveLinhaDado"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.datilografo.Escritor.escreveLinhaDado" title="Permalink to this definition">¶</a></dt>
+<dd><p>Função que escreve a linha com os valores atuais do dado separado pelo separador.
+Antes de gravar, a função verifica se o dado é mesmo para ser gravado ou não.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.datilografo.Escritor.fazCabecalho">
+<code class="descname">fazCabecalho</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/datilografo.html#Escritor.fazCabecalho"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.datilografo.Escritor.fazCabecalho" title="Permalink to this definition">¶</a></dt>
+<dd><p>Função que escreve o cabeçalho do arquivo:
+Primeira linha (se printaNome=True) = Printa o nome dos dados
+Segunda linha (se printaUM=True) = Printa unidade de medida na segunda linha</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.datilografo.Escritor.passaProPendrive">
+<code class="descname">passaProPendrive</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/datilografo.html#Escritor.passaProPendrive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.datilografo.Escritor.passaProPendrive" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.datilografo.Escritor.setDados">
+<code class="descname">setDados</code><span class="sig-paren">(</span><em>d</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/datilografo.html#Escritor.setDados"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.datilografo.Escritor.setDados" title="Permalink to this definition">¶</a></dt>
+<dd><p>Função que atualiza o vetor de dados do Escritor com os dados que vem como parâmetro dessa função.
+O Escritor apenas consegue ver os dados que foram passados por meio dessa função.
+É utilizada como a porta de entrada para os dados que serão escritos.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>d</strong> – Vetor de Dado que será escrito na ordem do vetor.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.datilografo.Escritor.verificaTamanhoArquivo">
+<code class="descname">verificaTamanhoArquivo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/datilografo.html#Escritor.verificaTamanhoArquivo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.datilografo.Escritor.verificaTamanhoArquivo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Função pega tamanho do arquivo</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-telemetria.lib.gpslib">
+<span id="telemetria-lib-gpslib-module"></span><h2>telemetria.lib.gpslib module<a class="headerlink" href="#module-telemetria.lib.gpslib" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="telemetria.lib.gpslib.Gps">
+<em class="property">class </em><code class="descclassname">telemetria.lib.gpslib.</code><code class="descname">Gps</code><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Esta classe é o conjunto de funções relaciodas a aquisição de dados do GPS
+Para utiliza-la, basta criar o objeto GPS e de tempos em tempos, chamar
+a função atualizaGps(). Essa função irá pegar os ultimos dados recebidos
+dos satélites e irá preencher as variáveis com estes dados. Para pegar
+esses valores, basta usar os getters disponíveis.</p>
+<p>Note o seguinte: Esta função utiliza uma outra classe chamada GPSController
+que ajudar a fazer a gerência das informações. Nessa classe, é criada uma thread
+que irá constantemente pegar as informações vindas do satélite, precessar e
+pegar os dados. Essa thread pode ser entendida como um processo separado, ou
+seja, mesmo que não estamos vendo, há um processo sendo executado no fundo, fazendo
+a aquisição dos dados do gps. Essa classe (Gps) é usada apenas para pegar os dados
+processados do GpsController e adicionar para as variáveis da classe (tal como uma
+interface entre a classe GpsController e o código global).</p>
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.atualiza">
+<code class="descname">atualiza</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.atualiza"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.atualiza" title="Permalink to this definition">¶</a></dt>
+<dd><p>Essa função atualiza as variáveis relacionadas ao GPS. Chame-a
+toda vez que quiser passar as ultimas informações procesadas dos
+satélites para as variáveis dessa classe.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.atualizaHorarioSistema">
+<code class="descname">atualizaHorarioSistema</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.atualizaHorarioSistema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.atualizaHorarioSistema" title="Permalink to this definition">¶</a></dt>
+<dd><p>Atualiza horário do Raspberry com o horário do gps
+:returns: Sucesso ou não de sincronizar horário</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.finaliza">
+<code class="descname">finaliza</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.finaliza"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.finaliza" title="Permalink to this definition">¶</a></dt>
+<dd><p>Após a aquisição de dado, precisa-se parar a interpretação dos dados
+pelo gpsc. Por isso chamamos essa função, caso contrário, ele ficará
+realizando o processo indefinidamente.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.getAltitude">
+<code class="descname">getAltitude</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.getAltitude"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.getAltitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pega altitude atual vinda do gps
+:returns: Altitude atual</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.getDirecaoCurso">
+<code class="descname">getDirecaoCurso</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.getDirecaoCurso"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.getDirecaoCurso" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pega direção de curso do avião (direção da velocidade que o avião ta indo
+semelhante ao yaw.
+:returns: Direção de curso</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.getDistanciaAbsoluta">
+<code class="descname">getDistanciaAbsoluta</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.getDistanciaAbsoluta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.getDistanciaAbsoluta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pega distância absoluta apartir do ponto de referência
+:returns: Distância absoluta apartir do ponto de referência</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.getErroAltitude">
+<code class="descname">getErroAltitude</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.getErroAltitude"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.getErroAltitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pega o erro de altitude.
+:returns: Erro atual de altitude</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.getErroTempo">
+<code class="descname">getErroTempo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.getErroTempo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.getErroTempo" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Erro do tempo atual.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.getErroVelSubida">
+<code class="descname">getErroVelSubida</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.getErroVelSubida"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.getErroVelSubida" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pega erro de velocidade atual do avião.
+:returns: Erro de velocidade vertical.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.getErroVelocidade">
+<code class="descname">getErroVelocidade</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.getErroVelocidade"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.getErroVelocidade" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pega erro de velocidade.
+:returns: Erro de velocidade</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.getErroX">
+<code class="descname">getErroX</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.getErroX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.getErroX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retorna o erro em metros do eixo de longitude.
+:returns: Erro no eixo X.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.getErroY">
+<code class="descname">getErroY</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.getErroY"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.getErroY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retorna o erro em metros do eixo de latitude.
+:returns: Erro no eixo Y.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.getLatitude">
+<code class="descname">getLatitude</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.getLatitude"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.getLatitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retorna a latitude atual.
+:returns:Latitude atual.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.getLatitudeRef">
+<code class="descname">getLatitudeRef</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.getLatitudeRef"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.getLatitudeRef" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pega a latitude de referência (latitude que será considerada
+o ponto zero no plano, apartir desse ponto será calculada a distância
+x e y)
+:returns: Latitude de referência.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.getLongitude">
+<code class="descname">getLongitude</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.getLongitude"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.getLongitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retorna Longitude atual.
+:returns: Longitude atual.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.getLongitudeRef">
+<code class="descname">getLongitudeRef</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.getLongitudeRef"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.getLongitudeRef" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pega a longitude de referência (lopngitude que será considerada
+o ponto zero no plano, apartir desse ponto será calculada a distância
+x e y)
+:returns: Longitude de referência.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.getNivelFixacao">
+<code class="descname">getNivelFixacao</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.getNivelFixacao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.getNivelFixacao" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pega em que dimensão o satélite está com lock.
+MODE_NO_FIX = 1 (Não pegou satélite)
+MODE_2D = 2 (Pegando apenas latitude e longitude)
+MODE_3D = 3 (Pegando latitude, longitude e altitude)
+:returns: Nível de fixação (1 = não fixo, 2 = 2d, 3 = 3d).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.getPosicaoX">
+<code class="descname">getPosicaoX</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.getPosicaoX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.getPosicaoX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pega a distância X em metros apartir de um ponto de referência (latitude e longitude de referência)
+:returns: Posição X do avião em metros.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.getPosicaoY">
+<code class="descname">getPosicaoY</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.getPosicaoY"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.getPosicaoY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pega a distância Y em metros apartir de um ponto de referência (latitude e longitude de referência)
+:returns: Posição Y do avião em metros.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.getTempo">
+<code class="descname">getTempo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.getTempo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.getTempo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retorna tempo atual.
+:returns: Tempo atual.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.getUTC">
+<code class="descname">getUTC</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.getUTC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.getUTC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pega o tempo atual em UTC
+:returns: Tempo atual em UTC.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.getVelSubida">
+<code class="descname">getVelSubida</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.getVelSubida"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.getVelSubida" title="Permalink to this definition">¶</a></dt>
+<dd><p>Velocidade vertical do avião.
+:returns: Velocidade vertical</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.getVelocidade">
+<code class="descname">getVelocidade</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.getVelocidade"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.getVelocidade" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pega velocidade atual do avião.
+:returns: Velocidade em m/s (?)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.haversine">
+<code class="descname">haversine</code><span class="sig-paren">(</span><em>lon1</em>, <em>lat1</em>, <em>lon2</em>, <em>lat2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.haversine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.haversine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calcula a distância em metros entre dois pontos de coodenadas de latitude e longitude</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>lon1</strong> – Valor da longitude 1</li>
+<li><strong>lat1</strong> – Valor da latitude 1</li>
+<li><strong>lon2</strong> – Valor da longitude 2</li>
+<li><strong>lat2</strong> – Valor da latitude 2</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Distância em metros entre os pontos</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.resetaAtualizacaoHorario">
+<code class="descname">resetaAtualizacaoHorario</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.resetaAtualizacaoHorario"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.resetaAtualizacaoHorario" title="Permalink to this definition">¶</a></dt>
+<dd><p>Função utilizada para reatualizar o horário da plataforma se houver bugs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.setReferenciaAqui">
+<code class="descname">setReferenciaAqui</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.setReferenciaAqui"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.setReferenciaAqui" title="Permalink to this definition">¶</a></dt>
+<dd><p>Esta função pega os ultimo dado de latitude e longitude e coloca
+como referência. Esta referência será utilizada para saber a distância
+em metros que o avião está, ou seja, será utilizada como (0,0) no plano
+cartesiano.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Se deu certo colocar este ponto como referência.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemetria.lib.gpslib.Gps.verificaAtualizacaoHorario">
+<code class="descname">verificaAtualizacaoHorario</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemetria/lib/gpslib.html#Gps.verificaAtualizacaoHorario"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemetria.lib.gpslib.Gps.verificaAtualizacaoHorario" title="Permalink to this definition">¶</a></dt>
+<dd><p>Função utilizada para verificar se o horário já foi atualizado
+:returns: Se o horário já foi atualizado, retorna True</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="telemetria-lib-mpulib-module">
+<h2>telemetria.lib.mpulib module<a class="headerlink" href="#telemetria-lib-mpulib-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="telemetria-lib-nanolib-module">
+<h2>telemetria.lib.nanolib module<a class="headerlink" href="#telemetria-lib-nanolib-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="telemetria-lib-pitot8b-module">
+<h2>telemetria.lib.pitot8b module<a class="headerlink" href="#telemetria-lib-pitot8b-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="telemetria-lib-telepatia-module">
+<h2>telemetria.lib.telepatia module<a class="headerlink" href="#telemetria-lib-telepatia-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="telemetria-lib-ultrassomlib-module">
+<h2>telemetria.lib.ultrassomlib module<a class="headerlink" href="#telemetria-lib-ultrassomlib-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-telemetria.lib">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-telemetria.lib" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Leonardo Mariga and Rafael Araujo Lehmkuhl.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

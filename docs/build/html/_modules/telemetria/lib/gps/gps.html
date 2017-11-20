@@ -1,0 +1,625 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>telemetria.lib.gps.gps &mdash; Vivace 2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="Vivace 2.0 documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Vivace
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Vivace</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>telemetria.lib.gps.gps</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for telemetria.lib.gps.gps</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="c1"># Original contents have been modified to be compatible with Python3 for use</span>
+<span class="c1"># in the TwisterPi embedded application.  The original author&#39;s comments can</span>
+<span class="c1"># be found unaltered below.</span>
+<span class="c1">#</span>
+<span class="c1"># This file is Copyright (c) 2010 by the GPSD project</span>
+<span class="c1"># BSD terms apply: see the file COPYING in the distribution root for details.</span>
+<span class="c1">#</span>
+<span class="c1"># gps.py -- Python interface to GPSD.</span>
+<span class="c1">#</span>
+<span class="c1"># This interface has a lot of historical cruft in it related to old</span>
+<span class="c1"># protocol, and was modeled on the C interface. It won&#39;t be thrown</span>
+<span class="c1"># away, but it&#39;s likely to be deprecated in favor of something more</span>
+<span class="c1"># Pythonic.</span>
+<span class="c1">#</span>
+<span class="c1"># The JSON parts of this (which will be reused by any new interface)</span>
+<span class="c1"># now live in a different module.</span>
+<span class="c1">#</span>
+<span class="kn">from</span> <span class="nn">.client</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.misc</span> <span class="k">import</span> <span class="n">iso_time</span>
+
+<span class="n">NaN</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="isnan"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.gps.isnan">[docs]</a><span class="k">def</span> <span class="nf">isnan</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;nan&#39;</span></div>
+
+
+<span class="c1"># Don&#39;t hand-hack this list, it&#39;s generated.</span>
+<span class="n">ONLINE_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">TIME_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">TIMERR_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">LATLON_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">ALTITUDE_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">SPEED_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">6</span><span class="p">)</span>
+<span class="n">TRACK_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">7</span><span class="p">)</span>
+<span class="n">CLIMB_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">STATUS_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">9</span><span class="p">)</span>
+<span class="n">MODE_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">DOP_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">11</span><span class="p">)</span>
+<span class="n">HERR_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">12</span><span class="p">)</span>
+<span class="n">VERR_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">13</span><span class="p">)</span>
+<span class="n">ATTITUDE_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">14</span><span class="p">)</span>
+<span class="n">SATELLITE_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">SPEEDERR_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span><span class="p">)</span>
+<span class="n">TRACKERR_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">17</span><span class="p">)</span>
+<span class="n">CLIMBERR_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">18</span><span class="p">)</span>
+<span class="n">DEVICE_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">19</span><span class="p">)</span>
+<span class="n">DEVICELIST_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">DEVICEID_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">21</span><span class="p">)</span>
+<span class="n">RTCM2_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">22</span><span class="p">)</span>
+<span class="n">RTCM3_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">)</span>
+<span class="n">AIS_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">24</span><span class="p">)</span>
+<span class="n">PACKET_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">25</span><span class="p">)</span>
+<span class="n">SUBFRAME_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">26</span><span class="p">)</span>
+<span class="n">GST_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">27</span><span class="p">)</span>
+<span class="n">VERSION_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">28</span><span class="p">)</span>
+<span class="n">POLICY_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">29</span><span class="p">)</span>
+<span class="n">LOGMESSAGE_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">30</span><span class="p">)</span>
+<span class="n">ERROR_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">31</span><span class="p">)</span>
+<span class="n">TIMEDRIFT_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">EOF_SET</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">33</span><span class="p">)</span>
+<span class="n">SET_HIGH_BIT</span> <span class="o">=</span> <span class="mi">34</span>
+<span class="n">UNION_SET</span> <span class="o">=</span> <span class="p">(</span><span class="n">RTCM2_SET</span> <span class="o">|</span> <span class="n">RTCM3_SET</span> <span class="o">|</span> <span class="n">SUBFRAME_SET</span> <span class="o">|</span> <span class="n">AIS_SET</span> <span class="o">|</span>
+             <span class="n">VERSION_SET</span> <span class="o">|</span> <span class="n">DEVICELIST_SET</span> <span class="o">|</span> <span class="n">ERROR_SET</span> <span class="o">|</span> <span class="n">GST_SET</span><span class="p">)</span>
+<span class="n">STATUS_NO_FIX</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">STATUS_FIX</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">STATUS_DGPS_FIX</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">MODE_NO_FIX</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">MODE_2D</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">MODE_3D</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">MAXCHANNELS</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">SIGNAL_STRENGTH_UNKNOWN</span> <span class="o">=</span> <span class="n">NaN</span>
+
+<span class="n">WATCH_ENABLE</span> <span class="o">=</span> <span class="mh">0x000001</span>	 <span class="c1"># enable streaming</span>
+<span class="n">WATCH_DISABLE</span> <span class="o">=</span> <span class="mh">0x000002</span>    <span class="c1"># disable watching</span>
+<span class="n">WATCH_JSON</span> <span class="o">=</span> <span class="mh">0x000010</span>	 <span class="c1"># JSON output</span>
+<span class="n">WATCH_NMEA</span> <span class="o">=</span> <span class="mh">0x000020</span>	 <span class="c1"># output in NMEA</span>
+<span class="n">WATCH_RARE</span> <span class="o">=</span> <span class="mh">0x000040</span>	 <span class="c1"># output of packets in hex</span>
+<span class="n">WATCH_RAW</span> <span class="o">=</span> <span class="mh">0x000080</span>	 <span class="c1"># output of raw packets</span>
+<span class="n">WATCH_SCALED</span> <span class="o">=</span> <span class="mh">0x000100</span>	 <span class="c1"># scale output to floats</span>
+<span class="n">WATCH_TIMING</span> <span class="o">=</span> <span class="mh">0x000200</span>	 <span class="c1"># timing information</span>
+<span class="n">WATCH_DEVICE</span> <span class="o">=</span> <span class="mh">0x000800</span>	 <span class="c1"># watch specific device</span>
+<span class="n">WATCH_SPLIT24</span> <span class="o">=</span> <span class="mh">0x001000</span>    <span class="c1"># split AIS Type 24s</span>
+<span class="n">WATCH_PPS</span> <span class="o">=</span> <span class="mh">0x002000</span>    <span class="c1"># enable PPS JSON</span>
+<span class="n">WATCH_NEWSTYLE</span> <span class="o">=</span> <span class="mh">0x010000</span>    <span class="c1"># force JSON streaming</span>
+<span class="n">WATCH_OLDSTYLE</span> <span class="o">=</span> <span class="mh">0x020000</span>    <span class="c1"># force old-style streaming</span>
+
+
+<div class="viewcode-block" id="GPSFix"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.gps.GPSFix">[docs]</a><span class="k">class</span> <span class="nc">GPSFix</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">MODE_NO_FIX</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">NaN</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ept</span> <span class="o">=</span> <span class="n">NaN</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epx</span> <span class="o">=</span> <span class="n">NaN</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epy</span> <span class="o">=</span> <span class="n">NaN</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">altitude</span> <span class="o">=</span> <span class="n">NaN</span>         <span class="c1"># Meters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epv</span> <span class="o">=</span> <span class="n">NaN</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">track</span> <span class="o">=</span> <span class="n">NaN</span>            <span class="c1"># Degrees from true north</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">speed</span> <span class="o">=</span> <span class="n">NaN</span>            <span class="c1"># Knots</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">climb</span> <span class="o">=</span> <span class="n">NaN</span>            <span class="c1"># Meters per second</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epd</span> <span class="o">=</span> <span class="n">NaN</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eps</span> <span class="o">=</span> <span class="n">NaN</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epc</span> <span class="o">=</span> <span class="n">NaN</span></div>
+
+
+<div class="viewcode-block" id="GPSData"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.gps.GPSData">[docs]</a><span class="k">class</span> <span class="nc">GPSData</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Position, track, velocity and status information returned by a GPS. &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GPSData.Satellite"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.gps.GPSData.Satellite">[docs]</a>    <span class="k">class</span> <span class="nc">Satellite</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">PRN</span><span class="p">,</span> <span class="n">elevation</span><span class="p">,</span> <span class="n">azimuth</span><span class="p">,</span> <span class="n">ss</span><span class="p">,</span> <span class="n">used</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">PRN</span> <span class="o">=</span> <span class="n">PRN</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">elevation</span> <span class="o">=</span> <span class="n">elevation</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">azimuth</span> <span class="o">=</span> <span class="n">azimuth</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ss</span> <span class="o">=</span> <span class="n">ss</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">used</span> <span class="o">=</span> <span class="n">used</span>
+
+        <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;PRN: </span><span class="si">%3d</span><span class="s2">  E: </span><span class="si">%3d</span><span class="s2">  Az: </span><span class="si">%3d</span><span class="s2">  Ss: </span><span class="si">%3d</span><span class="s2">  Used: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">PRN</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">elevation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">azimuth</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss</span><span class="p">,</span> <span class="s2">&quot;ny&quot;</span><span class="p">[</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">used</span><span class="p">]</span>
+            <span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Initialize all data members</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">online</span> <span class="o">=</span> <span class="mi">0</span>                 <span class="c1"># NZ if GPS on, zero if not</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">valid</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="n">GPSFix</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">STATUS_NO_FIX</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">utc</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">satellites_used</span> <span class="o">=</span> <span class="mi">0</span>        <span class="c1"># Satellites used in last fix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xdop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ydop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vdop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdop</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pdop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hdop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gdop</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">epe</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">satellites</span> <span class="o">=</span> <span class="p">[]</span>            <span class="c1"># satellite objects in view</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">gps_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver_mode</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">baudrate</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stopbits</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cycle</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mincycle</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">devices</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="s2">&quot;Time:     </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">utc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">time</span><span class="p">)</span>
+        <span class="n">st</span> <span class="o">+=</span> <span class="s2">&quot;Lat/Lon:  </span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">altitude</span><span class="p">):</span>
+            <span class="n">st</span> <span class="o">+=</span> <span class="s2">&quot;Altitude: ?</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">st</span> <span class="o">+=</span> <span class="s2">&quot;Altitude: </span><span class="si">%f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">altitude</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">speed</span><span class="p">):</span>
+            <span class="n">st</span> <span class="o">+=</span> <span class="s2">&quot;Speed:    ?</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">st</span> <span class="o">+=</span> <span class="s2">&quot;Speed:    </span><span class="si">%f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">speed</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">track</span><span class="p">):</span>
+            <span class="n">st</span> <span class="o">+=</span> <span class="s2">&quot;Track:    ?</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">st</span> <span class="o">+=</span> <span class="s2">&quot;Track:    </span><span class="si">%f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">track</span><span class="p">)</span>
+        <span class="n">st</span> <span class="o">+=</span> <span class="s2">&quot;Status:   STATUS_</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;NO_FIX&quot;</span><span class="p">,</span>
+                                         <span class="s2">&quot;FIX&quot;</span><span class="p">,</span> <span class="s2">&quot;DGPS_FIX&quot;</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">]</span>
+        <span class="n">st</span> <span class="o">+=</span> <span class="s2">&quot;Mode:     MODE_</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;ZERO&quot;</span><span class="p">,</span>
+                                       <span class="s2">&quot;NO_FIX&quot;</span><span class="p">,</span> <span class="s2">&quot;2D&quot;</span><span class="p">,</span> <span class="s2">&quot;3D&quot;</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">mode</span><span class="p">]</span>
+        <span class="n">st</span> <span class="o">+=</span> <span class="s2">&quot;Quality:  </span><span class="si">%d</span><span class="s2"> p=</span><span class="si">%2.2f</span><span class="s2"> h=</span><span class="si">%2.2f</span><span class="s2"> v=</span><span class="si">%2.2f</span><span class="s2"> t=</span><span class="si">%2.2f</span><span class="s2"> g=</span><span class="si">%2.2f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> \
+              <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">satellites_used</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pdop</span><span class="p">,</span>
+               <span class="bp">self</span><span class="o">.</span><span class="n">hdop</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vdop</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdop</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gdop</span><span class="p">)</span>
+        <span class="n">st</span> <span class="o">+=</span> <span class="s2">&quot;Y: </span><span class="si">%s</span><span class="s2"> satellites in view:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">satellites</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">sat</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">satellites</span><span class="p">:</span>
+            <span class="n">st</span> <span class="o">+=</span> <span class="s2">&quot;    </span><span class="si">%r</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">sat</span>
+        <span class="k">return</span> <span class="n">st</span></div>
+
+
+<div class="viewcode-block" id="GPS"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.gps.GPS">[docs]</a><span class="k">class</span> <span class="nc">GPS</span><span class="p">(</span><span class="n">GPSCommon</span><span class="p">,</span> <span class="n">GPSData</span><span class="p">,</span> <span class="n">GPSJson</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Client interface to a running gpsd instance. &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">GPSD_PORT</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="n">GPSCommon</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+        <span class="n">GPSData</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">newstyle</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">mode</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__oldstyle_unpack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buf</span><span class="p">):</span>
+        <span class="c1"># unpack a daemon response into the gps instance members</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">buf</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">fields</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;GPSD&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">field</span> <span class="ow">or</span> <span class="n">field</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;=&#39;</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">cmd</span> <span class="o">=</span> <span class="n">field</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">field</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+                <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;?&quot;</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">cmd</span> <span class="o">==</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">data</span>
+                <span class="k">elif</span> <span class="n">cmd</span> <span class="o">==</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gps_id</span> <span class="o">=</span> <span class="n">data</span>
+                <span class="k">elif</span> <span class="n">cmd</span> <span class="o">==</span> <span class="s1">&#39;O&#39;</span><span class="p">:</span>
+                    <span class="n">fields</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">fields</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;?&#39;</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">MODE_NO_FIX</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">vbit</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">cnv</span><span class="o">=</span><span class="nb">float</span><span class="p">):</span>
+                            <span class="k">if</span> <span class="n">fields</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;?&#39;</span><span class="p">:</span>
+                                <span class="k">return</span> <span class="n">NaN</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="k">try</span><span class="p">:</span>
+                                    <span class="n">value</span> <span class="o">=</span> <span class="n">cnv</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                                <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                                    <span class="k">return</span> <span class="n">NaN</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">valid</span> <span class="o">|=</span> <span class="n">vbit</span>
+                                <span class="k">return</span> <span class="n">value</span>
+                        <span class="c1"># clear all valid bits that might be set again below</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">valid</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="p">(</span>
+                            <span class="n">TIME_SET</span> <span class="o">|</span> <span class="n">TIMERR_SET</span> <span class="o">|</span> <span class="n">LATLON_SET</span> <span class="o">|</span> <span class="n">ALTITUDE_SET</span> <span class="o">|</span>
+                            <span class="n">HERR_SET</span> <span class="o">|</span> <span class="n">VERR_SET</span> <span class="o">|</span> <span class="n">TRACK_SET</span> <span class="o">|</span> <span class="n">SPEED_SET</span> <span class="o">|</span>
+                            <span class="n">CLIMB_SET</span> <span class="o">|</span> <span class="n">SPEEDERR_SET</span> <span class="o">|</span> <span class="n">CLIMBERR_SET</span> <span class="o">|</span> <span class="n">MODE_SET</span>
+                        <span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">utc</span> <span class="o">=</span> <span class="n">fields</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">TIME_SET</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">time</span><span class="p">):</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">utc</span> <span class="o">=</span> <span class="n">iso_time</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">time</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">ept</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">TIMERR_SET</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">latitude</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">LATLON_SET</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">longitude</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">altitude</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">ALTITUDE_SET</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">epx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">epy</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">HERR_SET</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">epv</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="n">VERR_SET</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">track</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">TRACK_SET</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">speed</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="n">SPEED_SET</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">climb</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">CLIMB_SET</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">epd</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">eps</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="n">SPEEDERR_SET</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">epc</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="n">CLIMBERR_SET</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">14</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="n">MODE_SET</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span> <span class="o">&amp;</span> <span class="n">ALTITUDE_SET</span><span class="p">:</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">MODE_2D</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">MODE_3D</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">valid</span> <span class="o">|=</span> <span class="n">MODE_SET</span>
+                <span class="k">elif</span> <span class="n">cmd</span> <span class="o">==</span> <span class="s1">&#39;X&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">online</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">valid</span> <span class="o">|=</span> <span class="n">ONLINE_SET</span>
+                <span class="k">elif</span> <span class="n">cmd</span> <span class="o">==</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span>
+                    <span class="n">satellites</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+                    <span class="n">prefix</span> <span class="o">=</span> <span class="n">satellites</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                    <span class="n">d1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">prefix</span><span class="o">.</span><span class="n">pop</span><span class="p">())</span>
+                    <span class="n">new_sats</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">d1</span><span class="p">):</span>
+                        <span class="n">new_sats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">GPS</span><span class="o">.</span><span class="n">Satellite</span><span class="p">(</span>
+                            <span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">satellites</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">())))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">satellites</span> <span class="o">=</span> <span class="n">new_sats</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">valid</span> <span class="o">|=</span> <span class="n">SATELLITE_SET</span>
+
+    <span class="k">def</span> <span class="nf">__oldstyle_shim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># The rest is backwards compatibility for the old interface</span>
+        <span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">dflt</span><span class="p">,</span> <span class="n">vbit</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">return</span> <span class="n">dflt</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">valid</span> <span class="o">|=</span> <span class="n">vbit</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;VERSION&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;DEVICE&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">valid</span> <span class="o">=</span> <span class="n">ONLINE_SET</span> <span class="o">|</span> <span class="n">DEVICE_SET</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">activated</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="s2">&quot;activated&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">driver</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="s2">&quot;driver&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">DEVICEID_SET</span><span class="p">)</span>
+            <span class="n">subtype</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="s2">&quot;subtype&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">DEVICEID_SET</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gps_id</span> <span class="o">=</span> <span class="n">driver</span>
+            <span class="k">if</span> <span class="n">subtype</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">gps_id</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">subtype</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">driver_mode</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="s2">&quot;native&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">baudrate</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="s2">&quot;bps&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">serialmode</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="s2">&quot;serialmode&quot;</span><span class="p">,</span> <span class="s2">&quot;8N1&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cycle</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="s2">&quot;cycle&quot;</span><span class="p">,</span>    <span class="n">NaN</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mincycle</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="s2">&quot;mincycle&quot;</span><span class="p">,</span> <span class="n">NaN</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;TPV&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">valid</span> <span class="o">=</span> <span class="n">ONLINE_SET</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">utc</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">TIME_SET</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">utc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Time can be either Unix time as a float or an ISO8601 string</span>
+                <span class="c1"># print(&quot;GPS: received fix.time type={}&quot;.format(type(self.fix.time)))     # TODO: Remove after verified</span>
+                <span class="c1"># changed from type(self.fix.time) == type(0.0):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">utc</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>  <span class="c1"># added</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">iso_time</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">utc</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># changed from iso_time(self.utc.encode(&quot;ascii&quot;))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">iso_time</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">ept</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="s2">&quot;ept&quot;</span><span class="p">,</span>   <span class="n">NaN</span><span class="p">,</span> <span class="n">TIMERR_SET</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">latitude</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span>   <span class="n">NaN</span><span class="p">,</span> <span class="n">LATLON_SET</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">longitude</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="s2">&quot;lon&quot;</span><span class="p">,</span>   <span class="n">NaN</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">altitude</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="s2">&quot;alt&quot;</span><span class="p">,</span>   <span class="n">NaN</span><span class="p">,</span> <span class="n">ALTITUDE_SET</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">epx</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="s2">&quot;epx&quot;</span><span class="p">,</span>   <span class="n">NaN</span><span class="p">,</span> <span class="n">HERR_SET</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">epy</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="s2">&quot;epy&quot;</span><span class="p">,</span>   <span class="n">NaN</span><span class="p">,</span> <span class="n">HERR_SET</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">epv</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="s2">&quot;epv&quot;</span><span class="p">,</span>   <span class="n">NaN</span><span class="p">,</span> <span class="n">VERR_SET</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">track</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="s2">&quot;track&quot;</span><span class="p">,</span> <span class="n">NaN</span><span class="p">,</span> <span class="n">TRACK_SET</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">speed</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="s2">&quot;speed&quot;</span><span class="p">,</span> <span class="n">NaN</span><span class="p">,</span> <span class="n">SPEED_SET</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">climb</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="s2">&quot;climb&quot;</span><span class="p">,</span> <span class="n">NaN</span><span class="p">,</span> <span class="n">CLIMB_SET</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">epd</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="s2">&quot;epd&quot;</span><span class="p">,</span>   <span class="n">NaN</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">eps</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="s2">&quot;eps&quot;</span><span class="p">,</span>   <span class="n">NaN</span><span class="p">,</span> <span class="n">SPEEDERR_SET</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">epc</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="s2">&quot;epc&quot;</span><span class="p">,</span>   <span class="n">NaN</span><span class="p">,</span> <span class="n">CLIMBERR_SET</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">default</span><span class="p">(</span><span class="s2">&quot;mode&quot;</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>   <span class="n">MODE_SET</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;SKY&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">attrp</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;v&quot;</span><span class="p">,</span> <span class="s2">&quot;h&quot;</span><span class="p">,</span> <span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">):</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attrp</span> <span class="o">+</span> <span class="s2">&quot;dop&quot;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="p">(</span><span class="n">attrp</span> <span class="o">+</span> <span class="s2">&quot;dop&quot;</span><span class="p">,</span> <span class="n">NaN</span><span class="p">,</span> <span class="n">DOP_SET</span><span class="p">))</span>
+            <span class="k">if</span> <span class="s2">&quot;satellites&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">satellites</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">sat</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;satellites&#39;</span><span class="p">]:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">satellites</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">GPS</span><span class="o">.</span><span class="n">Satellite</span><span class="p">(</span>
+                        <span class="n">PRN</span><span class="o">=</span><span class="n">sat</span><span class="p">[</span><span class="s1">&#39;PRN&#39;</span><span class="p">],</span> <span class="n">elevation</span><span class="o">=</span><span class="n">sat</span><span class="p">[</span><span class="s1">&#39;el&#39;</span><span class="p">],</span> <span class="n">azimuth</span><span class="o">=</span><span class="n">sat</span><span class="p">[</span><span class="s1">&#39;az&#39;</span><span class="p">],</span> <span class="n">ss</span><span class="o">=</span><span class="n">sat</span><span class="p">[</span><span class="s1">&#39;ss&#39;</span><span class="p">],</span> <span class="n">used</span><span class="o">=</span><span class="n">sat</span><span class="p">[</span><span class="s1">&#39;used&#39;</span><span class="p">]))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">satellites_used</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">sat</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">satellites</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">sat</span><span class="o">.</span><span class="n">used</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">satellites_used</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">valid</span> <span class="o">=</span> <span class="n">ONLINE_SET</span> <span class="o">|</span> <span class="n">SATELLITE_SET</span>
+
+<div class="viewcode-block" id="GPS.read"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.gps.GPS.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Read and interpret data from the daemon. &quot;&quot;&quot;</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">GPSCommon</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">status</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">status</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;{&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;}</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">response</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__oldstyle_shim</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">newstyle</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">valid</span> <span class="o">|=</span> <span class="n">PACKET_SET</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;GPSD&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__oldstyle_unpack</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">response</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">valid</span> <span class="o">|=</span> <span class="n">PACKET_SET</span>
+        <span class="k">return</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="GPS.next"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.gps.GPS.next">[docs]</a>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">StopIteration</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">response</span></div>
+
+<div class="viewcode-block" id="GPS.stream"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.gps.GPS.stream">[docs]</a>    <span class="k">def</span> <span class="nf">stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">devpath</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Ask gpsd to stream reports at your client. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">WATCH_JSON</span> <span class="o">|</span> <span class="n">WATCH_OLDSTYLE</span> <span class="o">|</span> <span class="n">WATCH_NMEA</span> <span class="o">|</span> <span class="n">WATCH_RAW</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">flags</span> <span class="o">|=</span> <span class="n">WATCH_JSON</span>
+        <span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">WATCH_DISABLE</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">WATCH_OLDSTYLE</span><span class="p">:</span>
+                <span class="n">arg</span> <span class="o">=</span> <span class="s2">&quot;w-&quot;</span>
+                <span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">WATCH_NMEA</span><span class="p">:</span>
+                    <span class="n">arg</span> <span class="o">+=</span> <span class="s1">&#39;r-&#39;</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">GPSJson</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">~</span><span class="n">flags</span><span class="p">,</span> <span class="n">devpath</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># flags &amp; WATCH_ENABLE:</span>
+            <span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">WATCH_OLDSTYLE</span><span class="p">:</span>
+                <span class="n">arg</span> <span class="o">=</span> <span class="s1">&#39;w+&#39;</span>
+                <span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">WATCH_NMEA</span><span class="p">:</span>
+                    <span class="n">arg</span> <span class="o">+=</span> <span class="s1">&#39;r+&#39;</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">GPSJson</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span> <span class="n">devpath</span><span class="p">)</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">getopt</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">arguments</span><span class="p">)</span> <span class="o">=</span> <span class="n">getopt</span><span class="o">.</span><span class="n">getopt</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="s2">&quot;v&quot;</span><span class="p">)</span>
+    <span class="n">streaming</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">switch</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">switch</span> <span class="o">==</span> <span class="s1">&#39;-v&#39;</span><span class="p">:</span>
+            <span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">arguments</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="c1">##print(&#39;Usage: gps.py [-v] [host [port]]&#39;)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">opts</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;verbose&quot;</span><span class="p">:</span> <span class="n">verbose</span><span class="p">}</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">arguments</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">opts</span><span class="p">[</span><span class="s2">&quot;host&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">arguments</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">opts</span><span class="p">[</span><span class="s2">&quot;port&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">arguments</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">session</span> <span class="o">=</span> <span class="n">GPS</span><span class="p">(</span><span class="o">**</span><span class="n">opts</span><span class="p">)</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="n">WATCH_ENABLE</span><span class="p">)</span>
+
+
+<span class="c1"># gps.py ends here</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Leonardo Mariga and Rafael Araujo Lehmkuhl.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

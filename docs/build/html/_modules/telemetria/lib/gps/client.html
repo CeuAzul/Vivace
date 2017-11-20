@@ -1,0 +1,471 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>telemetria.lib.gps.client &mdash; Vivace 2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="Vivace 2.0 documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Vivace
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Vivace</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>telemetria.lib.gps.client</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for telemetria.lib.gps.client</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="c1"># This file is Copyright (c) 2010 by the GPSD project</span>
+<span class="c1"># BSD terms apply: see the file COPYING in the distribution root for details.</span>
+<span class="c1">#</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">select</span>  <span class="c1"># , exceptions</span>
+
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">hexversion</span> <span class="o">&gt;=</span> <span class="mh">0x2060000</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">json</span>			        <span class="c1"># For Python 2.6</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">simplejson</span> <span class="k">as</span> <span class="nn">json</span>   <span class="c1"># For Python 2.4 and 2.5</span>
+
+<span class="n">GPSD_PORT</span> <span class="o">=</span> <span class="s2">&quot;2947&quot;</span>
+
+
+<div class="viewcode-block" id="JsonError"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.JsonError">[docs]</a><span class="k">class</span> <span class="nc">JsonError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">explanation</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">explanation</span> <span class="o">=</span> <span class="n">explanation</span></div>
+
+
+<div class="viewcode-block" id="GPSCommon"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.GPSCommon">[docs]</a><span class="k">class</span> <span class="nc">GPSCommon</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Isolate socket handling and buffering from the protocol interpretation. &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">GPSD_PORT</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="o">=</span> <span class="kc">None</span>        <span class="c1"># in case we blow up in connect</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linebuffer</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+        <span class="k">if</span> <span class="n">host</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+
+<div class="viewcode-block" id="GPSCommon.connect"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.GPSCommon.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Connect to a host on a given port.</span>
+<span class="sd">        If the hostname ends with a colon (`:&#39;) followed by a number, and</span>
+<span class="sd">        there is no port specified, that suffix will be stripped off and the</span>
+<span class="sd">        number interpreted as the port number to use.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">port</span> <span class="ow">and</span> <span class="p">(</span><span class="n">host</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">host</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)):</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">host</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">host</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">host</span><span class="p">[:</span><span class="n">i</span><span class="p">],</span> <span class="n">host</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">socket</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;nonnumeric port&quot;</span><span class="p">)</span>
+        <span class="c1"># if self.verbose &gt; 0:</span>
+        <span class="c1">#    print &#39;connect:&#39;, (host, port)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;getaddrinfo returns an empty list&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">socket</span><span class="o">.</span><span class="n">getaddrinfo</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">):</span>
+            <span class="n">af</span><span class="p">,</span> <span class="n">socktype</span><span class="p">,</span> <span class="n">proto</span><span class="p">,</span> <span class="n">_canonname</span><span class="p">,</span> <span class="n">sa</span> <span class="o">=</span> <span class="n">res</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">af</span><span class="p">,</span> <span class="n">socktype</span><span class="p">,</span> <span class="n">proto</span><span class="p">)</span>
+                <span class="c1"># if self.debuglevel &gt; 0: print &#39;connect:&#39;, (host, port)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">sa</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">error</span> <span class="k">as</span> <span class="n">msg</span><span class="p">:</span>
+                <span class="c1"># if self.debuglevel &gt; 0: print &#39;connect fail:&#39;, (host, port)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="k">continue</span>
+            <span class="k">break</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">socket</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;getaddrinfo returns an empty list&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GPSCommon.close"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.GPSCommon.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<div class="viewcode-block" id="GPSCommon.waiting"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.GPSCommon.waiting">[docs]</a>    <span class="k">def</span> <span class="nf">waiting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return True if data is ready for the client. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">linebuffer</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="p">(</span><span class="n">winput</span><span class="p">,</span> <span class="n">_woutput</span><span class="p">,</span> <span class="n">_wexceptions</span><span class="p">)</span> <span class="o">=</span> <span class="n">select</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="p">,),</span> <span class="p">(),</span> <span class="p">(),</span> <span class="n">timeout</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">winput</span> <span class="o">!=</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="GPSCommon.read"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.GPSCommon.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Wait for and read data being streamed from the daemon. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;poll: reading from daemon...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">eol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linebuffer</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">eol</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># ensure that data is available on the socket</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">waiting</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;gps.client: no data available on socket&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="n">frag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">linebuffer</span> <span class="o">+=</span> <span class="n">frag</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>    <span class="c1"># convert to str</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;poll: read complete.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">linebuffer</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;poll: returning -1.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="c1"># Read failed</span>
+                <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="n">eol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linebuffer</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">eol</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;poll: returning 0.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="c1"># Read succeeded, but only got a fragment</span>
+                <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;poll: fetching from buffer.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># We got a line</span>
+        <span class="n">eol</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linebuffer</span><span class="p">[:</span><span class="n">eol</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linebuffer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linebuffer</span><span class="p">[</span><span class="n">eol</span><span class="p">:]</span>
+
+        <span class="c1"># Can happen if daemon terminates while we&#39;re reading.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">response</span><span class="p">:</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;poll: data is </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">response</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">received</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="c1"># We got a \n-terminated line</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">response</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GPSCommon.data"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.GPSCommon.data">[docs]</a>    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return the client data buffer. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">response</span></div>
+
+<div class="viewcode-block" id="GPSCommon.send"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.GPSCommon.send">[docs]</a>    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">commands</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Ship commands to the daemon. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">commands</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+            <span class="n">commands</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">commands</span><span class="p">,</span> <span class="s1">&#39;UTF-8&#39;</span><span class="p">))</span>    <span class="c1"># convert to UTF-8 bytes</span></div></div>
+
+
+<span class="n">WATCH_ENABLE</span> <span class="o">=</span> <span class="mh">0x000001</span>	    <span class="c1"># enable streaming</span>
+<span class="n">WATCH_DISABLE</span> <span class="o">=</span> <span class="mh">0x000002</span>    <span class="c1"># disable watching</span>
+<span class="n">WATCH_JSON</span> <span class="o">=</span> <span class="mh">0x000010</span>	    <span class="c1"># JSON output</span>
+<span class="n">WATCH_NMEA</span> <span class="o">=</span> <span class="mh">0x000020</span>	    <span class="c1"># output in NMEA</span>
+<span class="n">WATCH_RARE</span> <span class="o">=</span> <span class="mh">0x000040</span>	    <span class="c1"># output of packets in hex</span>
+<span class="n">WATCH_RAW</span> <span class="o">=</span> <span class="mh">0x000080</span>	    <span class="c1"># output of raw packets</span>
+<span class="n">WATCH_SCALED</span> <span class="o">=</span> <span class="mh">0x000100</span>	    <span class="c1"># scale output to floats</span>
+<span class="n">WATCH_TIMING</span> <span class="o">=</span> <span class="mh">0x000200</span>	    <span class="c1"># timing information</span>
+<span class="n">WATCH_SPLIT24</span> <span class="o">=</span> <span class="mh">0x001000</span>    <span class="c1"># split AIS Type 24s</span>
+<span class="n">WATCH_PPS</span> <span class="o">=</span> <span class="mh">0x002000</span>	    <span class="c1"># enable PPS in raw/NMEA</span>
+<span class="n">WATCH_DEVICE</span> <span class="o">=</span> <span class="mh">0x000800</span>	    <span class="c1"># watch specific device</span>
+
+
+<div class="viewcode-block" id="GPSJson"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.GPSJson">[docs]</a><span class="k">class</span> <span class="nc">GPSJson</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Basic JSON decoding. &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+<div class="viewcode-block" id="GPSJson.unpack"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.GPSJson.unpack">[docs]</a>    <span class="k">def</span> <span class="nf">unpack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buf</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">DictWrapper</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">buf</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ascii&quot;</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">JsonError</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="c1"># Should be done for any other array-valued subobjects, too.</span>
+        <span class="c1"># This particular logic can fire on SKY or RTCM2 objects.</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;satellites&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">satellites</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">DictWrapper</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">satellites</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GPSJson.stream"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.GPSJson.stream">[docs]</a>    <span class="k">def</span> <span class="nf">stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">devpath</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Control streaming reports from the daemon &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">WATCH_DISABLE</span><span class="p">:</span>
+            <span class="n">arg</span> <span class="o">=</span> <span class="s1">&#39;?WATCH={&quot;enable&quot;:false&#39;</span>
+            <span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">WATCH_JSON</span><span class="p">:</span>
+                <span class="n">arg</span> <span class="o">+=</span> <span class="s1">&#39;,&quot;json&quot;:false&#39;</span>
+            <span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">WATCH_NMEA</span><span class="p">:</span>
+                <span class="n">arg</span> <span class="o">+=</span> <span class="s1">&#39;,&quot;nmea&quot;:false&#39;</span>
+            <span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">WATCH_RARE</span><span class="p">:</span>
+                <span class="n">arg</span> <span class="o">+=</span> <span class="s1">&#39;,&quot;raw&quot;:1&#39;</span>
+            <span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">WATCH_RAW</span><span class="p">:</span>
+                <span class="n">arg</span> <span class="o">+=</span> <span class="s1">&#39;,&quot;raw&quot;:2&#39;</span>
+            <span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">WATCH_SCALED</span><span class="p">:</span>
+                <span class="n">arg</span> <span class="o">+=</span> <span class="s1">&#39;,&quot;scaled&quot;:false&#39;</span>
+            <span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">WATCH_TIMING</span><span class="p">:</span>
+                <span class="n">arg</span> <span class="o">+=</span> <span class="s1">&#39;,&quot;timing&quot;:false&#39;</span>
+            <span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">WATCH_SPLIT24</span><span class="p">:</span>
+                <span class="n">arg</span> <span class="o">+=</span> <span class="s1">&#39;,&quot;split24&quot;:false&#39;</span>
+            <span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">WATCH_PPS</span><span class="p">:</span>
+                <span class="n">arg</span> <span class="o">+=</span> <span class="s1">&#39;,&quot;pps&quot;:false&#39;</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># flags &amp; WATCH_ENABLE:</span>
+            <span class="n">arg</span> <span class="o">=</span> <span class="s1">&#39;?WATCH={&quot;enable&quot;:true&#39;</span>
+            <span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">WATCH_JSON</span><span class="p">:</span>
+                <span class="n">arg</span> <span class="o">+=</span> <span class="s1">&#39;,&quot;json&quot;:true&#39;</span>
+            <span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">WATCH_NMEA</span><span class="p">:</span>
+                <span class="n">arg</span> <span class="o">+=</span> <span class="s1">&#39;,&quot;nmea&quot;:true&#39;</span>
+            <span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">WATCH_RARE</span><span class="p">:</span>
+                <span class="n">arg</span> <span class="o">+=</span> <span class="s1">&#39;,&quot;raw&quot;:1&#39;</span>
+            <span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">WATCH_RAW</span><span class="p">:</span>
+                <span class="n">arg</span> <span class="o">+=</span> <span class="s1">&#39;,&quot;raw&quot;:2&#39;</span>
+            <span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">WATCH_SCALED</span><span class="p">:</span>
+                <span class="n">arg</span> <span class="o">+=</span> <span class="s1">&#39;,&quot;scaled&quot;:true&#39;</span>
+            <span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">WATCH_TIMING</span><span class="p">:</span>
+                <span class="n">arg</span> <span class="o">+=</span> <span class="s1">&#39;,&quot;timing&quot;:true&#39;</span>
+            <span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">WATCH_SPLIT24</span><span class="p">:</span>
+                <span class="n">arg</span> <span class="o">+=</span> <span class="s1">&#39;,&quot;split24&quot;:true&#39;</span>
+            <span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">WATCH_PPS</span><span class="p">:</span>
+                <span class="n">arg</span> <span class="o">+=</span> <span class="s1">&#39;,&quot;pps&quot;:true&#39;</span>
+            <span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">WATCH_DEVICE</span><span class="p">:</span>
+                <span class="n">arg</span> <span class="o">+=</span> <span class="s1">&#39;,&quot;device&quot;:&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">devpath</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">arg</span> <span class="o">+</span> <span class="s2">&quot;}&quot;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="DictWrapper"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.DictWrapper">[docs]</a><span class="k">class</span> <span class="nc">DictWrapper</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Wrapper that yields both class and dictionary behavior &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ddict</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">=</span> <span class="n">ddict</span>
+
+<div class="viewcode-block" id="DictWrapper.get"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.DictWrapper.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DictWrapper.keys"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.DictWrapper.keys">[docs]</a>    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="s2">&quot;Emulate dictionary, for new-style interface.&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="s2">&quot;Emulate dictionary, for new-style interface.&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;dictwrapper: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;&gt;&quot;</span>
+
+<div class="viewcode-block" id="DictWrapper.json_encode"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.DictWrapper.json_encode">[docs]</a>    <span class="k">def</span> <span class="nf">json_encode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns a JSON compatible dictionary representation of the object &quot;&quot;&quot;</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">d</span></div></div>
+
+<span class="c1">#</span>
+<span class="c1"># Someday a cleaner Python interface using this machinery will live here</span>
+<span class="c1">#</span>
+
+<span class="c1"># End</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Leonardo Mariga and Rafael Araujo Lehmkuhl.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
