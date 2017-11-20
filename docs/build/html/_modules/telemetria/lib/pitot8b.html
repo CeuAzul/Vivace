@@ -1,0 +1,349 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>telemetria.lib.pitot8b &mdash; Vivace 2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="Vivace 2.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Vivace
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Vivace</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>telemetria.lib.pitot8b</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for telemetria.lib.pitot8b</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;Biblioteca Pitot</span>
+<span class="sd">Biblioteca irá converter os dados do ADC para um valor de velocidade e pressão</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">.adc8</span> <span class="k">import</span> <span class="n">ADC8</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">randint</span>
+
+
+<div class="viewcode-block" id="Pitot8b"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.pitot8b.Pitot8b">[docs]</a><span class="k">class</span> <span class="nc">Pitot8b</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Biblioteca Pitot</span>
+<span class="sd">    Biblioteca irá converter os dados do ADC para um valor de velocidade e pressão</span>
+<span class="sd">    Primeiramente será convertido o valor do ADC para um nível de tensão</span>
+<span class="sd">    Depois, essa tensão é convertida em pressão</span>
+<span class="sd">    E por fim, é convertida em velocidade</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">numADC</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="c1"># Cria objeto do ADC</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adc8</span> <span class="o">=</span> <span class="n">ADC8</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numADC</span> <span class="o">=</span> <span class="n">numADC</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">valADC</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">valTensao</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pressaoDinamica</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">velocidade</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">valorInicial</span> <span class="o">=</span> <span class="mi">58</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setReferenciaAqui</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Pitot8b.setReferenciaAqui"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.pitot8b.Pitot8b.setReferenciaAqui">[docs]</a>    <span class="k">def</span> <span class="nf">setReferenciaAqui</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">samples</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">atualiza</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">valorInicial</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">valADC</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Pitot8b.atualiza"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.pitot8b.Pitot8b.atualiza">[docs]</a>    <span class="k">def</span> <span class="nf">atualiza</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">densAr</span><span class="o">=</span><span class="mf">1.218</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Le valor analogico do ADC e transforma isso em pressão e velocidade</span>
+<span class="sd">        :param samples: Número de amostras para oversampling.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">valADC</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">samples</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">numADC</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">valADC</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adc8</span><span class="o">.</span><span class="n">getCanal0</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">numADC</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">valADC</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adc8</span><span class="o">.</span><span class="n">getCanal2</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">numADC</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">valADC</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adc8</span><span class="o">.</span><span class="n">getCanal1</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">numADC</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">valADC</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adc8</span><span class="o">.</span><span class="n">getCanal3</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">valADC</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adc8</span><span class="o">.</span><span class="n">getCanal0</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">valADC</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">valADC</span> <span class="o">/</span> <span class="n">samples</span>
+
+        <span class="c1"># Sabemos que 255 equivale a 3.3 V</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">valTensao</span> <span class="o">=</span> <span class="mf">3.3</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">valADC</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">valorInicial</span><span class="p">)</span> <span class="o">/</span> <span class="mi">255</span>
+
+        <span class="c1"># Utilizamos a equação do datasheet para encontra a pressão em PA</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pressaoDinamica</span> <span class="o">=</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">valTensao</span><span class="p">)</span> <span class="o">/</span> <span class="mf">0.66</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span>
+
+        <span class="c1"># Só ruído</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pressaoDinamica</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pressaoDinamica</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Esquadrão anti-burrice</span>
+        <span class="k">if</span> <span class="n">densAr</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">densAr</span> <span class="o">=</span> <span class="mf">1.218</span>
+
+        <span class="c1"># E outra formulinha de mec flu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">velocidade</span> <span class="o">=</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pressaoDinamica</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">densAr</span><span class="p">))</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Pitot8b.getValADC"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.pitot8b.Pitot8b.getValADC">[docs]</a>    <span class="k">def</span> <span class="nf">getValADC</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retorna o valor vindo direto do adc</span>
+<span class="sd">            :returns: Valor do ADC</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">valADC</span></div>
+
+<div class="viewcode-block" id="Pitot8b.getValTensao"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.pitot8b.Pitot8b.getValTensao">[docs]</a>    <span class="k">def</span> <span class="nf">getValTensao</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retorna o valor da tensão do pitot</span>
+<span class="sd">            :returns: Tensão (Volts)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">valTensao</span></div>
+
+<div class="viewcode-block" id="Pitot8b.getRPM"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.pitot8b.Pitot8b.getRPM">[docs]</a>    <span class="k">def</span> <span class="nf">getRPM</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retorna um valor aproximado em RPM caso o pitot esteja no escoamento do motor</span>
+<span class="sd">            :returns: RPM</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rpm</span> <span class="o">=</span> <span class="p">(</span><span class="mi">640</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocidade</span> <span class="o">-</span> <span class="mf">166.67</span><span class="p">)</span>
+        <span class="n">rpm</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">rpm</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">rpm</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">rpm</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">rpm</span> <span class="o">&gt;</span> <span class="mi">24320</span><span class="p">:</span>
+            <span class="n">rpm</span> <span class="o">=</span> <span class="mi">24000</span> <span class="o">-</span> <span class="p">(</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span>
+
+        <span class="k">return</span> <span class="n">rpm</span></div>
+
+<div class="viewcode-block" id="Pitot8b.getPressaoDinamica"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.pitot8b.Pitot8b.getPressaoDinamica">[docs]</a>    <span class="k">def</span> <span class="nf">getPressaoDinamica</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">um</span><span class="o">=</span><span class="s2">&quot;m/s&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retorna valor da pressão dinâmica</span>
+<span class="sd">            :returns: pressão dinâmica</span>
+<span class="sd">            :param um: Unidade de medida.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">um</span> <span class="o">==</span> <span class="s2">&quot;PA&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pressaoDinamica</span>
+        <span class="k">elif</span> <span class="n">um</span> <span class="o">==</span> <span class="s2">&quot;hPA&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pressaoDinamica</span> <span class="o">/</span> <span class="mi">100</span>
+        <span class="k">elif</span> <span class="n">um</span> <span class="o">==</span> <span class="s2">&quot;mBar&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pressaoDinamica</span> <span class="o">/</span> <span class="mi">100</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># retorna PA</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pressaoDinamica</span></div>
+
+<div class="viewcode-block" id="Pitot8b.getVelocidade"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.pitot8b.Pitot8b.getVelocidade">[docs]</a>    <span class="k">def</span> <span class="nf">getVelocidade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">um</span><span class="o">=</span><span class="s2">&quot;m/s&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retorna valor da velocidade calibrada</span>
+<span class="sd">            :returns: Velocidade calibrada</span>
+<span class="sd">            :param um: Unidade de medida.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">um</span> <span class="o">==</span> <span class="s2">&quot;m/s&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocidade</span>
+        <span class="k">elif</span> <span class="n">um</span> <span class="o">==</span> <span class="s2">&quot;km/h&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocidade</span> <span class="o">*</span> <span class="mf">3.6</span>
+        <span class="k">elif</span> <span class="n">um</span> <span class="o">==</span> <span class="s2">&quot;nós&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocidade</span> <span class="o">*</span> <span class="mf">1.94384</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># velocidade em m/s</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocidade</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Leonardo Mariga and Rafael Araujo Lehmkuhl.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

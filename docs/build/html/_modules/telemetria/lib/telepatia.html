@@ -1,0 +1,301 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>telemetria.lib.telepatia &mdash; Vivace 2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="Vivace 2.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Vivace
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Vivace</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>telemetria.lib.telepatia</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for telemetria.lib.telepatia</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">uname</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;raspberrypi&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">serial</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">.dado</span> <span class="k">import</span> <span class="n">Dado</span>
+
+
+<div class="viewcode-block" id="Transmissor"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.telepatia.Transmissor">[docs]</a><span class="k">class</span> <span class="nc">Transmissor</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Esta classe é chamada toda vez que queremos transmitir um dado usando o transceiver da 3DR</span>
+<span class="sd">    Depois de criar os dados, utiza-se a função setDados() para popular o vetor dessa classe com os</span>
+<span class="sd">    dados a serem transmitidos.</span>
+
+<span class="sd">    Para utilizar a classe:</span>
+<span class="sd">    - Primeiramente utilize o construtor para setar propriedades.</span>
+<span class="sd">    - Depois, popule o vetor de dados com a função setDados()</span>
+<span class="sd">    - Por fim, chame a função transmiteLinha()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">separador</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">protocolo</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="n">baudRate</span><span class="o">=</span><span class="mi">57600</span><span class="p">,</span> <span class="n">codificacao</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construtor inicializa parâmetros de configuração do Transmissor</span>
+<span class="sd">        Exitem dois métodos de transmissão, utilizando o protolo ou não.</span>
+
+<span class="sd">        Utilizando protocolo: As mensagens enviadas são empacotadas da seguinte forma:</span>
+<span class="sd">        &quot;!identificador=valor@\&quot; onde o identificador é o &quot;apelido&quot; de cada dado.</span>
+
+<span class="sd">        Não utilizando protocolo: As mensagens são enviadas da mesma ordem que os dados são gravados</span>
+<span class="sd">        &quot;valor1, valor2, valor3&quot;</span>
+
+
+<span class="sd">        :param separador: Especifica o tipo de separados dos valores mais comum é virgula espaço ou tabulação</span>
+<span class="sd">        :param protocolo: Indica a utilização ou não do protocolo</span>
+<span class="sd">        :param baudRate: Taxa de transmissão da serial</span>
+<span class="sd">        :param codificacao: Tipo de codificação dos caracteres ASCII</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dados</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">separador</span> <span class="o">=</span> <span class="n">separador</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">baudRate</span> <span class="o">=</span> <span class="n">baudRate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">separador</span> <span class="o">=</span> <span class="n">separador</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">protocolo</span> <span class="o">=</span> <span class="n">protocolo</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">codificacao</span> <span class="o">=</span> <span class="n">codificacao</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ser</span> <span class="o">=</span> <span class="n">serial</span><span class="o">.</span><span class="n">Serial</span><span class="p">(</span><span class="s1">&#39;/dev/ttyUSB0&#39;</span><span class="p">,</span> <span class="n">baudRate</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Transmissor.setDados"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.telepatia.Transmissor.setDados">[docs]</a>    <span class="k">def</span> <span class="nf">setDados</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Função que atualiza o vetor de dados do Transmissor com os dados que vem como parâmetro dessa função.</span>
+<span class="sd">        O Transmissor apenas consegue ver os dados que foram passados por meio dessa função.</span>
+<span class="sd">        É utilizada como a porta de entrada para os dados que serão escritos.</span>
+
+<span class="sd">        :param d: Vetor de Dado que será escrito na ordem do vetor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dados</span> <span class="o">=</span> <span class="n">d</span></div>
+
+<div class="viewcode-block" id="Transmissor.transmiteLinha"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.telepatia.Transmissor.transmiteLinha">[docs]</a>    <span class="k">def</span> <span class="nf">transmiteLinha</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Função será chamada quando os dados deverão ser transmitidos</span>
+
+<span class="sd">        A forma de transmissão dependerá da utilização do protocolo ou não</span>
+<span class="sd">        Recomenda-se a utilização do protocolo para verificar a integridade do dado.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dados</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">transmiteDado</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">protocolo</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ser</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="s2">&quot;!&quot;</span> <span class="o">+</span> <span class="n">x</span><span class="o">.</span><span class="n">apelido</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span> <span class="o">+</span>
+                                         <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">valor</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;@</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">codificacao</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ser</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                        <span class="nb">bytes</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">valor</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">separador</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">codificacao</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">protocolo</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ser</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">codificacao</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Transmissor.leLinha"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.telepatia.Transmissor.leLinha">[docs]</a>    <span class="k">def</span> <span class="nf">leLinha</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Essa função é responsável por ler telecomandos recebidos pela serial</span>
+
+<span class="sd">        :returns: String do telecomando</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ser</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Leonardo Mariga and Rafael Araujo Lehmkuhl.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
