@@ -6,11 +6,11 @@ Biblioteca irá converter os dados do ADC para um valor de velocidade e pressão
 """
 
 import time
-from .adc8 import ADC8
+from .adc import ADC
 from random import randint
 
 
-class Pitot8b:
+class Pitot:
     """Biblioteca Pitot
     Biblioteca irá converter os dados do ADC para um valor de velocidade e pressão
     Primeiramente será convertido o valor do ADC para um nível de tensão
@@ -20,7 +20,7 @@ class Pitot8b:
 
     def __init__(self, numADC=0):
         # Cria objeto do ADC
-        self.adc8 = ADC8()
+        self.adc8 = ADC()
         self.numADC = numADC
         self.valADC = 0
         self.valTensao = 0

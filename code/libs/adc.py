@@ -7,7 +7,7 @@ if os.uname()[1] == 'raspberrypi':
 import time
 
 
-class ADC8:
+class ADC:
     """Classe utilizada para realização da interface do ADC 8 bits
     com o restante da telemetria
 
