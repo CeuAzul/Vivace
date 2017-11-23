@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>telemetria.lib.mpulib &mdash; Vivace 2.0 documentation</title>
+  <title>code.libs.mpu &mdash; Vivace 2.0 documentation</title>
   
 
   
@@ -135,7 +135,7 @@
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
-      <li>telemetria.lib.mpulib</li>
+      <li>code.libs.mpu</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -152,7 +152,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for telemetria.lib.mpulib</h1><div class="highlight"><pre>
+  <h1>Source code for code.libs.mpu</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
@@ -162,7 +162,7 @@
 <span class="kn">import</span> <span class="nn">math</span>
 
 
-<div class="viewcode-block" id="MPU"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.mpulib.MPU">[docs]</a><span class="k">class</span> <span class="nc">MPU</span><span class="p">:</span>
+<div class="viewcode-block" id="MPU"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU">[docs]</a><span class="k">class</span> <span class="nc">MPU</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Um objeto dessa classe deve ser criado quando quiser realizar a comunicação</span>
 <span class="sd">    ou obter dados da MPU (Acelerômetro e Giroscópio).</span>
@@ -218,12 +218,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">write_byte_data</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">acRegScale</span><span class="p">,</span> <span class="mb">0b00011000</span><span class="p">)</span>  <span class="c1"># ate 16g</span>
 
-<div class="viewcode-block" id="MPU.read_byte"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.mpulib.MPU.read_byte">[docs]</a>    <span class="k">def</span> <span class="nf">read_byte</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">adr</span><span class="p">):</span>
+<div class="viewcode-block" id="MPU.read_byte"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.read_byte">[docs]</a>    <span class="k">def</span> <span class="nf">read_byte</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">adr</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função apenas para uso interno na comunicação i2c.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">read_byte_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">adr</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="MPU.read_word"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.mpulib.MPU.read_word">[docs]</a>    <span class="k">def</span> <span class="nf">read_word</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">adr</span><span class="p">):</span>
+<div class="viewcode-block" id="MPU.read_word"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.read_word">[docs]</a>    <span class="k">def</span> <span class="nf">read_word</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">adr</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função apenas para uso interno na comunicação i2c.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">high</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">read_byte_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">adr</span><span class="p">)</span>
@@ -231,7 +231,7 @@
         <span class="n">val</span> <span class="o">=</span> <span class="p">(</span><span class="n">high</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="n">low</span>
         <span class="k">return</span> <span class="n">val</span></div>
 
-<div class="viewcode-block" id="MPU.read_word_2c"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.mpulib.MPU.read_word_2c">[docs]</a>    <span class="k">def</span> <span class="nf">read_word_2c</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">adr</span><span class="p">):</span>
+<div class="viewcode-block" id="MPU.read_word_2c"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.read_word_2c">[docs]</a>    <span class="k">def</span> <span class="nf">read_word_2c</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">adr</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função apenas para uso interno na comunicação i2c.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_word</span><span class="p">(</span><span class="n">adr</span><span class="p">)</span>
@@ -240,24 +240,24 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">val</span></div>
 
-<div class="viewcode-block" id="MPU.dist"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.mpulib.MPU.dist">[docs]</a>    <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<div class="viewcode-block" id="MPU.dist"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.dist">[docs]</a>    <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função apenas para uso interno na comunicação i2c.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">a</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">b</span> <span class="o">*</span> <span class="n">b</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="MPU.get_y_rotation"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.mpulib.MPU.get_y_rotation">[docs]</a>    <span class="k">def</span> <span class="nf">get_y_rotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+<div class="viewcode-block" id="MPU.get_y_rotation"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.get_y_rotation">[docs]</a>    <span class="k">def</span> <span class="nf">get_y_rotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função apenas para uso interno na obtenção do pitch e roll.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">radians</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">))</span>
         <span class="k">return</span> <span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">radians</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="MPU.get_x_rotation"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.mpulib.MPU.get_x_rotation">[docs]</a>    <span class="k">def</span> <span class="nf">get_x_rotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+<div class="viewcode-block" id="MPU.get_x_rotation"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.get_x_rotation">[docs]</a>    <span class="k">def</span> <span class="nf">get_x_rotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função apenas para uso interno na obtenção do pitch e roll.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">radians</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">radians</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="MPU.atualiza"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.mpulib.MPU.atualiza">[docs]</a>    <span class="k">def</span> <span class="nf">atualiza</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MPU.atualiza"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.atualiza">[docs]</a>    <span class="k">def</span> <span class="nf">atualiza</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função que atualiza todos os dados da MPU (faz a comunicação i2c</span>
 <span class="sd">        e atualiza as variaveis locais)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -301,55 +301,55 @@
                         <span class="bp">self</span><span class="o">.</span><span class="n">roll</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_y_rotation</span><span class="p">(</span>
                             <span class="n">accel_xout_scaled</span><span class="p">,</span> <span class="n">accel_yout_scaled</span><span class="p">,</span> <span class="n">accel_zout_scaled</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="MPU.getAcx"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.mpulib.MPU.getAcx">[docs]</a>    <span class="k">def</span> <span class="nf">getAcx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MPU.getAcx"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.getAcx">[docs]</a>    <span class="k">def</span> <span class="nf">getAcx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função retorna o valor de aceleração no eixo X</span>
 <span class="sd">        :returns: Aceleração no eixo X</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">acx</span></div>
 
-<div class="viewcode-block" id="MPU.getAcy"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.mpulib.MPU.getAcy">[docs]</a>    <span class="k">def</span> <span class="nf">getAcy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MPU.getAcy"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.getAcy">[docs]</a>    <span class="k">def</span> <span class="nf">getAcy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função retorna o valor de aceleração no eixo Y</span>
 <span class="sd">        :returns: Aceleração no eixo Y</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">acy</span></div>
 
-<div class="viewcode-block" id="MPU.getAcz"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.mpulib.MPU.getAcz">[docs]</a>    <span class="k">def</span> <span class="nf">getAcz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MPU.getAcz"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.getAcz">[docs]</a>    <span class="k">def</span> <span class="nf">getAcz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função retorna o valor de aceleração no eixo Z</span>
 <span class="sd">        :returns: Aceleração no eixo Z</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">acz</span></div>
 
-<div class="viewcode-block" id="MPU.getGyx"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.mpulib.MPU.getGyx">[docs]</a>    <span class="k">def</span> <span class="nf">getGyx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MPU.getGyx"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.getGyx">[docs]</a>    <span class="k">def</span> <span class="nf">getGyx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função retorna o valor da taxa de giro no eixo X</span>
 <span class="sd">        :returns: Taxa de giro no eixo X</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gyx</span></div>
 
-<div class="viewcode-block" id="MPU.getGyy"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.mpulib.MPU.getGyy">[docs]</a>    <span class="k">def</span> <span class="nf">getGyy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MPU.getGyy"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.getGyy">[docs]</a>    <span class="k">def</span> <span class="nf">getGyy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função retorna o valor da taxa de giro no eixo Y</span>
 <span class="sd">        :returns: Taxa de giro no eixo Y</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gyy</span></div>
 
-<div class="viewcode-block" id="MPU.getGyz"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.mpulib.MPU.getGyz">[docs]</a>    <span class="k">def</span> <span class="nf">getGyz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MPU.getGyz"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.getGyz">[docs]</a>    <span class="k">def</span> <span class="nf">getGyz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função retorna o valor da taxa de giro no eixo Z</span>
 <span class="sd">        :returns: Taxa de giro no eixo Z</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gyz</span></div>
 
-<div class="viewcode-block" id="MPU.getPitch"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.mpulib.MPU.getPitch">[docs]</a>    <span class="k">def</span> <span class="nf">getPitch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MPU.getPitch"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.getPitch">[docs]</a>    <span class="k">def</span> <span class="nf">getPitch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função retorna o valor do pitch.</span>
 <span class="sd">        :returns: Valor do Pitch atual</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pitch</span></div>
 
-<div class="viewcode-block" id="MPU.getRoll"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.mpulib.MPU.getRoll">[docs]</a>    <span class="k">def</span> <span class="nf">getRoll</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MPU.getRoll"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.getRoll">[docs]</a>    <span class="k">def</span> <span class="nf">getRoll</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função retorna o valor do Roll.</span>
 <span class="sd">        :returns: Valor do Roll atual</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">roll</span></div>
 
-<div class="viewcode-block" id="MPU.getTemp"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.mpulib.MPU.getTemp">[docs]</a>    <span class="k">def</span> <span class="nf">getTemp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MPU.getTemp"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.getTemp">[docs]</a>    <span class="k">def</span> <span class="nf">getTemp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função retorna o valor do temperatura.</span>
 <span class="sd">        :returns: Valor do temperatura atual</span>
 <span class="sd">        &quot;&quot;&quot;</span>

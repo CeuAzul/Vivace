@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>telemetria.lib.telepatia &mdash; Vivace 2.0 documentation</title>
+  <title>code.libs.telepatia &mdash; Vivace 2.0 documentation</title>
   
 
   
@@ -135,7 +135,7 @@
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
-      <li>telemetria.lib.telepatia</li>
+      <li>code.libs.telepatia</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -152,7 +152,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for telemetria.lib.telepatia</h1><div class="highlight"><pre>
+  <h1>Source code for code.libs.telepatia</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
@@ -163,7 +163,7 @@
 <span class="kn">from</span> <span class="nn">.dado</span> <span class="k">import</span> <span class="n">Dado</span>
 
 
-<div class="viewcode-block" id="Transmissor"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.telepatia.Transmissor">[docs]</a><span class="k">class</span> <span class="nc">Transmissor</span><span class="p">:</span>
+<div class="viewcode-block" id="Transmissor"><a class="viewcode-back" href="../../../code.libs.html#code.libs.telepatia.Transmissor">[docs]</a><span class="k">class</span> <span class="nc">Transmissor</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot; Esta classe é chamada toda vez que queremos transmitir um dado usando o transceiver da 3DR</span>
 <span class="sd">    Depois de criar os dados, utiza-se a função setDados() para popular o vetor dessa classe com os</span>
 <span class="sd">    dados a serem transmitidos.</span>
@@ -199,7 +199,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">codificacao</span> <span class="o">=</span> <span class="n">codificacao</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ser</span> <span class="o">=</span> <span class="n">serial</span><span class="o">.</span><span class="n">Serial</span><span class="p">(</span><span class="s1">&#39;/dev/ttyUSB0&#39;</span><span class="p">,</span> <span class="n">baudRate</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Transmissor.setDados"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.telepatia.Transmissor.setDados">[docs]</a>    <span class="k">def</span> <span class="nf">setDados</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+<div class="viewcode-block" id="Transmissor.setDados"><a class="viewcode-back" href="../../../code.libs.html#code.libs.telepatia.Transmissor.setDados">[docs]</a>    <span class="k">def</span> <span class="nf">setDados</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função que atualiza o vetor de dados do Transmissor com os dados que vem como parâmetro dessa função.</span>
 <span class="sd">        O Transmissor apenas consegue ver os dados que foram passados por meio dessa função.</span>
 <span class="sd">        É utilizada como a porta de entrada para os dados que serão escritos.</span>
@@ -208,7 +208,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dados</span> <span class="o">=</span> <span class="n">d</span></div>
 
-<div class="viewcode-block" id="Transmissor.transmiteLinha"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.telepatia.Transmissor.transmiteLinha">[docs]</a>    <span class="k">def</span> <span class="nf">transmiteLinha</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Transmissor.transmiteLinha"><a class="viewcode-back" href="../../../code.libs.html#code.libs.telepatia.Transmissor.transmiteLinha">[docs]</a>    <span class="k">def</span> <span class="nf">transmiteLinha</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função será chamada quando os dados deverão ser transmitidos</span>
 
 <span class="sd">        A forma de transmissão dependerá da utilização do protocolo ou não</span>
@@ -226,7 +226,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">protocolo</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ser</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">codificacao</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Transmissor.leLinha"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.telepatia.Transmissor.leLinha">[docs]</a>    <span class="k">def</span> <span class="nf">leLinha</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Transmissor.leLinha"><a class="viewcode-back" href="../../../code.libs.html#code.libs.telepatia.Transmissor.leLinha">[docs]</a>    <span class="k">def</span> <span class="nf">leLinha</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Essa função é responsável por ler telecomandos recebidos pela serial</span>
 
 <span class="sd">        :returns: String do telecomando</span>

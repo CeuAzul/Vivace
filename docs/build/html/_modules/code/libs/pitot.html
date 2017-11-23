@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>telemetria.lib.pitot8b &mdash; Vivace 2.0 documentation</title>
+  <title>code.libs.pitot &mdash; Vivace 2.0 documentation</title>
   
 
   
@@ -135,7 +135,7 @@
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
-      <li>telemetria.lib.pitot8b</li>
+      <li>code.libs.pitot</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -152,7 +152,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for telemetria.lib.pitot8b</h1><div class="highlight"><pre>
+  <h1>Source code for code.libs.pitot</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
@@ -161,11 +161,11 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">.adc8</span> <span class="k">import</span> <span class="n">ADC8</span>
+<span class="kn">from</span> <span class="nn">.adc</span> <span class="k">import</span> <span class="n">ADC</span>
 <span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">randint</span>
 
 
-<div class="viewcode-block" id="Pitot8b"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.pitot8b.Pitot8b">[docs]</a><span class="k">class</span> <span class="nc">Pitot8b</span><span class="p">:</span>
+<div class="viewcode-block" id="Pitot"><a class="viewcode-back" href="../../../code.libs.html#code.libs.pitot.Pitot">[docs]</a><span class="k">class</span> <span class="nc">Pitot</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Biblioteca Pitot</span>
 <span class="sd">    Biblioteca irá converter os dados do ADC para um valor de velocidade e pressão</span>
 <span class="sd">    Primeiramente será convertido o valor do ADC para um nível de tensão</span>
@@ -175,7 +175,7 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">numADC</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="c1"># Cria objeto do ADC</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">adc8</span> <span class="o">=</span> <span class="n">ADC8</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adc8</span> <span class="o">=</span> <span class="n">ADC</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">numADC</span> <span class="o">=</span> <span class="n">numADC</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">valADC</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">valTensao</span> <span class="o">=</span> <span class="mi">0</span>
@@ -184,13 +184,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">valorInicial</span> <span class="o">=</span> <span class="mi">58</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setReferenciaAqui</span><span class="p">()</span>
 
-<div class="viewcode-block" id="Pitot8b.setReferenciaAqui"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.pitot8b.Pitot8b.setReferenciaAqui">[docs]</a>    <span class="k">def</span> <span class="nf">setReferenciaAqui</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+<div class="viewcode-block" id="Pitot.setReferenciaAqui"><a class="viewcode-back" href="../../../code.libs.html#code.libs.pitot.Pitot.setReferenciaAqui">[docs]</a>    <span class="k">def</span> <span class="nf">setReferenciaAqui</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">samples</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">atualiza</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">valorInicial</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">valADC</span>
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Pitot8b.atualiza"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.pitot8b.Pitot8b.atualiza">[docs]</a>    <span class="k">def</span> <span class="nf">atualiza</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">densAr</span><span class="o">=</span><span class="mf">1.218</span><span class="p">):</span>
+<div class="viewcode-block" id="Pitot.atualiza"><a class="viewcode-back" href="../../../code.libs.html#code.libs.pitot.Pitot.atualiza">[docs]</a>    <span class="k">def</span> <span class="nf">atualiza</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">densAr</span><span class="o">=</span><span class="mf">1.218</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Le valor analogico do ADC e transforma isso em pressão e velocidade</span>
 <span class="sd">        :param samples: Número de amostras para oversampling.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -227,19 +227,19 @@
         <span class="c1"># E outra formulinha de mec flu</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">velocidade</span> <span class="o">=</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pressaoDinamica</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">densAr</span><span class="p">))</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Pitot8b.getValADC"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.pitot8b.Pitot8b.getValADC">[docs]</a>    <span class="k">def</span> <span class="nf">getValADC</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Pitot.getValADC"><a class="viewcode-back" href="../../../code.libs.html#code.libs.pitot.Pitot.getValADC">[docs]</a>    <span class="k">def</span> <span class="nf">getValADC</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retorna o valor vindo direto do adc</span>
 <span class="sd">            :returns: Valor do ADC</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">valADC</span></div>
 
-<div class="viewcode-block" id="Pitot8b.getValTensao"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.pitot8b.Pitot8b.getValTensao">[docs]</a>    <span class="k">def</span> <span class="nf">getValTensao</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Pitot.getValTensao"><a class="viewcode-back" href="../../../code.libs.html#code.libs.pitot.Pitot.getValTensao">[docs]</a>    <span class="k">def</span> <span class="nf">getValTensao</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retorna o valor da tensão do pitot</span>
 <span class="sd">            :returns: Tensão (Volts)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">valTensao</span></div>
 
-<div class="viewcode-block" id="Pitot8b.getRPM"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.pitot8b.Pitot8b.getRPM">[docs]</a>    <span class="k">def</span> <span class="nf">getRPM</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Pitot.getRPM"><a class="viewcode-back" href="../../../code.libs.html#code.libs.pitot.Pitot.getRPM">[docs]</a>    <span class="k">def</span> <span class="nf">getRPM</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retorna um valor aproximado em RPM caso o pitot esteja no escoamento do motor</span>
 <span class="sd">            :returns: RPM</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -253,7 +253,7 @@
 
         <span class="k">return</span> <span class="n">rpm</span></div>
 
-<div class="viewcode-block" id="Pitot8b.getPressaoDinamica"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.pitot8b.Pitot8b.getPressaoDinamica">[docs]</a>    <span class="k">def</span> <span class="nf">getPressaoDinamica</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">um</span><span class="o">=</span><span class="s2">&quot;m/s&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="Pitot.getPressaoDinamica"><a class="viewcode-back" href="../../../code.libs.html#code.libs.pitot.Pitot.getPressaoDinamica">[docs]</a>    <span class="k">def</span> <span class="nf">getPressaoDinamica</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">um</span><span class="o">=</span><span class="s2">&quot;m/s&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retorna valor da pressão dinâmica</span>
 <span class="sd">            :returns: pressão dinâmica</span>
 <span class="sd">            :param um: Unidade de medida.</span>
@@ -267,7 +267,7 @@
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># retorna PA</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pressaoDinamica</span></div>
 
-<div class="viewcode-block" id="Pitot8b.getVelocidade"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.pitot8b.Pitot8b.getVelocidade">[docs]</a>    <span class="k">def</span> <span class="nf">getVelocidade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">um</span><span class="o">=</span><span class="s2">&quot;m/s&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="Pitot.getVelocidade"><a class="viewcode-back" href="../../../code.libs.html#code.libs.pitot.Pitot.getVelocidade">[docs]</a>    <span class="k">def</span> <span class="nf">getVelocidade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">um</span><span class="o">=</span><span class="s2">&quot;m/s&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retorna valor da velocidade calibrada</span>
 <span class="sd">            :returns: Velocidade calibrada</span>
 <span class="sd">            :param um: Unidade de medida.</span>

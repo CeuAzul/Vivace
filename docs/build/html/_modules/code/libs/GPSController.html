@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>telemetria.lib.GPSController &mdash; Vivace 2.0 documentation</title>
+  <title>code.libs.GPSController &mdash; Vivace 2.0 documentation</title>
   
 
   
@@ -135,7 +135,7 @@
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
-      <li>telemetria.lib.GPSController</li>
+      <li>code.libs.GPSController</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -152,7 +152,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for telemetria.lib.GPSController</h1><div class="highlight"><pre>
+  <h1>Source code for code.libs.GPSController</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
@@ -162,13 +162,13 @@
 <span class="kn">import</span> <span class="nn">math</span>
 
 
-<div class="viewcode-block" id="GpsController"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.GPSController.GpsController">[docs]</a><span class="k">class</span> <span class="nc">GpsController</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
+<div class="viewcode-block" id="GpsController"><a class="viewcode-back" href="../../../code.libs.html#code.libs.GPSController.GpsController">[docs]</a><span class="k">class</span> <span class="nc">GpsController</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gpsd</span> <span class="o">=</span> <span class="n">GPS</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">WATCH_ENABLE</span><span class="p">)</span>  <span class="c1"># starting the stream of info</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">running</span> <span class="o">=</span> <span class="kc">False</span>
 
-<div class="viewcode-block" id="GpsController.run"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.GPSController.GpsController.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GpsController.run"><a class="viewcode-back" href="../../../code.libs.html#code.libs.GPSController.GpsController.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">running</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">running</span><span class="p">:</span>
             <span class="c1"># grab EACH set of gpsd info to clear the buffer</span>
@@ -177,7 +177,7 @@
             <span class="k">except</span><span class="p">:</span>
                 <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="GpsController.stopController"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.GPSController.GpsController.stopController">[docs]</a>    <span class="k">def</span> <span class="nf">stopController</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GpsController.stopController"><a class="viewcode-back" href="../../../code.libs.html#code.libs.GPSController.GpsController.stopController">[docs]</a>    <span class="k">def</span> <span class="nf">stopController</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">running</span> <span class="o">=</span> <span class="kc">False</span></div>
 
     <span class="nd">@property</span>
