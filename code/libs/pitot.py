@@ -11,11 +11,12 @@ from random import randint
 
 
 class Pitot:
-    """Biblioteca Pitot
-    Biblioteca irá converter os dados do ADC para um valor de velocidade e pressão
-    Primeiramente será convertido o valor do ADC para um nível de tensão
-    Depois, essa tensão é convertida em pressão
-    E por fim, é convertida em velocidade
+    """Biblioteca Pitot:
+
+    1. Biblioteca irá converter os dados do ADC para um valor de velocidade e pressão.
+    2. Primeiramente será convertido o valor do ADC para um nível de tensão.
+    3. Depois, essa tensão é convertida em pressão.
+    4. E por fim, é convertida em velocidade.
     """
 
     def __init__(self, numADC=0):
@@ -36,8 +37,9 @@ class Pitot:
             time.sleep(0.01)
 
     def atualiza(self, samples=20, densAr=1.218):
-        """Le valor analogico do ADC e transforma isso em pressão e velocidade
-        :param samples: Número de amostras para oversampling.
+        """Le valor analogico do ADC e transforma isso em pressão e velocidade.
+
+        :param samples: Número de amostras para oversampling
         """
         self.valADC = 0
         for x in range(samples):
@@ -73,19 +75,22 @@ class Pitot:
         self.velocidade = (abs(self.pressaoDinamica * 2 / densAr))**(1 / 2)
 
     def getValADC(self):
-        """Retorna o valor vindo direto do adc
+        """Retorna o valor vindo direto do adc.
+
             :returns: Valor do ADC
         """
         return self.valADC
 
     def getValTensao(self):
-        """Retorna o valor da tensão do pitot
+        """Retorna o valor da tensão do pitot.
+
             :returns: Tensão (Volts)
         """
         return self.valTensao
 
     def getRPM(self):
-        """Retorna um valor aproximado em RPM caso o pitot esteja no escoamento do motor
+        """Retorna um valor aproximado em RPM caso o pitot esteja no escoamento do motor.
+
             :returns: RPM
         """
         rpm = (640 * self.velocidade - 166.67)
@@ -99,9 +104,10 @@ class Pitot:
         return rpm
 
     def getPressaoDinamica(self, um="m/s"):
-        """Retorna valor da pressão dinâmica
+        """Retorna valor da pressão dinâmica.
+
             :returns: pressão dinâmica
-            :param um: Unidade de medida.
+            :param um: Unidade de medida
         """
         if um == "PA":
             return self.pressaoDinamica
@@ -113,9 +119,10 @@ class Pitot:
             return self.pressaoDinamica
 
     def getVelocidade(self, um="m/s"):
-        """Retorna valor da velocidade calibrada
+        """Retorna valor da velocidade calibrada.
+
             :returns: Velocidade calibrada
-            :param um: Unidade de medida.
+            :param um: Unidade de medida
         """
         if um == "m/s":
             return self.velocidade

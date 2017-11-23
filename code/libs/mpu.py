@@ -20,6 +20,7 @@ class MPU:
     def __init__(self, useGyx=True, useGyy=True, useGyz=True, useAcx=True, useAcy=True, useAcz=True, usePitch=True, useRoll=True, useTemp=True):
         """Inicializa a classe com os parâmetros setados para adquirir e
         realiza configurações para aquisição do I2C.
+
         :param useGyx: Indicador se deve adquirir a taxa de rotação no eixo X
         :param useGyy: Indicador se deve adquirir a taxa de rotação no eixo y
         :param useGyz: Indicador se deve adquirir a taxa de rotação no eixo Z
@@ -104,7 +105,7 @@ class MPU:
 
     def atualiza(self):
         """Função que atualiza todos os dados da MPU (faz a comunicação i2c
-        e atualiza as variaveis locais)
+        e atualiza as variaveis locais).
         """
         if self.useGyx:
             gyro_xout = self.read_word_2c(0x43)
@@ -147,55 +148,64 @@ class MPU:
                             accel_xout_scaled, accel_yout_scaled, accel_zout_scaled)
 
     def getAcx(self):
-        """Função retorna o valor de aceleração no eixo X
+        """Função retorna o valor de aceleração no eixo X.
+
         :returns: Aceleração no eixo X
         """
         return self.acx
 
     def getAcy(self):
-        """Função retorna o valor de aceleração no eixo Y
+        """Função retorna o valor de aceleração no eixo Y.
+
         :returns: Aceleração no eixo Y
         """
         return self.acy
 
     def getAcz(self):
-        """Função retorna o valor de aceleração no eixo Z
+        """Função retorna o valor de aceleração no eixo Z.
+
         :returns: Aceleração no eixo Z
         """
         return self.acz
 
     def getGyx(self):
-        """Função retorna o valor da taxa de giro no eixo X
+        """Função retorna o valor da taxa de giro no eixo X.
+
         :returns: Taxa de giro no eixo X
         """
         return self.gyx
 
     def getGyy(self):
-        """Função retorna o valor da taxa de giro no eixo Y
+        """Função retorna o valor da taxa de giro no eixo Y.
+
         :returns: Taxa de giro no eixo Y
         """
         return self.gyy
 
     def getGyz(self):
-        """Função retorna o valor da taxa de giro no eixo Z
+        """Função retorna o valor da taxa de giro no eixo Z.
+
         :returns: Taxa de giro no eixo Z
         """
         return self.gyz
 
     def getPitch(self):
         """Função retorna o valor do pitch.
+
         :returns: Valor do Pitch atual
         """
         return self.pitch
 
     def getRoll(self):
         """Função retorna o valor do Roll.
+
         :returns: Valor do Roll atual
         """
         return self.roll
 
     def getTemp(self):
         """Função retorna o valor do temperatura.
+
         :returns: Valor do temperatura atual
         """
         return self.temp
