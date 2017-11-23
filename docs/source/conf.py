@@ -39,6 +39,14 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.viewcode',
               'sphinx.ext.githubpages']
 
+# Activate autodoc special-members (like __init__) documentations
+autodoc_default_flags = [
+    "members",
+    # "undoc-members",
+    # "private-members",
+    "special-members",
+]
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
