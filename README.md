@@ -1,6 +1,10 @@
 # Vivace
 Este é o código para a plataforma de telemetria desenvolvida pela equipe Céu Azul Aeronaves a partir do ano de 2016
 
+## Documentaçao
+
+A documentaçao da plataforma Vivace, incluindo as *docstrings* de todas as classes e metodos esta disponivel em http://vivace.readthedocs.io .
+
 ## Instalar dependencias
 
 Para instalar as dependencias Python basta abrir um terminal na raiz do projeto e usar o comando ```make init```.
