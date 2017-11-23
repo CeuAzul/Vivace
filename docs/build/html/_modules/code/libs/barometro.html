@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>telemetria.lib.barometrolib &mdash; Vivace 2.0 documentation</title>
+  <title>code.libs.barometro &mdash; Vivace 2.0 documentation</title>
   
 
   
@@ -135,7 +135,7 @@
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
-      <li>telemetria.lib.barometrolib</li>
+      <li>code.libs.barometro</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -152,7 +152,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for telemetria.lib.barometrolib</h1><div class="highlight"><pre>
+  <h1>Source code for code.libs.barometro</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
@@ -163,7 +163,7 @@
     <span class="kn">from</span> <span class="nn">smbus</span> <span class="k">import</span> <span class="n">SMBus</span>
 
 
-<div class="viewcode-block" id="Barometro"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.barometrolib.Barometro">[docs]</a><span class="k">class</span> <span class="nc">Barometro</span><span class="p">:</span>
+<div class="viewcode-block" id="Barometro"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro">[docs]</a><span class="k">class</span> <span class="nc">Barometro</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Um objeto dessa classe deve ser criado quando quiser realizar a comunicação</span>
 <span class="sd">    ou obter dados do barômetro.</span>
@@ -262,36 +262,36 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">atualizaReferencia</span><span class="p">()</span>
 
-<div class="viewcode-block" id="Barometro.atualizaReferencia"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.barometrolib.Barometro.atualizaReferencia">[docs]</a>    <span class="k">def</span> <span class="nf">atualizaReferencia</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Barometro.atualizaReferencia"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro.atualizaReferencia">[docs]</a>    <span class="k">def</span> <span class="nf">atualizaReferencia</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pressaoReferencia</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">atualiza</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">pressaoReferencia</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pressaoReferencia</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">getPressao</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pressaoReferencia</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pressaoReferencia</span> <span class="o">/</span> <span class="mi">10</span></div>
 
-<div class="viewcode-block" id="Barometro.refreshPressure"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.barometrolib.Barometro.refreshPressure">[docs]</a>    <span class="k">def</span> <span class="nf">refreshPressure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">OSR</span><span class="o">=</span><span class="n">__MS5611_RA_D1_OSR_4096</span><span class="p">):</span>
+<div class="viewcode-block" id="Barometro.refreshPressure"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro.refreshPressure">[docs]</a>    <span class="k">def</span> <span class="nf">refreshPressure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">OSR</span><span class="o">=</span><span class="n">__MS5611_RA_D1_OSR_4096</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função utilizada internamente para comunicação I2C</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">write_byte</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">OSR</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Barometro.refreshTemperature"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.barometrolib.Barometro.refreshTemperature">[docs]</a>    <span class="k">def</span> <span class="nf">refreshTemperature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">OSR</span><span class="o">=</span><span class="n">__MS5611_RA_D2_OSR_4096</span><span class="p">):</span>
+<div class="viewcode-block" id="Barometro.refreshTemperature"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro.refreshTemperature">[docs]</a>    <span class="k">def</span> <span class="nf">refreshTemperature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">OSR</span><span class="o">=</span><span class="n">__MS5611_RA_D2_OSR_4096</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função utilizada internamente para comunicação I2C</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">write_byte</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">OSR</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Barometro.readPressure"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.barometrolib.Barometro.readPressure">[docs]</a>    <span class="k">def</span> <span class="nf">readPressure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Barometro.readPressure"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro.readPressure">[docs]</a>    <span class="k">def</span> <span class="nf">readPressure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função utilizada internamente para comunicação I2C</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">D1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">read_i2c_block_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__MS5611_RA_ADC</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">D1</span> <span class="o">=</span> <span class="n">D1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">65536</span> <span class="o">+</span> <span class="n">D1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">256.0</span> <span class="o">+</span> <span class="n">D1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="Barometro.readTemperature"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.barometrolib.Barometro.readTemperature">[docs]</a>    <span class="k">def</span> <span class="nf">readTemperature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Barometro.readTemperature"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro.readTemperature">[docs]</a>    <span class="k">def</span> <span class="nf">readTemperature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função utilizada internamente para comunicação I2C</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">D2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">read_i2c_block_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__MS5611_RA_ADC</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">D2</span> <span class="o">=</span> <span class="n">D2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">65536</span> <span class="o">+</span> <span class="n">D2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">256.0</span> <span class="o">+</span> <span class="n">D2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="Barometro.calculatePressureAndTemperature"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.barometrolib.Barometro.calculatePressureAndTemperature">[docs]</a>    <span class="k">def</span> <span class="nf">calculatePressureAndTemperature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Barometro.calculatePressureAndTemperature"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro.calculatePressureAndTemperature">[docs]</a>    <span class="k">def</span> <span class="nf">calculatePressureAndTemperature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função utilizada internamente para comunicação I2C.</span>
 <span class="sd">        É a função principal para realizar a aquisição dos dados</span>
 <span class="sd">        pelo i2c.</span>
@@ -323,7 +323,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp</span> <span class="o">/</span> <span class="mi">100</span>  <span class="c1"># Temperature updated</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pres</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pres</span> <span class="o">/</span> <span class="mi">100</span>  <span class="c1"># Pressure updated</span></div>
 
-<div class="viewcode-block" id="Barometro.getPressao"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.barometrolib.Barometro.getPressao">[docs]</a>    <span class="k">def</span> <span class="nf">getPressao</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">um</span><span class="o">=</span><span class="s2">&quot;PA&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="Barometro.getPressao"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro.getPressao">[docs]</a>    <span class="k">def</span> <span class="nf">getPressao</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">um</span><span class="o">=</span><span class="s2">&quot;PA&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retorna valor da pressão atual</span>
 <span class="sd">        :returns: Pressão atual</span>
 <span class="sd">        :param um: Unidade de medida.</span>
@@ -337,19 +337,19 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pres</span></div>
 
-<div class="viewcode-block" id="Barometro.getTemperatura"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.barometrolib.Barometro.getTemperatura">[docs]</a>    <span class="k">def</span> <span class="nf">getTemperatura</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Barometro.getTemperatura"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro.getTemperatura">[docs]</a>    <span class="k">def</span> <span class="nf">getTemperatura</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retorna valor de temperatura</span>
 <span class="sd">        :returns: Temperatura (ºC)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp</span></div>
 
-<div class="viewcode-block" id="Barometro.getDensidadeAr"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.barometrolib.Barometro.getDensidadeAr">[docs]</a>    <span class="k">def</span> <span class="nf">getDensidadeAr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Barometro.getDensidadeAr"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro.getDensidadeAr">[docs]</a>    <span class="k">def</span> <span class="nf">getDensidadeAr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retorna Densidade do ar</span>
 <span class="sd">        :returns: Densidade</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">densidadeAr</span></div>
 
-<div class="viewcode-block" id="Barometro.getAltitudeRelativa"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.barometrolib.Barometro.getAltitudeRelativa">[docs]</a>    <span class="k">def</span> <span class="nf">getAltitudeRelativa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">um</span><span class="o">=</span><span class="s2">&quot;m&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="Barometro.getAltitudeRelativa"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro.getAltitudeRelativa">[docs]</a>    <span class="k">def</span> <span class="nf">getAltitudeRelativa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">um</span><span class="o">=</span><span class="s2">&quot;m&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retorna altitude em relação ao lugar de calibração (solo)</span>
 <span class="sd">        :param um: Unidade de medida.</span>
 <span class="sd">        :returns: Altitude em relação ao solo</span>
@@ -361,7 +361,7 @@
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># retorna metros</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">altitudeRelativa</span></div>
 
-<div class="viewcode-block" id="Barometro.getAltitudePressao"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.barometrolib.Barometro.getAltitudePressao">[docs]</a>    <span class="k">def</span> <span class="nf">getAltitudePressao</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">um</span><span class="o">=</span><span class="s2">&quot;m&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="Barometro.getAltitudePressao"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro.getAltitudePressao">[docs]</a>    <span class="k">def</span> <span class="nf">getAltitudePressao</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">um</span><span class="o">=</span><span class="s2">&quot;m&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retorna altitude-pressão. Altitude pressão é o valor da</span>
 <span class="sd">        pressão de atmosfera padrão 101325 pascal</span>
 <span class="sd">        :param um: Unidade de medida.</span>
@@ -374,7 +374,7 @@
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># retorna metros</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">altitudePressao</span></div>
 
-<div class="viewcode-block" id="Barometro.atualiza"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.barometrolib.Barometro.atualiza">[docs]</a>    <span class="k">def</span> <span class="nf">atualiza</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="Barometro.atualiza"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro.atualiza">[docs]</a>    <span class="k">def</span> <span class="nf">atualiza</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Pega mais uma amostra dos parâmetros relacionados ao</span>
 <span class="sd">        barômetro e armazena-os nas variáveis da classe.</span>
 <span class="sd">        &quot;&quot;&quot;</span>

@@ -1,7 +1,7 @@
-Plataforma
-==========
+code
+====
 
 .. toctree::
    :maxdepth: 4
 
-   telemetria
+   code

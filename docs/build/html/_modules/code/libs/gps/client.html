@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>telemetria.lib.gps.client &mdash; Vivace 2.0 documentation</title>
+  <title>code.libs.gps.client &mdash; Vivace 2.0 documentation</title>
   
 
   
@@ -135,7 +135,7 @@
         
           <li><a href="../../../index.html">Module code</a> &raquo;</li>
         
-      <li>telemetria.lib.gps.client</li>
+      <li>code.libs.gps.client</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -152,7 +152,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for telemetria.lib.gps.client</h1><div class="highlight"><pre>
+  <h1>Source code for code.libs.gps.client</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
@@ -172,14 +172,14 @@
 <span class="n">GPSD_PORT</span> <span class="o">=</span> <span class="s2">&quot;2947&quot;</span>
 
 
-<div class="viewcode-block" id="JsonError"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.JsonError">[docs]</a><span class="k">class</span> <span class="nc">JsonError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="JsonError"><a class="viewcode-back" href="../../../../code.libs.gps.html#code.libs.gps.client.JsonError">[docs]</a><span class="k">class</span> <span class="nc">JsonError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">explanation</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">explanation</span> <span class="o">=</span> <span class="n">explanation</span></div>
 
 
-<div class="viewcode-block" id="GPSCommon"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.GPSCommon">[docs]</a><span class="k">class</span> <span class="nc">GPSCommon</span><span class="p">:</span>
+<div class="viewcode-block" id="GPSCommon"><a class="viewcode-back" href="../../../../code.libs.gps.html#code.libs.gps.client.GPSCommon">[docs]</a><span class="k">class</span> <span class="nc">GPSCommon</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot; Isolate socket handling and buffering from the protocol interpretation. &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">GPSD_PORT</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
@@ -189,7 +189,7 @@
         <span class="k">if</span> <span class="n">host</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
 
-<div class="viewcode-block" id="GPSCommon.connect"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.GPSCommon.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
+<div class="viewcode-block" id="GPSCommon.connect"><a class="viewcode-back" href="../../../../code.libs.gps.html#code.libs.gps.client.GPSCommon.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Connect to a host on a given port.</span>
 <span class="sd">        If the hostname ends with a colon (`:&#39;) followed by a number, and</span>
@@ -222,7 +222,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">socket</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;getaddrinfo returns an empty list&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GPSCommon.close"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.GPSCommon.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GPSCommon.close"><a class="viewcode-back" href="../../../../code.libs.gps.html#code.libs.gps.client.GPSCommon.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="o">=</span> <span class="kc">None</span></div>
@@ -230,7 +230,7 @@
     <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-<div class="viewcode-block" id="GPSCommon.waiting"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.GPSCommon.waiting">[docs]</a>    <span class="k">def</span> <span class="nf">waiting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="GPSCommon.waiting"><a class="viewcode-back" href="../../../../code.libs.gps.html#code.libs.gps.client.GPSCommon.waiting">[docs]</a>    <span class="k">def</span> <span class="nf">waiting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if data is ready for the client. &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">linebuffer</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
@@ -238,7 +238,7 @@
             <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="p">,),</span> <span class="p">(),</span> <span class="p">(),</span> <span class="n">timeout</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">winput</span> <span class="o">!=</span> <span class="p">[]</span></div>
 
-<div class="viewcode-block" id="GPSCommon.read"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.GPSCommon.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GPSCommon.read"><a class="viewcode-back" href="../../../../code.libs.gps.html#code.libs.gps.client.GPSCommon.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Wait for and read data being streamed from the daemon. &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;poll: reading from daemon...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -281,11 +281,11 @@
         <span class="c1"># We got a \n-terminated line</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">response</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GPSCommon.data"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.GPSCommon.data">[docs]</a>    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GPSCommon.data"><a class="viewcode-back" href="../../../../code.libs.gps.html#code.libs.gps.client.GPSCommon.data">[docs]</a>    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the client data buffer. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">response</span></div>
 
-<div class="viewcode-block" id="GPSCommon.send"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.GPSCommon.send">[docs]</a>    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">commands</span><span class="p">):</span>
+<div class="viewcode-block" id="GPSCommon.send"><a class="viewcode-back" href="../../../../code.libs.gps.html#code.libs.gps.client.GPSCommon.send">[docs]</a>    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">commands</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Ship commands to the daemon. &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">commands</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
             <span class="n">commands</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
@@ -305,13 +305,13 @@
 <span class="n">WATCH_DEVICE</span> <span class="o">=</span> <span class="mh">0x000800</span>	    <span class="c1"># watch specific device</span>
 
 
-<div class="viewcode-block" id="GPSJson"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.GPSJson">[docs]</a><span class="k">class</span> <span class="nc">GPSJson</span><span class="p">:</span>
+<div class="viewcode-block" id="GPSJson"><a class="viewcode-back" href="../../../../code.libs.gps.html#code.libs.gps.client.GPSJson">[docs]</a><span class="k">class</span> <span class="nc">GPSJson</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot; Basic JSON decoding. &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-<div class="viewcode-block" id="GPSJson.unpack"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.GPSJson.unpack">[docs]</a>    <span class="k">def</span> <span class="nf">unpack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buf</span><span class="p">):</span>
+<div class="viewcode-block" id="GPSJson.unpack"><a class="viewcode-back" href="../../../../code.libs.gps.html#code.libs.gps.client.GPSJson.unpack">[docs]</a>    <span class="k">def</span> <span class="nf">unpack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buf</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">DictWrapper</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">buf</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ascii&quot;</span><span class="p">))</span>
         <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -321,7 +321,7 @@
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;satellites&quot;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">satellites</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">DictWrapper</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">satellites</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GPSJson.stream"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.GPSJson.stream">[docs]</a>    <span class="k">def</span> <span class="nf">stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">devpath</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="GPSJson.stream"><a class="viewcode-back" href="../../../../code.libs.gps.html#code.libs.gps.client.GPSJson.stream">[docs]</a>    <span class="k">def</span> <span class="nf">stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">devpath</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Control streaming reports from the daemon &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">WATCH_DISABLE</span><span class="p">:</span>
             <span class="n">arg</span> <span class="o">=</span> <span class="s1">&#39;?WATCH={&quot;enable&quot;:false&#39;</span>
@@ -364,16 +364,16 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">arg</span> <span class="o">+</span> <span class="s2">&quot;}&quot;</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="DictWrapper"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.DictWrapper">[docs]</a><span class="k">class</span> <span class="nc">DictWrapper</span><span class="p">:</span>
+<div class="viewcode-block" id="DictWrapper"><a class="viewcode-back" href="../../../../code.libs.gps.html#code.libs.gps.client.DictWrapper">[docs]</a><span class="k">class</span> <span class="nc">DictWrapper</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot; Wrapper that yields both class and dictionary behavior &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ddict</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">=</span> <span class="n">ddict</span>
 
-<div class="viewcode-block" id="DictWrapper.get"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.DictWrapper.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DictWrapper.get"><a class="viewcode-back" href="../../../../code.libs.gps.html#code.libs.gps.client.DictWrapper.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="DictWrapper.keys"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.DictWrapper.keys">[docs]</a>    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="DictWrapper.keys"><a class="viewcode-back" href="../../../../code.libs.gps.html#code.libs.gps.client.DictWrapper.keys">[docs]</a>    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span></div>
 
     <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
@@ -393,7 +393,7 @@
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;dictwrapper: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;&gt;&quot;</span>
 
-<div class="viewcode-block" id="DictWrapper.json_encode"><a class="viewcode-back" href="../../../../telemetria.lib.gps.html#telemetria.lib.gps.client.DictWrapper.json_encode">[docs]</a>    <span class="k">def</span> <span class="nf">json_encode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="DictWrapper.json_encode"><a class="viewcode-back" href="../../../../code.libs.gps.html#code.libs.gps.client.DictWrapper.json_encode">[docs]</a>    <span class="k">def</span> <span class="nf">json_encode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Returns a JSON compatible dictionary representation of the object &quot;&quot;&quot;</span>
         <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">d</span></div></div>

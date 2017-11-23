@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>telemetria.lib.adc8 &mdash; Vivace 2.0 documentation</title>
+  <title>code.libs.adc &mdash; Vivace 2.0 documentation</title>
   
 
   
@@ -135,7 +135,7 @@
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
-      <li>telemetria.lib.adc8</li>
+      <li>code.libs.adc</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -152,7 +152,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for telemetria.lib.adc8</h1><div class="highlight"><pre>
+  <h1>Source code for code.libs.adc</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
@@ -162,7 +162,7 @@
 <span class="kn">import</span> <span class="nn">time</span>
 
 
-<div class="viewcode-block" id="ADC8"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.adc8.ADC8">[docs]</a><span class="k">class</span> <span class="nc">ADC8</span><span class="p">:</span>
+<div class="viewcode-block" id="ADC"><a class="viewcode-back" href="../../../code.libs.html#code.libs.adc.ADC">[docs]</a><span class="k">class</span> <span class="nc">ADC</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Classe utilizada para realização da interface do ADC 8 bits</span>
 <span class="sd">    com o restante da telemetria</span>
 
@@ -175,7 +175,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">bus</span> <span class="o">=</span> <span class="n">smbus</span><span class="o">.</span><span class="n">SMBus</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="mh">0x48</span>
 
-<div class="viewcode-block" id="ADC8.read"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.adc8.ADC8.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chn</span><span class="p">):</span>
+<div class="viewcode-block" id="ADC.read"><a class="viewcode-back" href="../../../code.libs.html#code.libs.adc.ADC.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chn</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Le o canal pedido pela função</span>
 <span class="sd">        :param chn: Canal do ADC que gostaria de ler (0 até 3)</span>
 <span class="sd">        :returns: Valor analógico do canal especificado</span>
@@ -191,25 +191,25 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">read_byte</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>  <span class="c1"># dummy read to start conversion</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">read_byte</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ADC8.getCanal0"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.adc8.ADC8.getCanal0">[docs]</a>    <span class="k">def</span> <span class="nf">getCanal0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ADC.getCanal0"><a class="viewcode-back" href="../../../code.libs.html#code.libs.adc.ADC.getCanal0">[docs]</a>    <span class="k">def</span> <span class="nf">getCanal0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Pega valor do canal 0</span>
 <span class="sd">        :returns: Valor analógico do canal 0</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ADC8.getCanal1"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.adc8.ADC8.getCanal1">[docs]</a>    <span class="k">def</span> <span class="nf">getCanal1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ADC.getCanal1"><a class="viewcode-back" href="../../../code.libs.html#code.libs.adc.ADC.getCanal1">[docs]</a>    <span class="k">def</span> <span class="nf">getCanal1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Pega valor do canal 1</span>
 <span class="sd">        :returns: Valor analógico do canal 1</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ADC8.getCanal2"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.adc8.ADC8.getCanal2">[docs]</a>    <span class="k">def</span> <span class="nf">getCanal2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ADC.getCanal2"><a class="viewcode-back" href="../../../code.libs.html#code.libs.adc.ADC.getCanal2">[docs]</a>    <span class="k">def</span> <span class="nf">getCanal2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Pega valor do canal 2</span>
 <span class="sd">        :returns: Valor analógico do canal 2</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ADC8.getCanal3"><a class="viewcode-back" href="../../../telemetria.lib.html#telemetria.lib.adc8.ADC8.getCanal3">[docs]</a>    <span class="k">def</span> <span class="nf">getCanal3</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ADC.getCanal3"><a class="viewcode-back" href="../../../code.libs.html#code.libs.adc.ADC.getCanal3">[docs]</a>    <span class="k">def</span> <span class="nf">getCanal3</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Pega valor do canal 3</span>
 <span class="sd">        :returns: Valor analógico do canal 3</span>
 <span class="sd">        &quot;&quot;&quot;</span>
