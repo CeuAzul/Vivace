@@ -197,6 +197,16 @@
 <dt id="code.libs.GPSController.GpsController">
 <em class="property">class </em><code class="descclassname">code.libs.GPSController.</code><code class="descname">GpsController</code><a class="reference internal" href="_modules/code/libs/GPSController.html#GpsController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.GPSController.GpsController" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/threading.html#threading.Thread" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">threading.Thread</span></code></a></p>
+<dl class="method">
+<dt id="code.libs.GPSController.GpsController.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/GPSController.html#GpsController.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.GPSController.GpsController.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="code.libs.GPSController.GpsController.__module__">
+<code class="descname">__module__</code><em class="property"> = 'code.libs.GPSController'</em><a class="headerlink" href="#code.libs.GPSController.GpsController.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="code.libs.GPSController.GpsController.fix">
 <code class="descname">fix</code><a class="headerlink" href="#code.libs.GPSController.GpsController.fix" title="Permalink to this definition">¶</a></dt>
@@ -231,42 +241,89 @@
 <dt id="code.libs.adc.ADC">
 <em class="property">class </em><code class="descclassname">code.libs.adc.</code><code class="descname">ADC</code><a class="reference internal" href="_modules/code/libs/adc.html#ADC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.adc.ADC" title="Permalink to this definition">¶</a></dt>
 <dd><p>Classe utilizada para realização da interface do ADC 8 bits
-com o restante da telemetria</p>
-<p>O ADC utilizado é o Waveshare PCF8591 ligado no I2C endereço 48</p>
+com o restante da telemetria.</p>
+<p>O ADC utilizado é o Waveshare PCF8591 ligado via I2C no endereço 48.</p>
+<dl class="method">
+<dt id="code.libs.adc.ADC.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/adc.html#ADC.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.adc.ADC.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construtor: cria o bus e seta o endereço i2c.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="code.libs.adc.ADC.__module__">
+<code class="descname">__module__</code><em class="property"> = 'code.libs.adc'</em><a class="headerlink" href="#code.libs.adc.ADC.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="code.libs.adc.ADC.getCanal0">
 <code class="descname">getCanal0</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/adc.html#ADC.getCanal0"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.adc.ADC.getCanal0" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pega valor do canal 0
-:returns: Valor analógico do canal 0</p>
+<dd><p>Retorna valor do canal 0.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Valor analógico do canal 0</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.adc.ADC.getCanal1">
 <code class="descname">getCanal1</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/adc.html#ADC.getCanal1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.adc.ADC.getCanal1" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pega valor do canal 1
-:returns: Valor analógico do canal 1</p>
+<dd><p>Retorna valor do canal 1.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Valor analógico do canal 1</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.adc.ADC.getCanal2">
 <code class="descname">getCanal2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/adc.html#ADC.getCanal2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.adc.ADC.getCanal2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pega valor do canal 2
-:returns: Valor analógico do canal 2</p>
+<dd><p>Retorna valor do canal 2.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Valor analógico do canal 2</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.adc.ADC.getCanal3">
 <code class="descname">getCanal3</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/adc.html#ADC.getCanal3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.adc.ADC.getCanal3" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pega valor do canal 3
-:returns: Valor analógico do canal 3</p>
+<dd><p>Retorna valor do canal 3.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Valor analógico do canal 3</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.adc.ADC.read">
 <code class="descname">read</code><span class="sig-paren">(</span><em>chn</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/adc.html#ADC.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.adc.ADC.read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Le o canal pedido pela função
-:param chn: Canal do ADC que gostaria de ler (0 até 3)
-:returns: Valor analógico do canal especificado</p>
+<dd><p>Le o canal pedido pela função.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>chn</strong> – Canal do ADC que gostaria de ler (0 até 3)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Valor analógico do canal especificado</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -278,16 +335,52 @@ com o restante da telemetria</p>
 <dt id="code.libs.barometro.Barometro">
 <em class="property">class </em><code class="descclassname">code.libs.barometro.</code><code class="descname">Barometro</code><span class="sig-paren">(</span><em>usePressao=True</em>, <em>useTemp=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/barometro.html#Barometro"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.barometro.Barometro" title="Permalink to this definition">¶</a></dt>
 <dd><p>Um objeto dessa classe deve ser criado quando quiser realizar a comunicação
-ou obter dados do barômetro.
-Para utilizar a classe, criamos o construtor colocando como parâmetros
+ou obter dados do barômetro.</p>
+<p>Para utilizar a classe, criamos o construtor colocando como parâmetros
 se queremos pegar temperatura e pressão. Depois, utilizamos a função
 atualiza() para fazer a aquisição pelo I2C. Por fim, pegamos os dados
 usando os getters().</p>
 <dl class="method">
+<dt id="code.libs.barometro.Barometro.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>usePressao=True</em>, <em>useTemp=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/barometro.html#Barometro.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.barometro.Barometro.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construtor: Indica dados a serem lidos</p>
+<blockquote>
+<div>Coloca parâmetros indicando se gostaria de utilizar o
+dado de pressão e/ou utilizar os dados de temperatura.
+Além disso a função configura os dados
+para que a comunicação I2C seja feita corretamente.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>usePressao</strong> – Indicador se deve ser obtido o dado de pressão</li>
+<li><strong>useTemp</strong> – Indicador se deve ser obtido o dado de temperatura</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="code.libs.barometro.Barometro.__module__">
+<code class="descname">__module__</code><em class="property"> = 'code.libs.barometro'</em><a class="headerlink" href="#code.libs.barometro.Barometro.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="code.libs.barometro.Barometro.atualiza">
 <code class="descname">atualiza</code><span class="sig-paren">(</span><em>samples=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/barometro.html#Barometro.atualiza"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.barometro.Barometro.atualiza" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pega mais uma amostra dos parâmetros relacionados ao
+<dd><p>Retorna mais uma amostra dos parâmetros relacionados ao
 barômetro e armazena-os nas variáveis da classe.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>samples</strong> – Numero de samples adquiridos</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -298,72 +391,110 @@ barômetro e armazena-os nas variáveis da classe.</p>
 <dl class="method">
 <dt id="code.libs.barometro.Barometro.calculatePressureAndTemperature">
 <code class="descname">calculatePressureAndTemperature</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/barometro.html#Barometro.calculatePressureAndTemperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.barometro.Barometro.calculatePressureAndTemperature" title="Permalink to this definition">¶</a></dt>
-<dd><p>Função utilizada internamente para comunicação I2C.
-É a função principal para realizar a aquisição dos dados
-pelo i2c.</p>
+<dd><p>Função utilizada internamente para comunicação I2C.</p>
+<p>É a função principal para realizar a aquisição dos dados via I2C.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.barometro.Barometro.getAltitudePressao">
 <code class="descname">getAltitudePressao</code><span class="sig-paren">(</span><em>um='m'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/barometro.html#Barometro.getAltitudePressao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.barometro.Barometro.getAltitudePressao" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retorna altitude-pressão. Altitude pressão é o valor da
-pressão de atmosfera padrão 101325 pascal
-:param um: Unidade de medida.
-:returns: Altitude-pressão em relação a atmosfera padrão</p>
+<dd><p>Retorna a altitude-pressão.</p>
+<p>Altitude pressão é o valor da
+pressão de atmosfera padrão 101325 pascal.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>um</strong> – Unidade de medida</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Altitude-pressão em relação a atmosfera padrão</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.barometro.Barometro.getAltitudeRelativa">
 <code class="descname">getAltitudeRelativa</code><span class="sig-paren">(</span><em>um='m'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/barometro.html#Barometro.getAltitudeRelativa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.barometro.Barometro.getAltitudeRelativa" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retorna altitude em relação ao lugar de calibração (solo)
-:param um: Unidade de medida.
-:returns: Altitude em relação ao solo</p>
+<dd><p>Retorna altitude em relação ao lugar de calibração (solo).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>um</strong> – Unidade de medida</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Altitude em relação ao solo</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.barometro.Barometro.getDensidadeAr">
 <code class="descname">getDensidadeAr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/barometro.html#Barometro.getDensidadeAr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.barometro.Barometro.getDensidadeAr" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retorna Densidade do ar
-:returns: Densidade</p>
+<dd><p>Retorna Densidade do ar.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Densidade</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.barometro.Barometro.getPressao">
 <code class="descname">getPressao</code><span class="sig-paren">(</span><em>um='PA'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/barometro.html#Barometro.getPressao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.barometro.Barometro.getPressao" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retorna valor da pressão atual
-:returns: Pressão atual
-:param um: Unidade de medida.</p>
+<dd><p>Retorna valor da pressão atual.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Pressão atual</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><strong>um</strong> – Unidade de medida</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.barometro.Barometro.getTemperatura">
 <code class="descname">getTemperatura</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/barometro.html#Barometro.getTemperatura"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.barometro.Barometro.getTemperatura" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retorna valor de temperatura
-:returns: Temperatura (ºC)</p>
+<dd><p>Retorna valor de temperatura.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Temperatura (ºC)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.barometro.Barometro.readPressure">
 <code class="descname">readPressure</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/barometro.html#Barometro.readPressure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.barometro.Barometro.readPressure" title="Permalink to this definition">¶</a></dt>
-<dd><p>Função utilizada internamente para comunicação I2C</p>
+<dd><p>Função utilizada internamente para comunicação I2C.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.barometro.Barometro.readTemperature">
 <code class="descname">readTemperature</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/barometro.html#Barometro.readTemperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.barometro.Barometro.readTemperature" title="Permalink to this definition">¶</a></dt>
-<dd><p>Função utilizada internamente para comunicação I2C</p>
+<dd><p>Função utilizada internamente para comunicação I2C.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.barometro.Barometro.refreshPressure">
 <code class="descname">refreshPressure</code><span class="sig-paren">(</span><em>OSR=72</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/barometro.html#Barometro.refreshPressure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.barometro.Barometro.refreshPressure" title="Permalink to this definition">¶</a></dt>
-<dd><p>Função utilizada internamente para comunicação I2C</p>
+<dd><p>Função utilizada internamente para comunicação I2C.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.barometro.Barometro.refreshTemperature">
 <code class="descname">refreshTemperature</code><span class="sig-paren">(</span><em>OSR=88</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/barometro.html#Barometro.refreshTemperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.barometro.Barometro.refreshTemperature" title="Permalink to this definition">¶</a></dt>
-<dd><p>Função utilizada internamente para comunicação I2C</p>
+<dd><p>Função utilizada internamente para comunicação I2C.</p>
 </dd></dl>
 
 </dd></dl>
@@ -380,38 +511,101 @@ Cada dado será uma instância dessa classe e terá o mesmo padrão de atributos
 o ultimo valor captado pelo sensor, dessa forma, sabemos exatamente o valor
 atual do dado.</p>
 <dl class="method">
+<dt id="code.libs.dado.Dado.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>nome</em>, <em>unidadeMedida</em>, <em>apelido</em>, <em>gravaDado=True</em>, <em>transmiteDado=False</em>, <em>printaDado=False</em>, <em>casasDecimais=3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/dado.html#Dado.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.dado.Dado.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construtor: Inicializa as variáveis necessárias.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> – Nome completo do dado</li>
+<li><strong>unidadeMedida</strong> – Unidade de medida do dado</li>
+<li><strong>apelido</strong> – Identificador de letras utilizado na transmissão de dados</li>
+<li><strong>gravaDado</strong> – Indicador se o dado deve ser gravado no arquivo ou não</li>
+<li><strong>transmiteDado</strong> – Indicador se o dado deve ser transmitido ou não</li>
+<li><strong>printaDado</strong> – Indicador se o dado deve ser exibido na tela ou não</li>
+<li><strong>casasDecimais</strong> – Indica quantas casas decimais o número deve ter depois da virgula para ser escrito e transmitido</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="code.libs.dado.Dado.__module__">
+<code class="descname">__module__</code><em class="property"> = 'code.libs.dado'</em><a class="headerlink" href="#code.libs.dado.Dado.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="code.libs.dado.Dado.getValor">
 <code class="descname">getValor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/dado.html#Dado.getValor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.dado.Dado.getValor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pega o valor atual do dado
-:returns: Valor atual do dado</p>
+<dd><p>Retorna o valor atual do dado.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Valor atual do dado</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.dado.Dado.setGravacao">
 <code class="descname">setGravacao</code><span class="sig-paren">(</span><em>mode</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/dado.html#Dado.setGravacao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.dado.Dado.setGravacao" title="Permalink to this definition">¶</a></dt>
-<dd><p>Indica se dado deve ser gravado ou não.
-:param mode: Boolean indicando se deve ser gravado ou não</p>
+<dd><p>Indica se dado deve ser gravado ou não.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mode</strong> – Boolean indicando se deve ser gravado ou não</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.dado.Dado.setPrintDado">
 <code class="descname">setPrintDado</code><span class="sig-paren">(</span><em>mode</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/dado.html#Dado.setPrintDado"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.dado.Dado.setPrintDado" title="Permalink to this definition">¶</a></dt>
-<dd><p>Indica se dado deve ser exibido na tela ou não.
-:param mode: Boolean indicando se deve ser exibido ou não</p>
+<dd><p>Indica se dado deve ser exibido na tela ou não.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mode</strong> – Boolean indicando se deve ser exibido ou não</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.dado.Dado.setTransmissao">
 <code class="descname">setTransmissao</code><span class="sig-paren">(</span><em>mode</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/dado.html#Dado.setTransmissao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.dado.Dado.setTransmissao" title="Permalink to this definition">¶</a></dt>
-<dd><p>Indica se dado deve ser transmitido ou não.
-:param mode: Boolean indicando se deve ser transmitido ou não</p>
+<dd><p>Indica se dado deve ser transmitido ou não.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mode</strong> – Boolean indicando se deve ser transmitido ou não</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.dado.Dado.setValor">
 <code class="descname">setValor</code><span class="sig-paren">(</span><em>valor</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/dado.html#Dado.setValor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.dado.Dado.setValor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Função seta o valor atual da variável para a especificada no parâmetro
-:param valor: Valor atual do dado</p>
+<dd><p>Função seta o valor atual da variável para a especificada no parâmetro.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>valor</strong> – Valor atual do dado</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -425,44 +619,85 @@ atual do dado.</p>
 <dd><p>É responsável pela escrita dos dados em um arquivo de texto.
 Esta classe será chamada toda vez que queremos gravar os valores
 que estão sendo adquirido pelos sensores em um arquivo de texto.</p>
-<p>A classe pode ser modificada das seguintes maneiras:
-- Indicar o tipo de separador dos dados (virgula, espaço, tabulação etc..)
-- Se deve colocar o nome dos dados na primeira linha.
-- Se deve colocar a unidade de medida na segunda linha
-- Nome do arquivo
-- Extensão do arquivo</p>
-<p>Para utilizar a classe seguimos os seguintes passos:
-1- Inicializamos a classe configurando o escritor para criar o arquivo do jeito que quisermo.
-2- Chamamos a função setDado com um vetor de objetos criados da classe “Dado”, já com nome e unidade de medida.
-3- Quando quisermos que a gravação de dados inicie, devemos chamar “fazCabecalho()”
-4- Cada vez que quiser que o Escritor grave uma linha dado, primeiro atualize o vetor de dados “setDados()” e depois invoque “escreveLinhaDado(self)”
-5- Veja o dado sendo gravado e corra para o abraço!</p>
-<p>Multiplos inicializações são criadas arquivos com o mesmo nome, mas com número diferente ex:
-Nome arquivo - 01
-Nome arquivo - 02
-Nome arquivo - 03
-…</p>
+<p>A classe pode ser modificada das seguintes maneiras:</p>
+<ul class="simple">
+<li>Indicar o tipo de separador dos dados (virgula, espaço, tabulação etc..).</li>
+<li>Se deve colocar o nome dos dados na primeira linha.</li>
+<li>Se deve colocar a unidade de medida na segunda linha.</li>
+<li>Nome do arquivo.</li>
+<li>Extensão do arquivo.</li>
+</ul>
+<p>Para utilizar a classe seguimos os seguintes passos:</p>
+<ol class="arabic simple">
+<li>Inicializamos a classe configurando o escritor para criar o arquivo do jeito que quisermo.</li>
+<li>Chamamos a função setDado com um vetor de objetos criados da classe “Dado”, já com nome e unidade de medida.</li>
+<li>Quando quisermos que a gravação de dados inicie, devemos chamar “fazCabecalho()”.</li>
+<li>Cada vez que quiser que o Escritor grave uma linha dado, primeiro atualize o vetor de dados “setDados()” e depois invoque “escreveLinhaDado(self)”.</li>
+<li>Veja o dado sendo gravado e corra para o abraço.</li>
+</ol>
+<p>Multiplos inicializações são criadas arquivos com o mesmo nome, mas com número diferente ex:</p>
+<ul class="simple">
+<li>Nome arquivo - 01.</li>
+<li>Nome arquivo - 02.</li>
+<li>Nome arquivo - 03.</li>
+<li>…</li>
+</ul>
+<dl class="method">
+<dt id="code.libs.datilografo.Escritor.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>separador='</em>, <em>'</em>, <em>printaNome=True</em>, <em>printaUM=True</em>, <em>nomeArquivo='Telemetria - '</em>, <em>extensao='.csv'</em>, <em>pasta='/home/pi/Telemetria/Codigos/Plataforma/telemetria/Dados'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/datilografo.html#Escritor.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.datilografo.Escritor.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construtor: Inicializa parâmetros de configuração do Escritor.
+No construtor ele já cria o arquivo, verifica se nome já existe, caso já exista, adiciona 1 no nome.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>separador</strong> – Especifica o tipo de separados dos valores mais comum é virgula espaço ou tabulação</li>
+<li><strong>printaNome</strong> – Indicador se deve ser gravado o nome do dado na primeira linha do cabeçalho</li>
+<li><strong>printaUM</strong> – Indicador se deve ser gravado a unidade de medida na segunda linha do cabeçalho</li>
+<li><strong>nomeArquivo</strong> – Nome do arquivo</li>
+<li><strong>extensao</strong> – Extensão do arquivo a ser criado</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="code.libs.datilografo.Escritor.__module__">
+<code class="descname">__module__</code><em class="property"> = 'code.libs.datilografo'</em><a class="headerlink" href="#code.libs.datilografo.Escritor.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="code.libs.datilografo.Escritor.addDado">
 <code class="descname">addDado</code><span class="sig-paren">(</span><em>d</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/datilografo.html#Escritor.addDado"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.datilografo.Escritor.addDado" title="Permalink to this definition">¶</a></dt>
-<dd><p>Função que adiciona um dado no vetor de dados.
-NÃO UTILIZAR ESSA FUNÇÃO A MENOS QUE VOCÊ SAIBA O QUE TA FAZENDO.
-:param d: Dado a ser adicionado.</p>
+<dd><p>Adiciona um dado no vetor de dados.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>d</strong> – Dado a ser adicionado.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.datilografo.Escritor.escreveLinhaDado">
 <code class="descname">escreveLinhaDado</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/datilografo.html#Escritor.escreveLinhaDado"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.datilografo.Escritor.escreveLinhaDado" title="Permalink to this definition">¶</a></dt>
-<dd><p>Função que escreve a linha com os valores atuais do dado separado pelo separador.
-Antes de gravar, a função verifica se o dado é mesmo para ser gravado ou não.</p>
+<dd><p>Função que escreve a linha com os valores atuais do dado separado pelo separador.</p>
+<p>Antes de gravar, a função verifica se o dado é mesmo para ser gravado ou não.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.datilografo.Escritor.fazCabecalho">
 <code class="descname">fazCabecalho</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/datilografo.html#Escritor.fazCabecalho"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.datilografo.Escritor.fazCabecalho" title="Permalink to this definition">¶</a></dt>
-<dd><p>Função que escreve o cabeçalho do arquivo:
-Primeira linha (se printaNome=True) = Printa o nome dos dados
-Segunda linha (se printaUM=True) = Printa unidade de medida na segunda linha</p>
+<dd><p>Escreve o cabeçalho do arquivo:</p>
+<ul class="simple">
+<li>Se printaNome=True -&gt; Printa o nome dos dados na primeira linha.</li>
+<li>Se printaUM=True -&gt; Printa unidade de medida na segunda linha.</li>
+</ul>
 </dd></dl>
 
 <dl class="method">
@@ -473,9 +708,9 @@ Segunda linha (se printaUM=True) = Printa unidade de medida na segunda linha</p>
 <dl class="method">
 <dt id="code.libs.datilografo.Escritor.setDados">
 <code class="descname">setDados</code><span class="sig-paren">(</span><em>d</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/datilografo.html#Escritor.setDados"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.datilografo.Escritor.setDados" title="Permalink to this definition">¶</a></dt>
-<dd><p>Função que atualiza o vetor de dados do Escritor com os dados que vem como parâmetro dessa função.
-O Escritor apenas consegue ver os dados que foram passados por meio dessa função.
-É utilizada como a porta de entrada para os dados que serão escritos.</p>
+<dd><p>Atualiza o vetor de dados do Escritor com os dados que vem como parâmetro dessa função.</p>
+<p>O Escritor apenas consegue ver os dados que foram passados por meio dessa função.</p>
+<p>É utilizada como a porta de entrada para os dados que serão escritos.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -489,7 +724,7 @@ O Escritor apenas consegue ver os dados que foram passados por meio dessa funç�
 <dl class="method">
 <dt id="code.libs.datilografo.Escritor.verificaTamanhoArquivo">
 <code class="descname">verificaTamanhoArquivo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/datilografo.html#Escritor.verificaTamanhoArquivo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.datilografo.Escritor.verificaTamanhoArquivo" title="Permalink to this definition">¶</a></dt>
-<dd><p>Função pega tamanho do arquivo</p>
+<dd><p>Retorna o tamanho do arquivo.</p>
 </dd></dl>
 
 </dd></dl>
@@ -510,10 +745,41 @@ se queremos pegar os parâmetros. Depois, utilizamos a função
 atualiza() para fazer a aquisição pelo I2C. Por fim, acessa os dados
 usando os getters().</p>
 <dl class="method">
+<dt id="code.libs.mpu.MPU.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>useGyx=True</em>, <em>useGyy=True</em>, <em>useGyz=True</em>, <em>useAcx=True</em>, <em>useAcy=True</em>, <em>useAcz=True</em>, <em>usePitch=True</em>, <em>useRoll=True</em>, <em>useTemp=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/mpu.html#MPU.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.mpu.MPU.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inicializa a classe com os parâmetros setados para adquirir e
+realiza configurações para aquisição do I2C.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>useGyx</strong> – Indicador se deve adquirir a taxa de rotação no eixo X</li>
+<li><strong>useGyy</strong> – Indicador se deve adquirir a taxa de rotação no eixo y</li>
+<li><strong>useGyz</strong> – Indicador se deve adquirir a taxa de rotação no eixo Z</li>
+<li><strong>useAcx</strong> – Indicador se deve adquirir a aceleração no eixo X</li>
+<li><strong>useAcy</strong> – Indicador se deve adquirir a aceleração no eixo Y</li>
+<li><strong>useAcz</strong> – Indicador se deve adquirir a aceleração no eixo Z</li>
+<li><strong>usePitch</strong> – Indicador se deve adquirir Pitch</li>
+<li><strong>useRoll</strong> – Indicador se deve adquirir Roll</li>
+<li><strong>useTemp</strong> – Indicador se deve adquirir Temperatura</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="code.libs.mpu.MPU.__module__">
+<code class="descname">__module__</code><em class="property"> = 'code.libs.mpu'</em><a class="headerlink" href="#code.libs.mpu.MPU.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="code.libs.mpu.MPU.atualiza">
 <code class="descname">atualiza</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/mpu.html#MPU.atualiza"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.mpu.MPU.atualiza" title="Permalink to this definition">¶</a></dt>
 <dd><p>Função que atualiza todos os dados da MPU (faz a comunicação i2c
-e atualiza as variaveis locais)</p>
+e atualiza as variaveis locais).</p>
 </dd></dl>
 
 <dl class="method">
@@ -525,64 +791,127 @@ e atualiza as variaveis locais)</p>
 <dl class="method">
 <dt id="code.libs.mpu.MPU.getAcx">
 <code class="descname">getAcx</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/mpu.html#MPU.getAcx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.mpu.MPU.getAcx" title="Permalink to this definition">¶</a></dt>
-<dd><p>Função retorna o valor de aceleração no eixo X
-:returns: Aceleração no eixo X</p>
+<dd><p>Função retorna o valor de aceleração no eixo X.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Aceleração no eixo X</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.mpu.MPU.getAcy">
 <code class="descname">getAcy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/mpu.html#MPU.getAcy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.mpu.MPU.getAcy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Função retorna o valor de aceleração no eixo Y
-:returns: Aceleração no eixo Y</p>
+<dd><p>Função retorna o valor de aceleração no eixo Y.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Aceleração no eixo Y</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.mpu.MPU.getAcz">
 <code class="descname">getAcz</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/mpu.html#MPU.getAcz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.mpu.MPU.getAcz" title="Permalink to this definition">¶</a></dt>
-<dd><p>Função retorna o valor de aceleração no eixo Z
-:returns: Aceleração no eixo Z</p>
+<dd><p>Função retorna o valor de aceleração no eixo Z.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Aceleração no eixo Z</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.mpu.MPU.getGyx">
 <code class="descname">getGyx</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/mpu.html#MPU.getGyx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.mpu.MPU.getGyx" title="Permalink to this definition">¶</a></dt>
-<dd><p>Função retorna o valor da taxa de giro no eixo X
-:returns: Taxa de giro no eixo X</p>
+<dd><p>Função retorna o valor da taxa de giro no eixo X.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Taxa de giro no eixo X</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.mpu.MPU.getGyy">
 <code class="descname">getGyy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/mpu.html#MPU.getGyy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.mpu.MPU.getGyy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Função retorna o valor da taxa de giro no eixo Y
-:returns: Taxa de giro no eixo Y</p>
+<dd><p>Função retorna o valor da taxa de giro no eixo Y.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Taxa de giro no eixo Y</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.mpu.MPU.getGyz">
 <code class="descname">getGyz</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/mpu.html#MPU.getGyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.mpu.MPU.getGyz" title="Permalink to this definition">¶</a></dt>
-<dd><p>Função retorna o valor da taxa de giro no eixo Z
-:returns: Taxa de giro no eixo Z</p>
+<dd><p>Função retorna o valor da taxa de giro no eixo Z.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Taxa de giro no eixo Z</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.mpu.MPU.getPitch">
 <code class="descname">getPitch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/mpu.html#MPU.getPitch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.mpu.MPU.getPitch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Função retorna o valor do pitch.
-:returns: Valor do Pitch atual</p>
+<dd><p>Função retorna o valor do pitch.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Valor do Pitch atual</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.mpu.MPU.getRoll">
 <code class="descname">getRoll</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/mpu.html#MPU.getRoll"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.mpu.MPU.getRoll" title="Permalink to this definition">¶</a></dt>
-<dd><p>Função retorna o valor do Roll.
-:returns: Valor do Roll atual</p>
+<dd><p>Função retorna o valor do Roll.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Valor do Roll atual</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.mpu.MPU.getTemp">
 <code class="descname">getTemp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/mpu.html#MPU.getTemp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.mpu.MPU.getTemp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Função retorna o valor do temperatura.
-:returns: Valor do temperatura atual</p>
+<dd><p>Função retorna o valor do temperatura.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Valor do temperatura atual</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -623,11 +952,22 @@ e atualiza as variaveis locais)</p>
 <dl class="class">
 <dt id="code.libs.nano.Nano">
 <em class="property">class </em><code class="descclassname">code.libs.nano.</code><code class="descname">Nano</code><a class="reference internal" href="_modules/code/libs/nano.html#Nano"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.nano.Nano" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pega dados do nano - Tacometro e Ultrassom</p>
+<dd><p>Retorna dados do nano - Tacometro e Ultrassom</p>
+<dl class="method">
+<dt id="code.libs.nano.Nano.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/nano.html#Nano.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.nano.Nano.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construtor: Bota os métodos para funcionar.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="code.libs.nano.Nano.__module__">
+<code class="descname">__module__</code><em class="property"> = 'code.libs.nano'</em><a class="headerlink" href="#code.libs.nano.Nano.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="code.libs.nano.Nano.atualiza">
 <code class="descname">atualiza</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/nano.html#Nano.atualiza"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.nano.Nano.atualiza" title="Permalink to this definition">¶</a></dt>
-<dd><p>Atualiza a parada</p>
+<dd><p>Atualiza a parada.</p>
 </dd></dl>
 
 <dl class="method">
@@ -675,53 +1015,109 @@ Biblioteca irá converter os dados do ADC para um valor de velocidade e pressão
 <dl class="class">
 <dt id="code.libs.pitot.Pitot">
 <em class="property">class </em><code class="descclassname">code.libs.pitot.</code><code class="descname">Pitot</code><span class="sig-paren">(</span><em>numADC=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/pitot.html#Pitot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.pitot.Pitot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Biblioteca Pitot
-Biblioteca irá converter os dados do ADC para um valor de velocidade e pressão
-Primeiramente será convertido o valor do ADC para um nível de tensão
-Depois, essa tensão é convertida em pressão
-E por fim, é convertida em velocidade</p>
+<dd><p>Biblioteca Pitot:</p>
+<ol class="arabic simple">
+<li>Biblioteca irá converter os dados do ADC para um valor de velocidade e pressão.</li>
+<li>Primeiramente será convertido o valor do ADC para um nível de tensão.</li>
+<li>Depois, essa tensão é convertida em pressão.</li>
+<li>E por fim, é convertida em velocidade.</li>
+</ol>
+<dl class="method">
+<dt id="code.libs.pitot.Pitot.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>numADC=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/pitot.html#Pitot.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.pitot.Pitot.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="code.libs.pitot.Pitot.__module__">
+<code class="descname">__module__</code><em class="property"> = 'code.libs.pitot'</em><a class="headerlink" href="#code.libs.pitot.Pitot.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="code.libs.pitot.Pitot.atualiza">
 <code class="descname">atualiza</code><span class="sig-paren">(</span><em>samples=20</em>, <em>densAr=1.218</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/pitot.html#Pitot.atualiza"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.pitot.Pitot.atualiza" title="Permalink to this definition">¶</a></dt>
-<dd><p>Le valor analogico do ADC e transforma isso em pressão e velocidade
-:param samples: Número de amostras para oversampling.</p>
+<dd><p>Le valor analogico do ADC e transforma isso em pressão e velocidade.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>samples</strong> – Número de amostras para oversampling</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.pitot.Pitot.getPressaoDinamica">
 <code class="descname">getPressaoDinamica</code><span class="sig-paren">(</span><em>um='m/s'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/pitot.html#Pitot.getPressaoDinamica"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.pitot.Pitot.getPressaoDinamica" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retorna valor da pressão dinâmica
-:returns: pressão dinâmica
-:param um: Unidade de medida.</p>
+<dd><p>Retorna valor da pressão dinâmica.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">pressão dinâmica</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><strong>um</strong> – Unidade de medida</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.pitot.Pitot.getRPM">
 <code class="descname">getRPM</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/pitot.html#Pitot.getRPM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.pitot.Pitot.getRPM" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retorna um valor aproximado em RPM caso o pitot esteja no escoamento do motor
-:returns: RPM</p>
+<dd><p>Retorna um valor aproximado em RPM caso o pitot esteja no escoamento do motor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">RPM</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.pitot.Pitot.getValADC">
 <code class="descname">getValADC</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/pitot.html#Pitot.getValADC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.pitot.Pitot.getValADC" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retorna o valor vindo direto do adc
-:returns: Valor do ADC</p>
+<dd><p>Retorna o valor vindo direto do adc.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Valor do ADC</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.pitot.Pitot.getValTensao">
 <code class="descname">getValTensao</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/pitot.html#Pitot.getValTensao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.pitot.Pitot.getValTensao" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retorna o valor da tensão do pitot
-:returns: Tensão (Volts)</p>
+<dd><p>Retorna o valor da tensão do pitot.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Tensão (Volts)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="code.libs.pitot.Pitot.getVelocidade">
 <code class="descname">getVelocidade</code><span class="sig-paren">(</span><em>um='m/s'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/pitot.html#Pitot.getVelocidade"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.pitot.Pitot.getVelocidade" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retorna valor da velocidade calibrada
-:returns: Velocidade calibrada
-:param um: Unidade de medida.</p>
+<dd><p>Retorna valor da velocidade calibrada.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Velocidade calibrada</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><strong>um</strong> – Unidade de medida</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -737,17 +1133,53 @@ E por fim, é convertida em velocidade</p>
 <dl class="class">
 <dt id="code.libs.telepatia.Transmissor">
 <em class="property">class </em><code class="descclassname">code.libs.telepatia.</code><code class="descname">Transmissor</code><span class="sig-paren">(</span><em>separador='</em>, <em>'</em>, <em>protocolo=True</em>, <em>baudRate=57600</em>, <em>codificacao='UTF-8'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/telepatia.html#Transmissor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.telepatia.Transmissor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Esta classe é chamada toda vez que queremos transmitir um dado usando o transceiver da 3DR
+<dd><p>Esta classe é chamada toda vez que queremos transmitir um dado usando o transceiver da 3DR.
 Depois de criar os dados, utiza-se a função setDados() para popular o vetor dessa classe com os
 dados a serem transmitidos.</p>
-<p>Para utilizar a classe:
-- Primeiramente utilize o construtor para setar propriedades.
-- Depois, popule o vetor de dados com a função setDados()
-- Por fim, chame a função transmiteLinha()</p>
+<p>Para utilizar a classe:</p>
+<ul class="simple">
+<li>Primeiramente utilize o construtor para setar propriedades.</li>
+<li>Depois, popule o vetor de dados com a função setDados().</li>
+<li>Por fim, chame a função transmiteLinha().</li>
+</ul>
+<dl class="method">
+<dt id="code.libs.telepatia.Transmissor.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>separador='</em>, <em>'</em>, <em>protocolo=True</em>, <em>baudRate=57600</em>, <em>codificacao='UTF-8'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/telepatia.html#Transmissor.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.telepatia.Transmissor.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construtor: Inicializa parâmetros de configuração do Transmissor.
+Exitem dois métodos de transmissão, utilizando o protolo ou não.</p>
+<ul class="simple">
+<li>Utilizando protocolo: As mensagens enviadas são empacotadas da seguinte forma:</li>
+</ul>
+<p>“!identificador=valor&#64;” onde o identificador é o “apelido” de cada dado.</p>
+<ul class="simple">
+<li>Não utilizando protocolo: As mensagens são enviadas da mesma ordem que os dados são gravados.</li>
+</ul>
+<p>“valor1, valor2, valor3”</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>separador</strong> – Especifica o tipo de separados dos valores mais comum é virgula espaço ou tabulação</li>
+<li><strong>protocolo</strong> – Indica a utilização ou não do protocolo</li>
+<li><strong>baudRate</strong> – Taxa de transmissão da serial</li>
+<li><strong>codificacao</strong> – Tipo de codificação dos caracteres ASCII</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="code.libs.telepatia.Transmissor.__module__">
+<code class="descname">__module__</code><em class="property"> = 'code.libs.telepatia'</em><a class="headerlink" href="#code.libs.telepatia.Transmissor.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="code.libs.telepatia.Transmissor.leLinha">
 <code class="descname">leLinha</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/telepatia.html#Transmissor.leLinha"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.telepatia.Transmissor.leLinha" title="Permalink to this definition">¶</a></dt>
-<dd><p>Essa função é responsável por ler telecomandos recebidos pela serial</p>
+<dd><p>Essa função é responsável por ler telecomandos recebidos pela serial.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -777,8 +1209,8 @@ O Transmissor apenas consegue ver os dados que foram passados por meio dessa fun
 <dl class="method">
 <dt id="code.libs.telepatia.Transmissor.transmiteLinha">
 <code class="descname">transmiteLinha</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/telepatia.html#Transmissor.transmiteLinha"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.telepatia.Transmissor.transmiteLinha" title="Permalink to this definition">¶</a></dt>
-<dd><p>Função será chamada quando os dados deverão ser transmitidos</p>
-<p>A forma de transmissão dependerá da utilização do protocolo ou não
+<dd><p>Função será chamada quando os dados deverão ser transmitidos.</p>
+<p>A forma de transmissão dependerá da utilização do protocolo ou não.
 Recomenda-se a utilização do protocolo para verificar a integridade do dado.</p>
 </dd></dl>
 
@@ -791,6 +1223,16 @@ Recomenda-se a utilização do protocolo para verificar a integridade do dado.</
 <dt id="code.libs.ultrassom.Ultrassom">
 <em class="property">class </em><code class="descclassname">code.libs.ultrassom.</code><code class="descname">Ultrassom</code><span class="sig-paren">(</span><em>distMax=30</em>, <em>elevacaoMin=3</em>, <em>trigPin=23</em>, <em>echoPin=24</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/ultrassom.html#Ultrassom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.ultrassom.Ultrassom" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
+<dt id="code.libs.ultrassom.Ultrassom.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>distMax=30</em>, <em>elevacaoMin=3</em>, <em>trigPin=23</em>, <em>echoPin=24</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/ultrassom.html#Ultrassom.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.ultrassom.Ultrassom.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="code.libs.ultrassom.Ultrassom.__module__">
+<code class="descname">__module__</code><em class="property"> = 'code.libs.ultrassom'</em><a class="headerlink" href="#code.libs.ultrassom.Ultrassom.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="code.libs.ultrassom.Ultrassom.atualiza">
 <code class="descname">atualiza</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/ultrassom.html#Ultrassom.atualiza"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.ultrassom.Ultrassom.atualiza" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>

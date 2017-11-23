@@ -172,9 +172,10 @@
 <span class="sd">    usando os getters().</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">useGyx</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useGyy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useGyz</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useAcx</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useAcy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useAcz</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">usePitch</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useRoll</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useTemp</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="MPU.__init__"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">useGyx</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useGyy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useGyz</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useAcx</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useAcy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useAcz</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">usePitch</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useRoll</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useTemp</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Inicializa a classe com os parâmetros setados para adquirir e</span>
 <span class="sd">        realiza configurações para aquisição do I2C.</span>
+
 <span class="sd">        :param useGyx: Indicador se deve adquirir a taxa de rotação no eixo X</span>
 <span class="sd">        :param useGyy: Indicador se deve adquirir a taxa de rotação no eixo y</span>
 <span class="sd">        :param useGyz: Indicador se deve adquirir a taxa de rotação no eixo Z</span>
@@ -216,7 +217,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">write_byte_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">power_mgmt_1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">write_byte_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gyRegScale</span><span class="p">,</span> <span class="mb">0b00001000</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">write_byte_data</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">acRegScale</span><span class="p">,</span> <span class="mb">0b00011000</span><span class="p">)</span>  <span class="c1"># ate 16g</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">acRegScale</span><span class="p">,</span> <span class="mb">0b00011000</span><span class="p">)</span>  <span class="c1"># ate 16g</span></div>
 
 <div class="viewcode-block" id="MPU.read_byte"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.read_byte">[docs]</a>    <span class="k">def</span> <span class="nf">read_byte</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">adr</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função apenas para uso interno na comunicação i2c.</span>
@@ -259,7 +260,7 @@
 
 <div class="viewcode-block" id="MPU.atualiza"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.atualiza">[docs]</a>    <span class="k">def</span> <span class="nf">atualiza</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função que atualiza todos os dados da MPU (faz a comunicação i2c</span>
-<span class="sd">        e atualiza as variaveis locais)</span>
+<span class="sd">        e atualiza as variaveis locais).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">useGyx</span><span class="p">:</span>
             <span class="n">gyro_xout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_word_2c</span><span class="p">(</span><span class="mh">0x43</span><span class="p">)</span>
@@ -302,55 +303,64 @@
                             <span class="n">accel_xout_scaled</span><span class="p">,</span> <span class="n">accel_yout_scaled</span><span class="p">,</span> <span class="n">accel_zout_scaled</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="MPU.getAcx"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.getAcx">[docs]</a>    <span class="k">def</span> <span class="nf">getAcx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Função retorna o valor de aceleração no eixo X</span>
+        <span class="sd">&quot;&quot;&quot;Função retorna o valor de aceleração no eixo X.</span>
+
 <span class="sd">        :returns: Aceleração no eixo X</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">acx</span></div>
 
 <div class="viewcode-block" id="MPU.getAcy"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.getAcy">[docs]</a>    <span class="k">def</span> <span class="nf">getAcy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Função retorna o valor de aceleração no eixo Y</span>
+        <span class="sd">&quot;&quot;&quot;Função retorna o valor de aceleração no eixo Y.</span>
+
 <span class="sd">        :returns: Aceleração no eixo Y</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">acy</span></div>
 
 <div class="viewcode-block" id="MPU.getAcz"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.getAcz">[docs]</a>    <span class="k">def</span> <span class="nf">getAcz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Função retorna o valor de aceleração no eixo Z</span>
+        <span class="sd">&quot;&quot;&quot;Função retorna o valor de aceleração no eixo Z.</span>
+
 <span class="sd">        :returns: Aceleração no eixo Z</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">acz</span></div>
 
 <div class="viewcode-block" id="MPU.getGyx"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.getGyx">[docs]</a>    <span class="k">def</span> <span class="nf">getGyx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Função retorna o valor da taxa de giro no eixo X</span>
+        <span class="sd">&quot;&quot;&quot;Função retorna o valor da taxa de giro no eixo X.</span>
+
 <span class="sd">        :returns: Taxa de giro no eixo X</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gyx</span></div>
 
 <div class="viewcode-block" id="MPU.getGyy"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.getGyy">[docs]</a>    <span class="k">def</span> <span class="nf">getGyy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Função retorna o valor da taxa de giro no eixo Y</span>
+        <span class="sd">&quot;&quot;&quot;Função retorna o valor da taxa de giro no eixo Y.</span>
+
 <span class="sd">        :returns: Taxa de giro no eixo Y</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gyy</span></div>
 
 <div class="viewcode-block" id="MPU.getGyz"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.getGyz">[docs]</a>    <span class="k">def</span> <span class="nf">getGyz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Função retorna o valor da taxa de giro no eixo Z</span>
+        <span class="sd">&quot;&quot;&quot;Função retorna o valor da taxa de giro no eixo Z.</span>
+
 <span class="sd">        :returns: Taxa de giro no eixo Z</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gyz</span></div>
 
 <div class="viewcode-block" id="MPU.getPitch"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.getPitch">[docs]</a>    <span class="k">def</span> <span class="nf">getPitch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função retorna o valor do pitch.</span>
+
 <span class="sd">        :returns: Valor do Pitch atual</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pitch</span></div>
 
 <div class="viewcode-block" id="MPU.getRoll"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.getRoll">[docs]</a>    <span class="k">def</span> <span class="nf">getRoll</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função retorna o valor do Roll.</span>
+
 <span class="sd">        :returns: Valor do Roll atual</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">roll</span></div>
 
 <div class="viewcode-block" id="MPU.getTemp"><a class="viewcode-back" href="../../../code.libs.html#code.libs.mpu.MPU.getTemp">[docs]</a>    <span class="k">def</span> <span class="nf">getTemp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função retorna o valor do temperatura.</span>
+
 <span class="sd">        :returns: Valor do temperatura atual</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp</span></div></div>

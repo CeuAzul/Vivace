@@ -163,20 +163,22 @@
 
 
 <div class="viewcode-block" id="ADC"><a class="viewcode-back" href="../../../code.libs.html#code.libs.adc.ADC">[docs]</a><span class="k">class</span> <span class="nc">ADC</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Classe utilizada para realização da interface do ADC 8 bits</span>
-<span class="sd">    com o restante da telemetria</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Classe utilizada para realização da interface do ADC 8 bits</span>
+<span class="sd">    com o restante da telemetria.</span>
 
-<span class="sd">    O ADC utilizado é o Waveshare PCF8591 ligado no I2C endereço 48</span>
+<span class="sd">    O ADC utilizado é o Waveshare PCF8591 ligado via I2C no endereço 48.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construtor apenas cria o bus e seta o endereço i2c</span>
+<div class="viewcode-block" id="ADC.__init__"><a class="viewcode-back" href="../../../code.libs.html#code.libs.adc.ADC.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construtor: cria o bus e seta o endereço i2c.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bus</span> <span class="o">=</span> <span class="n">smbus</span><span class="o">.</span><span class="n">SMBus</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="mh">0x48</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="mh">0x48</span></div>
 
 <div class="viewcode-block" id="ADC.read"><a class="viewcode-back" href="../../../code.libs.html#code.libs.adc.ADC.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chn</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Le o canal pedido pela função</span>
+        <span class="sd">&quot;&quot;&quot;Le o canal pedido pela função.</span>
+
 <span class="sd">        :param chn: Canal do ADC que gostaria de ler (0 até 3)</span>
 <span class="sd">        :returns: Valor analógico do canal especificado</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -192,25 +194,29 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">read_byte</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ADC.getCanal0"><a class="viewcode-back" href="../../../code.libs.html#code.libs.adc.ADC.getCanal0">[docs]</a>    <span class="k">def</span> <span class="nf">getCanal0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Pega valor do canal 0</span>
+        <span class="sd">&quot;&quot;&quot;Retorna valor do canal 0.</span>
+
 <span class="sd">        :returns: Valor analógico do canal 0</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ADC.getCanal1"><a class="viewcode-back" href="../../../code.libs.html#code.libs.adc.ADC.getCanal1">[docs]</a>    <span class="k">def</span> <span class="nf">getCanal1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Pega valor do canal 1</span>
+        <span class="sd">&quot;&quot;&quot;Retorna valor do canal 1.</span>
+
 <span class="sd">        :returns: Valor analógico do canal 1</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ADC.getCanal2"><a class="viewcode-back" href="../../../code.libs.html#code.libs.adc.ADC.getCanal2">[docs]</a>    <span class="k">def</span> <span class="nf">getCanal2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Pega valor do canal 2</span>
+        <span class="sd">&quot;&quot;&quot;Retorna valor do canal 2.</span>
+
 <span class="sd">        :returns: Valor analógico do canal 2</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ADC.getCanal3"><a class="viewcode-back" href="../../../code.libs.html#code.libs.adc.ADC.getCanal3">[docs]</a>    <span class="k">def</span> <span class="nf">getCanal3</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Pega valor do canal 3</span>
+        <span class="sd">&quot;&quot;&quot;Retorna valor do canal 3.</span>
+
 <span class="sd">        :returns: Valor analógico do canal 3</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span></div></div>

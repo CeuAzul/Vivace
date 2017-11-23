@@ -166,14 +166,15 @@
 
 
 <div class="viewcode-block" id="Pitot"><a class="viewcode-back" href="../../../code.libs.html#code.libs.pitot.Pitot">[docs]</a><span class="k">class</span> <span class="nc">Pitot</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Biblioteca Pitot</span>
-<span class="sd">    Biblioteca irá converter os dados do ADC para um valor de velocidade e pressão</span>
-<span class="sd">    Primeiramente será convertido o valor do ADC para um nível de tensão</span>
-<span class="sd">    Depois, essa tensão é convertida em pressão</span>
-<span class="sd">    E por fim, é convertida em velocidade</span>
+    <span class="sd">&quot;&quot;&quot;Biblioteca Pitot:</span>
+
+<span class="sd">    1. Biblioteca irá converter os dados do ADC para um valor de velocidade e pressão.</span>
+<span class="sd">    2. Primeiramente será convertido o valor do ADC para um nível de tensão.</span>
+<span class="sd">    3. Depois, essa tensão é convertida em pressão.</span>
+<span class="sd">    4. E por fim, é convertida em velocidade.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">numADC</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="Pitot.__init__"><a class="viewcode-back" href="../../../code.libs.html#code.libs.pitot.Pitot.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">numADC</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="c1"># Cria objeto do ADC</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">adc8</span> <span class="o">=</span> <span class="n">ADC</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">numADC</span> <span class="o">=</span> <span class="n">numADC</span>
@@ -182,7 +183,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">pressaoDinamica</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">velocidade</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">valorInicial</span> <span class="o">=</span> <span class="mi">58</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setReferenciaAqui</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setReferenciaAqui</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Pitot.setReferenciaAqui"><a class="viewcode-back" href="../../../code.libs.html#code.libs.pitot.Pitot.setReferenciaAqui">[docs]</a>    <span class="k">def</span> <span class="nf">setReferenciaAqui</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">samples</span><span class="p">):</span>
@@ -191,8 +192,9 @@
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Pitot.atualiza"><a class="viewcode-back" href="../../../code.libs.html#code.libs.pitot.Pitot.atualiza">[docs]</a>    <span class="k">def</span> <span class="nf">atualiza</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">densAr</span><span class="o">=</span><span class="mf">1.218</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Le valor analogico do ADC e transforma isso em pressão e velocidade</span>
-<span class="sd">        :param samples: Número de amostras para oversampling.</span>
+        <span class="sd">&quot;&quot;&quot;Le valor analogico do ADC e transforma isso em pressão e velocidade.</span>
+
+<span class="sd">        :param samples: Número de amostras para oversampling</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">valADC</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">samples</span><span class="p">):</span>
@@ -228,19 +230,22 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">velocidade</span> <span class="o">=</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pressaoDinamica</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">densAr</span><span class="p">))</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Pitot.getValADC"><a class="viewcode-back" href="../../../code.libs.html#code.libs.pitot.Pitot.getValADC">[docs]</a>    <span class="k">def</span> <span class="nf">getValADC</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Retorna o valor vindo direto do adc</span>
+        <span class="sd">&quot;&quot;&quot;Retorna o valor vindo direto do adc.</span>
+
 <span class="sd">            :returns: Valor do ADC</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">valADC</span></div>
 
 <div class="viewcode-block" id="Pitot.getValTensao"><a class="viewcode-back" href="../../../code.libs.html#code.libs.pitot.Pitot.getValTensao">[docs]</a>    <span class="k">def</span> <span class="nf">getValTensao</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Retorna o valor da tensão do pitot</span>
+        <span class="sd">&quot;&quot;&quot;Retorna o valor da tensão do pitot.</span>
+
 <span class="sd">            :returns: Tensão (Volts)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">valTensao</span></div>
 
 <div class="viewcode-block" id="Pitot.getRPM"><a class="viewcode-back" href="../../../code.libs.html#code.libs.pitot.Pitot.getRPM">[docs]</a>    <span class="k">def</span> <span class="nf">getRPM</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Retorna um valor aproximado em RPM caso o pitot esteja no escoamento do motor</span>
+        <span class="sd">&quot;&quot;&quot;Retorna um valor aproximado em RPM caso o pitot esteja no escoamento do motor.</span>
+
 <span class="sd">            :returns: RPM</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">rpm</span> <span class="o">=</span> <span class="p">(</span><span class="mi">640</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocidade</span> <span class="o">-</span> <span class="mf">166.67</span><span class="p">)</span>
@@ -254,9 +259,10 @@
         <span class="k">return</span> <span class="n">rpm</span></div>
 
 <div class="viewcode-block" id="Pitot.getPressaoDinamica"><a class="viewcode-back" href="../../../code.libs.html#code.libs.pitot.Pitot.getPressaoDinamica">[docs]</a>    <span class="k">def</span> <span class="nf">getPressaoDinamica</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">um</span><span class="o">=</span><span class="s2">&quot;m/s&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Retorna valor da pressão dinâmica</span>
+        <span class="sd">&quot;&quot;&quot;Retorna valor da pressão dinâmica.</span>
+
 <span class="sd">            :returns: pressão dinâmica</span>
-<span class="sd">            :param um: Unidade de medida.</span>
+<span class="sd">            :param um: Unidade de medida</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">um</span> <span class="o">==</span> <span class="s2">&quot;PA&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pressaoDinamica</span>
@@ -268,9 +274,10 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pressaoDinamica</span></div>
 
 <div class="viewcode-block" id="Pitot.getVelocidade"><a class="viewcode-back" href="../../../code.libs.html#code.libs.pitot.Pitot.getVelocidade">[docs]</a>    <span class="k">def</span> <span class="nf">getVelocidade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">um</span><span class="o">=</span><span class="s2">&quot;m/s&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Retorna valor da velocidade calibrada</span>
+        <span class="sd">&quot;&quot;&quot;Retorna valor da velocidade calibrada.</span>
+
 <span class="sd">            :returns: Velocidade calibrada</span>
-<span class="sd">            :param um: Unidade de medida.</span>
+<span class="sd">            :param um: Unidade de medida</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">um</span> <span class="o">==</span> <span class="s2">&quot;m/s&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocidade</span>
