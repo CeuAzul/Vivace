@@ -16,7 +16,7 @@ from libs.mpu import MPU
 from libs.datilografo import Escritor
 from libs.telepatia import Transmissor
 from libs.barometro import Barometro
-from libs.gps import Gps
+from libs.gps import gps
 from libs.pitot import Pitot
 from libs.nano import Nano
 

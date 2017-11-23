@@ -56,7 +56,7 @@ class Gps:
 
     def __init__(self):
         """
-        Construtor, utilizado apenas para inicializar variáveis.
+        Construtor: Inicializa variáveis.
         """
         self.latitude = 0
         self.erroY = 0
@@ -110,7 +110,6 @@ class Gps:
         """ Essa função atualiza as variáveis relacionadas ao GPS. Chame-a
         toda vez que quiser passar as ultimas informações procesadas dos
         satélites para as variáveis dessa classe.
-
         """
         self.latitude = self.gpsc.fix.latitude
         self.erroY = self.gpsc.fix.epy
@@ -233,148 +232,170 @@ class Gps:
 
     def getLatitude(self):
         """ Retorna a latitude atual.
-        :returns:Latitude atual.
+
+        :returns: Latitude atual
         """
 
         return self.latitude
 
     def getErroY(self):
         """ Retorna o erro em metros do eixo de latitude.
-        :returns: Erro no eixo Y.
+
+        :returns: Erro no eixo Y
         """
         return self.erroY
 
     def getLongitude(self):
         """Retorna Longitude atual.
-        :returns: Longitude atual.
+
+        :returns: Longitude atual
         """
         return self.longitude
 
     def getErroX(self):
         """ Retorna o erro em metros do eixo de longitude.
-        :returns: Erro no eixo X.
+
+        :returns: Erro no eixo X
         """
         return self.erroX
 
     def getTempo(self):
         """Retorna tempo atual.
-        :returns: Tempo atual.
+
+        :returns: Tempo atual
         """
         return self.utc
 
     def getErroTempo(self):
-        """
+        """Retorna o erro no tempo atual.
+
         :returns: Erro do tempo atual.
         """
         return self.erroTempo
 
     def getUTC(self):
-        """Pega o tempo atual em UTC
-        :returns: Tempo atual em UTC.
+        """Retorna o tempo atual em UTC.
+
+        :returns: Tempo atual em UTC
         """
         return self.utc
 
     def getAltitude(self):
-        """Pega altitude atual vinda do gps
+        """Retorna altitude atual vinda do GPS.
+
         :returns: Altitude atual
         """
         return self.altitude
 
     def getErroAltitude(self):
-        """Pega o erro de altitude.
+        """Retorna o erro de altitude.
+
         :returns: Erro atual de altitude
         """
         return self.erroAltitude
 
     def getDirecaoCurso(self):
-        """Pega direção de curso do avião (direção da velocidade que o avião ta indo
-        semelhante ao yaw.
+        """Retorna a direção de curso do avião (direção de deslocamento do aviao, semelhante ao yaw).
+
         :returns: Direção de curso
         """
 
         return self.direcaoCurso
 
     def getVelocidade(self):
-        """Pega velocidade atual do avião.
+        """Retorna velocidade atual do avião.
+
         :returns: Velocidade em m/s (?)
         """
         return self.velocidade
 
     def getErroVelocidade(self):
-        """Pega erro de velocidade.
+        """Retorna erro de velocidade.
+
         :returns: Erro de velocidade
         """
         return self.erroVelocidade
 
     def getVelSubida(self):
         """Velocidade vertical do avião.
+
         :returns: Velocidade vertical
         """
         return self.velSubida
 
     def getErroVelSubida(self):
-        """Pega erro de velocidade atual do avião.
-        :returns: Erro de velocidade vertical.
+        """Retorna erro de velocidade atual do avião.
+
+        :returns: Erro de velocidade vertical
         """
         return self.erroVelSubida
 
     def getNivelFixacao(self):
-        """Pega em que dimensão o satélite está com lock.
-        MODE_NO_FIX = 1 (Não pegou satélite)
-        MODE_2D = 2 (Pegando apenas latitude e longitude)
-        MODE_3D = 3 (Pegando latitude, longitude e altitude)
-        :returns: Nível de fixação (1 = não fixo, 2 = 2d, 3 = 3d).
+        """Retorna em que dimensão o satélite está com lock.
+
+        * MODE_NO_FIX = 1 (Não pegou satélite).
+        * MODE_2D = 2 (Pegando apenas latitude e longitude).
+        * MODE_3D = 3 (Pegando latitude, longitude e altitude)
+
+        :returns: Nível de fixação (1 = não fixo, 2 = 2d, 3 = 3d)
         """
         return self.nivelFixacao
 
     def getLatitudeRef(self):
-        """Pega a latitude de referência (latitude que será considerada
+        """Retorna a latitude de referência (latitude que será considerada
         o ponto zero no plano, apartir desse ponto será calculada a distância
-        x e y)
-        :returns: Latitude de referência.
+        x e y).
+
+        :returns: Latitude de referência
         """
         return self.latitudeRef
 
     def getLongitudeRef(self):
-        """Pega a longitude de referência (lopngitude que será considerada
+        """Retorna a longitude de referência (lopngitude que será considerada
         o ponto zero no plano, apartir desse ponto será calculada a distância
-        x e y)
-        :returns: Longitude de referência.
+        x e y).
+
+        :returns: Longitude de referência
         """
         return self.longitudeRef
 
     def getPosicaoX(self):
-        """Pega a distância X em metros apartir de um ponto de referência (latitude e longitude de referência)
-        :returns: Posição X do avião em metros.
+        """Retorna a distância X em metros apartir de um ponto de referência (latitude e longitude de referência).
+
+        :returns: Posição X do avião em metros
         """
         return self.posicaoX
 
     def getPosicaoY(self):
-        """Pega a distância Y em metros apartir de um ponto de referência (latitude e longitude de referência)
-        :returns: Posição Y do avião em metros.
+        """Retorna a distância Y em metros apartir de um ponto de referência (latitude e longitude de referência).
+
+        :returns: Posição Y do avião em metros
         """
         return self.posicaoY
 
     def getDistanciaAbsoluta(self):
-        """ Pega distância absoluta apartir do ponto de referência
+        """ Retorna distância absoluta apartir do ponto de referência.
+
         :returns: Distância absoluta apartir do ponto de referência
         """
         return self.distanciaAbsoluta
 
     def verificaAtualizacaoHorario(self):
-        """ Função utilizada para verificar se o horário já foi atualizado
+        """ Função utilizada para verificar se o horário já foi atualizado.
+
         :returns: Se o horário já foi atualizado, retorna True
         """
         return self.sRelogio
 
     def resetaAtualizacaoHorario(self):
-        """ Função utilizada para reatualizar o horário da plataforma se houver bugs
+        """ Função utilizada para reatualizar o horário da plataforma se houver bugs.
         """
         self.contTempo = 0
         self.sRelogio = False
 
     def atualizaHorarioSistema(self):
-        """ Atualiza horário do Raspberry com o horário do gps
+        """ Atualiza horário do Raspberry com o horário do GPS.
+
         :returns: Sucesso ou não de sincronizar horário
         """
         if(self.utc != "" and self.utc != None):

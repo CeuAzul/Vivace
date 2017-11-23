@@ -157,8 +157,7 @@
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
 <div class="viewcode-block" id="Dado"><a class="viewcode-back" href="../../../code.libs.html#code.libs.dado.Dado">[docs]</a><span class="k">class</span> <span class="nc">Dado</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Esta classe é criada com o objetivo de servir como objeto para um dado.</span>
+    <span class="sd">&quot;&quot;&quot;Esta classe é criada com o objetivo de servir como objeto para um dado.</span>
 <span class="sd">    Cada dado será uma instância dessa classe e terá o mesmo padrão de atributos.</span>
 
 <span class="sd">    Cada vez que atualizarmos os sensores, iremos setar o valor do dado para</span>
@@ -166,11 +165,12 @@
 <span class="sd">    atual do dado.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nome</span><span class="p">,</span> <span class="n">unidadeMedida</span><span class="p">,</span> <span class="n">apelido</span><span class="p">,</span> <span class="n">gravaDado</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transmiteDado</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">printaDado</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">casasDecimais</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construtor: Inicializa variáveis necessárias</span>
+<div class="viewcode-block" id="Dado.__init__"><a class="viewcode-back" href="../../../code.libs.html#code.libs.dado.Dado.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nome</span><span class="p">,</span> <span class="n">unidadeMedida</span><span class="p">,</span> <span class="n">apelido</span><span class="p">,</span> <span class="n">gravaDado</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transmiteDado</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">printaDado</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">casasDecimais</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construtor: Inicializa as variáveis necessárias.</span>
+
 <span class="sd">        :param name: Nome completo do dado</span>
 <span class="sd">        :param unidadeMedida: Unidade de medida do dado</span>
-<span class="sd">        :param apelido: Identificado de  letras utilizado na transmissão de dados</span>
+<span class="sd">        :param apelido: Identificador de letras utilizado na transmissão de dados</span>
 <span class="sd">        :param gravaDado: Indicador se o dado deve ser gravado no arquivo ou não</span>
 <span class="sd">        :param transmiteDado: Indicador se o dado deve ser transmitido ou não</span>
 <span class="sd">        :param printaDado: Indicador se o dado deve ser exibido na tela ou não</span>
@@ -184,35 +184,40 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">transmiteDado</span> <span class="o">=</span> <span class="n">transmiteDado</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">printaDado</span> <span class="o">=</span> <span class="n">printaDado</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">valor</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">casasDecimais</span> <span class="o">=</span> <span class="n">casasDecimais</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">casasDecimais</span> <span class="o">=</span> <span class="n">casasDecimais</span></div>
 
 <div class="viewcode-block" id="Dado.setValor"><a class="viewcode-back" href="../../../code.libs.html#code.libs.dado.Dado.setValor">[docs]</a>    <span class="k">def</span> <span class="nf">setValor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valor</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Função seta o valor atual da variável para a especificada no parâmetro</span>
+        <span class="sd">&quot;&quot;&quot;Função seta o valor atual da variável para a especificada no parâmetro.</span>
+
 <span class="sd">        :param valor: Valor atual do dado</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Filtrar dado aqui</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">valor</span> <span class="o">=</span> <span class="n">valor</span></div>
 
 <div class="viewcode-block" id="Dado.getValor"><a class="viewcode-back" href="../../../code.libs.html#code.libs.dado.Dado.getValor">[docs]</a>    <span class="k">def</span> <span class="nf">getValor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Pega o valor atual do dado</span>
+        <span class="sd">&quot;&quot;&quot;Retorna o valor atual do dado.</span>
+
 <span class="sd">        :returns: Valor atual do dado</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">valor</span></div>
 
 <div class="viewcode-block" id="Dado.setTransmissao"><a class="viewcode-back" href="../../../code.libs.html#code.libs.dado.Dado.setTransmissao">[docs]</a>    <span class="k">def</span> <span class="nf">setTransmissao</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Indica se dado deve ser transmitido ou não.</span>
+
 <span class="sd">        :param mode: Boolean indicando se deve ser transmitido ou não</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">transmiteDado</span> <span class="o">=</span> <span class="n">mode</span></div>
 
 <div class="viewcode-block" id="Dado.setGravacao"><a class="viewcode-back" href="../../../code.libs.html#code.libs.dado.Dado.setGravacao">[docs]</a>    <span class="k">def</span> <span class="nf">setGravacao</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Indica se dado deve ser gravado ou não.</span>
+
 <span class="sd">        :param mode: Boolean indicando se deve ser gravado ou não</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gravaDado</span> <span class="o">=</span> <span class="n">mode</span></div>
 
 <div class="viewcode-block" id="Dado.setPrintDado"><a class="viewcode-back" href="../../../code.libs.html#code.libs.dado.Dado.setPrintDado">[docs]</a>    <span class="k">def</span> <span class="nf">setPrintDado</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Indica se dado deve ser exibido na tela ou não.</span>
+
 <span class="sd">        :param mode: Boolean indicando se deve ser exibido ou não</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">printDado</span> <span class="o">=</span> <span class="n">mode</span></div></div>

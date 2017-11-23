@@ -165,7 +165,7 @@
 
 <div class="viewcode-block" id="Ultrassom"><a class="viewcode-back" href="../../../code.libs.html#code.libs.ultrassom.Ultrassom">[docs]</a><span class="k">class</span> <span class="nc">Ultrassom</span><span class="p">:</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">distMax</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">elevacaoMin</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">trigPin</span><span class="o">=</span><span class="mi">23</span><span class="p">,</span> <span class="n">echoPin</span><span class="o">=</span><span class="mi">24</span><span class="p">):</span>
+<div class="viewcode-block" id="Ultrassom.__init__"><a class="viewcode-back" href="../../../code.libs.html#code.libs.ultrassom.Ultrassom.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">distMax</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">elevacaoMin</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">trigPin</span><span class="o">=</span><span class="mi">23</span><span class="p">,</span> <span class="n">echoPin</span><span class="o">=</span><span class="mi">24</span><span class="p">):</span>
         <span class="n">GPIO</span><span class="o">.</span><span class="n">setmode</span><span class="p">(</span><span class="n">GPIO</span><span class="o">.</span><span class="n">BCM</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">trigPin</span> <span class="o">=</span> <span class="n">trigPin</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">echoPin</span> <span class="o">=</span> <span class="n">echoPin</span>
@@ -173,7 +173,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">distAtual</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">distReferencia</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wowRaw</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">elevacaoMin</span> <span class="o">=</span> <span class="n">elevacaoMin</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elevacaoMin</span> <span class="o">=</span> <span class="n">elevacaoMin</span></div>
 
 <div class="viewcode-block" id="Ultrassom.calculaDistancia"><a class="viewcode-back" href="../../../code.libs.html#code.libs.ultrassom.Ultrassom.calculaDistancia">[docs]</a>    <span class="k">def</span> <span class="nf">calculaDistancia</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">distance</span> <span class="o">=</span> <span class="mi">0</span>

@@ -18,3 +18,12 @@ help:
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 %: Makefile
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+
+docs:
+	sphinx-apidoc -o ./source ../code/
+
+clean-docs:
+	rm ./source/modules.rst
+	rm ./source/code.rst
+	rm ./source/code.libs.rst
+	rm ./source/code.libs.gps.rst

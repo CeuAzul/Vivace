@@ -245,7 +245,7 @@
 
 
 <div class="viewcode-block" id="GPSFix"><a class="viewcode-back" href="../../../../code.libs.gps.html#code.libs.gps.gps.GPSFix">[docs]</a><span class="k">class</span> <span class="nc">GPSFix</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GPSFix.__init__"><a class="viewcode-back" href="../../../../code.libs.gps.html#code.libs.gps.gps.GPSFix.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">MODE_NO_FIX</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">NaN</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ept</span> <span class="o">=</span> <span class="n">NaN</span>
@@ -259,27 +259,27 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">climb</span> <span class="o">=</span> <span class="n">NaN</span>            <span class="c1"># Meters per second</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">epd</span> <span class="o">=</span> <span class="n">NaN</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">eps</span> <span class="o">=</span> <span class="n">NaN</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">epc</span> <span class="o">=</span> <span class="n">NaN</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epc</span> <span class="o">=</span> <span class="n">NaN</span></div></div>
 
 
 <div class="viewcode-block" id="GPSData"><a class="viewcode-back" href="../../../../code.libs.gps.html#code.libs.gps.gps.GPSData">[docs]</a><span class="k">class</span> <span class="nc">GPSData</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot; Position, track, velocity and status information returned by a GPS. &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="GPSData.Satellite"><a class="viewcode-back" href="../../../../code.libs.gps.html#code.libs.gps.gps.GPSData.Satellite">[docs]</a>    <span class="k">class</span> <span class="nc">Satellite</span><span class="p">:</span>
-        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">PRN</span><span class="p">,</span> <span class="n">elevation</span><span class="p">,</span> <span class="n">azimuth</span><span class="p">,</span> <span class="n">ss</span><span class="p">,</span> <span class="n">used</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="GPSData.Satellite.__init__"><a class="viewcode-back" href="../../../../code.libs.gps.html#code.libs.gps.gps.GPSData.Satellite.__init__">[docs]</a>        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">PRN</span><span class="p">,</span> <span class="n">elevation</span><span class="p">,</span> <span class="n">azimuth</span><span class="p">,</span> <span class="n">ss</span><span class="p">,</span> <span class="n">used</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">PRN</span> <span class="o">=</span> <span class="n">PRN</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">elevation</span> <span class="o">=</span> <span class="n">elevation</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">azimuth</span> <span class="o">=</span> <span class="n">azimuth</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ss</span> <span class="o">=</span> <span class="n">ss</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">used</span> <span class="o">=</span> <span class="n">used</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">used</span> <span class="o">=</span> <span class="n">used</span></div>
 
-        <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GPSData.Satellite.__repr__"><a class="viewcode-back" href="../../../../code.libs.gps.html#code.libs.gps.gps.GPSData.Satellite.__repr__">[docs]</a>        <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="k">return</span> <span class="s2">&quot;PRN: </span><span class="si">%3d</span><span class="s2">  E: </span><span class="si">%3d</span><span class="s2">  Az: </span><span class="si">%3d</span><span class="s2">  Ss: </span><span class="si">%3d</span><span class="s2">  Used: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">PRN</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">elevation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">azimuth</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss</span><span class="p">,</span> <span class="s2">&quot;ny&quot;</span><span class="p">[</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">used</span><span class="p">]</span>
-            <span class="p">)</span></div>
+            <span class="p">)</span></div></div>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GPSData.__init__"><a class="viewcode-back" href="../../../../code.libs.gps.html#code.libs.gps.gps.GPSData.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Initialize all data members</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">online</span> <span class="o">=</span> <span class="mi">0</span>                 <span class="c1"># NZ if GPS on, zero if not</span>
 
@@ -306,9 +306,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">devices</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GPSData.__repr__"><a class="viewcode-back" href="../../../../code.libs.gps.html#code.libs.gps.gps.GPSData.__repr__">[docs]</a>    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">st</span> <span class="o">=</span> <span class="s2">&quot;Time:     </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">utc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">time</span><span class="p">)</span>
         <span class="n">st</span> <span class="o">+=</span> <span class="s2">&quot;Lat/Lon:  </span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fix</span><span class="o">.</span><span class="n">altitude</span><span class="p">):</span>
@@ -333,18 +333,18 @@
         <span class="n">st</span> <span class="o">+=</span> <span class="s2">&quot;Y: </span><span class="si">%s</span><span class="s2"> satellites in view:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">satellites</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">sat</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">satellites</span><span class="p">:</span>
             <span class="n">st</span> <span class="o">+=</span> <span class="s2">&quot;    </span><span class="si">%r</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">sat</span>
-        <span class="k">return</span> <span class="n">st</span></div>
+        <span class="k">return</span> <span class="n">st</span></div></div>
 
 
 <div class="viewcode-block" id="GPS"><a class="viewcode-back" href="../../../../code.libs.gps.html#code.libs.gps.gps.GPS">[docs]</a><span class="k">class</span> <span class="nc">GPS</span><span class="p">(</span><span class="n">GPSCommon</span><span class="p">,</span> <span class="n">GPSData</span><span class="p">,</span> <span class="n">GPSJson</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Client interface to a running gpsd instance. &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">GPSD_PORT</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="GPS.__init__"><a class="viewcode-back" href="../../../../code.libs.gps.html#code.libs.gps.gps.GPS.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">GPSD_PORT</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="n">GPSCommon</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
         <span class="n">GPSData</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">newstyle</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="n">mode</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__oldstyle_unpack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buf</span><span class="p">):</span>
         <span class="c1"># unpack a daemon response into the gps instance members</span>

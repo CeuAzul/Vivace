@@ -9,25 +9,26 @@ from .dado import Dado
 
 
 class Transmissor:
-    """ Esta classe é chamada toda vez que queremos transmitir um dado usando o transceiver da 3DR
+    """ Esta classe é chamada toda vez que queremos transmitir um dado usando o transceiver da 3DR.
     Depois de criar os dados, utiza-se a função setDados() para popular o vetor dessa classe com os
     dados a serem transmitidos.
 
     Para utilizar a classe:
+
     - Primeiramente utilize o construtor para setar propriedades.
-    - Depois, popule o vetor de dados com a função setDados()
-    - Por fim, chame a função transmiteLinha()
+    - Depois, popule o vetor de dados com a função setDados().
+    - Por fim, chame a função transmiteLinha().
 
     """
 
     def __init__(self, separador=",", protocolo=True,  baudRate=57600, codificacao='UTF-8'):
-        """Construtor inicializa parâmetros de configuração do Transmissor
+        """Construtor: Inicializa parâmetros de configuração do Transmissor.
         Exitem dois métodos de transmissão, utilizando o protolo ou não.
 
-        Utilizando protocolo: As mensagens enviadas são empacotadas da seguinte forma:
+        * Utilizando protocolo: As mensagens enviadas são empacotadas da seguinte forma:
         "!identificador=valor@\" onde o identificador é o "apelido" de cada dado.
 
-        Não utilizando protocolo: As mensagens são enviadas da mesma ordem que os dados são gravados
+        * Não utilizando protocolo: As mensagens são enviadas da mesma ordem que os dados são gravados.
         "valor1, valor2, valor3"
 
 
@@ -54,11 +55,10 @@ class Transmissor:
         self.dados = d
 
     def transmiteLinha(self):
-        """Função será chamada quando os dados deverão ser transmitidos
+        """Função será chamada quando os dados deverão ser transmitidos.
 
-        A forma de transmissão dependerá da utilização do protocolo ou não
+        A forma de transmissão dependerá da utilização do protocolo ou não.
         Recomenda-se a utilização do protocolo para verificar a integridade do dado.
-
         """
         for x in self.dados:
             if x.transmiteDado:
@@ -72,7 +72,7 @@ class Transmissor:
             self.ser.write(bytes("\n", self.codificacao))
 
     def leLinha(self):
-        """Essa função é responsável por ler telecomandos recebidos pela serial
+        """Essa função é responsável por ler telecomandos recebidos pela serial.
 
         :returns: String do telecomando
         """

@@ -163,10 +163,10 @@
 
 
 <div class="viewcode-block" id="GpsController"><a class="viewcode-back" href="../../../code.libs.html#code.libs.GPSController.GpsController">[docs]</a><span class="k">class</span> <span class="nc">GpsController</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GpsController.__init__"><a class="viewcode-back" href="../../../code.libs.html#code.libs.GPSController.GpsController.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gpsd</span> <span class="o">=</span> <span class="n">GPS</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">WATCH_ENABLE</span><span class="p">)</span>  <span class="c1"># starting the stream of info</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">running</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">running</span> <span class="o">=</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="GpsController.run"><a class="viewcode-back" href="../../../code.libs.html#code.libs.GPSController.GpsController.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">running</span> <span class="o">=</span> <span class="kc">True</span>

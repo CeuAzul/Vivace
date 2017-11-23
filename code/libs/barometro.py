@@ -9,9 +9,9 @@ if os.uname()[1] == 'raspberrypi':
 
 
 class Barometro:
-    """
-    Um objeto dessa classe deve ser criado quando quiser realizar a comunicação
+    """Um objeto dessa classe deve ser criado quando quiser realizar a comunicação
     ou obter dados do barômetro.
+
     Para utilizar a classe, criamos o construtor colocando como parâmetros
     se queremos pegar temperatura e pressão. Depois, utilizamos a função
     atualiza() para fazer a aquisição pelo I2C. Por fim, pegamos os dados
@@ -46,12 +46,15 @@ class Barometro:
     __MS5611_RA_D2_OSR_4096 = 0x58
 
     def __init__(self, usePressao=True, useTemp=True):
-        """Construtor da classe, coloca parâmetros indicando ser
-         gostaria de utilizar o dado de pressão ou utilizar os dados
-         de temperatura. Além disso, a função configura os dados
-         para que a comunicação do i2c seja feita corretamente.
-        :param usePressao: Indicador se deve ser obtido o dado de pressão.
-        :param useTemp: Indicador se deve ser obtido o dado de temperatura.
+        """Construtor: Indica dados a serem lidos
+
+         Coloca parâmetros indicando se gostaria de utilizar o
+         dado de pressão e/ou utilizar os dados de temperatura.
+         Além disso a função configura os dados
+         para que a comunicação I2C seja feita corretamente.
+
+        :param usePressao: Indicador se deve ser obtido o dado de pressão
+        :param useTemp: Indicador se deve ser obtido o dado de temperatura
         """
         self.bus = SMBus(1)
         self.address = 0x77
@@ -115,31 +118,31 @@ class Barometro:
         self.pressaoReferencia = self.pressaoReferencia / 10
 
     def refreshPressure(self, OSR=__MS5611_RA_D1_OSR_4096):
-        """Função utilizada internamente para comunicação I2C
+        """Função utilizada internamente para comunicação I2C.
         """
         self.bus.write_byte(self.address, OSR)
 
     def refreshTemperature(self, OSR=__MS5611_RA_D2_OSR_4096):
-        """Função utilizada internamente para comunicação I2C
+        """Função utilizada internamente para comunicação I2C.
         """
         self.bus.write_byte(self.address, OSR)
 
     def readPressure(self):
-        """Função utilizada internamente para comunicação I2C
+        """Função utilizada internamente para comunicação I2C.
         """
         D1 = self.bus.read_i2c_block_data(self.address, self.__MS5611_RA_ADC)
         self.D1 = D1[0] * 65536 + D1[1] * 256.0 + D1[2]
 
     def readTemperature(self):
-        """Função utilizada internamente para comunicação I2C
+        """Função utilizada internamente para comunicação I2C.
         """
         D2 = self.bus.read_i2c_block_data(self.address, self.__MS5611_RA_ADC)
         self.D2 = D2[0] * 65536 + D2[1] * 256.0 + D2[2]
 
     def calculatePressureAndTemperature(self):
         """Função utilizada internamente para comunicação I2C.
-        É a função principal para realizar a aquisição dos dados
-        pelo i2c.
+
+        É a função principal para realizar a aquisição dos dados via I2C.
         """
         dT = self.D2 - self.C5 * 2**8
         self.temp = 2000 + dT * self.C6 / 2**23
@@ -169,9 +172,10 @@ class Barometro:
         self.pres = self.pres / 100  # Pressure updated
 
     def getPressao(self, um="PA"):
-        """Retorna valor da pressão atual
+        """Retorna valor da pressão atual.
+
         :returns: Pressão atual
-        :param um: Unidade de medida.
+        :param um: Unidade de medida
         """
         if um == "PA":
             return self.pres * 100
@@ -183,20 +187,23 @@ class Barometro:
             return self.pres
 
     def getTemperatura(self):
-        """Retorna valor de temperatura
+        """Retorna valor de temperatura.
+
         :returns: Temperatura (ºC)
         """
         return self.temp
 
     def getDensidadeAr(self):
-        """Retorna Densidade do ar
+        """Retorna Densidade do ar.
+
         :returns: Densidade
         """
         return self.densidadeAr
 
     def getAltitudeRelativa(self, um="m"):
-        """Retorna altitude em relação ao lugar de calibração (solo)
-        :param um: Unidade de medida.
+        """Retorna altitude em relação ao lugar de calibração (solo).
+
+        :param um: Unidade de medida
         :returns: Altitude em relação ao solo
         """
         if um == "m":
@@ -207,9 +214,12 @@ class Barometro:
             return self.altitudeRelativa
 
     def getAltitudePressao(self, um="m"):
-        """Retorna altitude-pressão. Altitude pressão é o valor da
-        pressão de atmosfera padrão 101325 pascal
-        :param um: Unidade de medida.
+        """Retorna a altitude-pressão.
+
+        Altitude pressão é o valor da
+        pressão de atmosfera padrão 101325 pascal.
+
+        :param um: Unidade de medida
         :returns: Altitude-pressão em relação a atmosfera padrão
         """
         if um == "m":
@@ -220,8 +230,10 @@ class Barometro:
             return self.altitudePressao
 
     def atualiza(self, samples=1):
-        """Pega mais uma amostra dos parâmetros relacionados ao
+        """Retorna mais uma amostra dos parâmetros relacionados ao
         barômetro e armazena-os nas variáveis da classe.
+
+        :param samples: Numero de samples adquiridos
         """
         somaTemp = 0
         somaPressao = 0

@@ -7,12 +7,11 @@ if os.uname()[1] == 'raspberrypi':
 
 
 class Nano:
-    """ Pega dados do nano - Tacometro e Ultrassom
+    """ Retorna dados do nano - Tacometro e Ultrassom
     """
 
     def __init__(self):
-        """Construtor
-        Bota os métodos para funcionar
+        """Construtor: Bota os métodos para funcionar.
         """
 
         self.ser = serial.Serial(port='/dev/ttyUSB1', baudrate=9600, timeout=1)
@@ -26,8 +25,7 @@ class Nano:
         self.distRef = 0
 
     def atualiza(self):
-        """Atualiza a parada
-
+        """Atualiza a parada.
         """
         x = self.ser.readline().decode("utf-8")
         if(x != ""):

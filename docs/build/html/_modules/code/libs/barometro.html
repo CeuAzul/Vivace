@@ -164,9 +164,9 @@
 
 
 <div class="viewcode-block" id="Barometro"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro">[docs]</a><span class="k">class</span> <span class="nc">Barometro</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Um objeto dessa classe deve ser criado quando quiser realizar a comunicação</span>
+    <span class="sd">&quot;&quot;&quot;Um objeto dessa classe deve ser criado quando quiser realizar a comunicação</span>
 <span class="sd">    ou obter dados do barômetro.</span>
+
 <span class="sd">    Para utilizar a classe, criamos o construtor colocando como parâmetros</span>
 <span class="sd">    se queremos pegar temperatura e pressão. Depois, utilizamos a função</span>
 <span class="sd">    atualiza() para fazer a aquisição pelo I2C. Por fim, pegamos os dados</span>
@@ -200,13 +200,16 @@
     <span class="n">__MS5611_RA_D2_OSR_2048</span> <span class="o">=</span> <span class="mh">0x56</span>
     <span class="n">__MS5611_RA_D2_OSR_4096</span> <span class="o">=</span> <span class="mh">0x58</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">usePressao</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useTemp</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construtor da classe, coloca parâmetros indicando ser</span>
-<span class="sd">         gostaria de utilizar o dado de pressão ou utilizar os dados</span>
-<span class="sd">         de temperatura. Além disso, a função configura os dados</span>
-<span class="sd">         para que a comunicação do i2c seja feita corretamente.</span>
-<span class="sd">        :param usePressao: Indicador se deve ser obtido o dado de pressão.</span>
-<span class="sd">        :param useTemp: Indicador se deve ser obtido o dado de temperatura.</span>
+<div class="viewcode-block" id="Barometro.__init__"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">usePressao</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useTemp</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construtor: Indica dados a serem lidos</span>
+
+<span class="sd">         Coloca parâmetros indicando se gostaria de utilizar o</span>
+<span class="sd">         dado de pressão e/ou utilizar os dados de temperatura.</span>
+<span class="sd">         Além disso a função configura os dados</span>
+<span class="sd">         para que a comunicação I2C seja feita corretamente.</span>
+
+<span class="sd">        :param usePressao: Indicador se deve ser obtido o dado de pressão</span>
+<span class="sd">        :param useTemp: Indicador se deve ser obtido o dado de temperatura</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bus</span> <span class="o">=</span> <span class="n">SMBus</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="mh">0x77</span>
@@ -260,7 +263,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">C5</span> <span class="o">=</span> <span class="n">C5</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">256.0</span> <span class="o">+</span> <span class="n">C5</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">C6</span> <span class="o">=</span> <span class="n">C6</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">256.0</span> <span class="o">+</span> <span class="n">C6</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">atualizaReferencia</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atualizaReferencia</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Barometro.atualizaReferencia"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro.atualizaReferencia">[docs]</a>    <span class="k">def</span> <span class="nf">atualizaReferencia</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pressaoReferencia</span> <span class="o">=</span> <span class="mi">0</span>
@@ -270,31 +273,31 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">pressaoReferencia</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pressaoReferencia</span> <span class="o">/</span> <span class="mi">10</span></div>
 
 <div class="viewcode-block" id="Barometro.refreshPressure"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro.refreshPressure">[docs]</a>    <span class="k">def</span> <span class="nf">refreshPressure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">OSR</span><span class="o">=</span><span class="n">__MS5611_RA_D1_OSR_4096</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Função utilizada internamente para comunicação I2C</span>
+        <span class="sd">&quot;&quot;&quot;Função utilizada internamente para comunicação I2C.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">write_byte</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">OSR</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Barometro.refreshTemperature"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro.refreshTemperature">[docs]</a>    <span class="k">def</span> <span class="nf">refreshTemperature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">OSR</span><span class="o">=</span><span class="n">__MS5611_RA_D2_OSR_4096</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Função utilizada internamente para comunicação I2C</span>
+        <span class="sd">&quot;&quot;&quot;Função utilizada internamente para comunicação I2C.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">write_byte</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">OSR</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Barometro.readPressure"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro.readPressure">[docs]</a>    <span class="k">def</span> <span class="nf">readPressure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Função utilizada internamente para comunicação I2C</span>
+        <span class="sd">&quot;&quot;&quot;Função utilizada internamente para comunicação I2C.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">D1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">read_i2c_block_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__MS5611_RA_ADC</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">D1</span> <span class="o">=</span> <span class="n">D1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">65536</span> <span class="o">+</span> <span class="n">D1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">256.0</span> <span class="o">+</span> <span class="n">D1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="Barometro.readTemperature"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro.readTemperature">[docs]</a>    <span class="k">def</span> <span class="nf">readTemperature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Função utilizada internamente para comunicação I2C</span>
+        <span class="sd">&quot;&quot;&quot;Função utilizada internamente para comunicação I2C.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">D2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bus</span><span class="o">.</span><span class="n">read_i2c_block_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__MS5611_RA_ADC</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">D2</span> <span class="o">=</span> <span class="n">D2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">65536</span> <span class="o">+</span> <span class="n">D2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">256.0</span> <span class="o">+</span> <span class="n">D2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="Barometro.calculatePressureAndTemperature"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro.calculatePressureAndTemperature">[docs]</a>    <span class="k">def</span> <span class="nf">calculatePressureAndTemperature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Função utilizada internamente para comunicação I2C.</span>
-<span class="sd">        É a função principal para realizar a aquisição dos dados</span>
-<span class="sd">        pelo i2c.</span>
+
+<span class="sd">        É a função principal para realizar a aquisição dos dados via I2C.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dT</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">D2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">C5</span> <span class="o">*</span> <span class="mi">2</span><span class="o">**</span><span class="mi">8</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">temp</span> <span class="o">=</span> <span class="mi">2000</span> <span class="o">+</span> <span class="n">dT</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">C6</span> <span class="o">/</span> <span class="mi">2</span><span class="o">**</span><span class="mi">23</span>
@@ -324,9 +327,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">pres</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pres</span> <span class="o">/</span> <span class="mi">100</span>  <span class="c1"># Pressure updated</span></div>
 
 <div class="viewcode-block" id="Barometro.getPressao"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro.getPressao">[docs]</a>    <span class="k">def</span> <span class="nf">getPressao</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">um</span><span class="o">=</span><span class="s2">&quot;PA&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Retorna valor da pressão atual</span>
+        <span class="sd">&quot;&quot;&quot;Retorna valor da pressão atual.</span>
+
 <span class="sd">        :returns: Pressão atual</span>
-<span class="sd">        :param um: Unidade de medida.</span>
+<span class="sd">        :param um: Unidade de medida</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">um</span> <span class="o">==</span> <span class="s2">&quot;PA&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pres</span> <span class="o">*</span> <span class="mi">100</span>
@@ -338,20 +342,23 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pres</span></div>
 
 <div class="viewcode-block" id="Barometro.getTemperatura"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro.getTemperatura">[docs]</a>    <span class="k">def</span> <span class="nf">getTemperatura</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Retorna valor de temperatura</span>
+        <span class="sd">&quot;&quot;&quot;Retorna valor de temperatura.</span>
+
 <span class="sd">        :returns: Temperatura (ºC)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp</span></div>
 
 <div class="viewcode-block" id="Barometro.getDensidadeAr"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro.getDensidadeAr">[docs]</a>    <span class="k">def</span> <span class="nf">getDensidadeAr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Retorna Densidade do ar</span>
+        <span class="sd">&quot;&quot;&quot;Retorna Densidade do ar.</span>
+
 <span class="sd">        :returns: Densidade</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">densidadeAr</span></div>
 
 <div class="viewcode-block" id="Barometro.getAltitudeRelativa"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro.getAltitudeRelativa">[docs]</a>    <span class="k">def</span> <span class="nf">getAltitudeRelativa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">um</span><span class="o">=</span><span class="s2">&quot;m&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Retorna altitude em relação ao lugar de calibração (solo)</span>
-<span class="sd">        :param um: Unidade de medida.</span>
+        <span class="sd">&quot;&quot;&quot;Retorna altitude em relação ao lugar de calibração (solo).</span>
+
+<span class="sd">        :param um: Unidade de medida</span>
 <span class="sd">        :returns: Altitude em relação ao solo</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">um</span> <span class="o">==</span> <span class="s2">&quot;m&quot;</span><span class="p">:</span>
@@ -362,9 +369,12 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">altitudeRelativa</span></div>
 
 <div class="viewcode-block" id="Barometro.getAltitudePressao"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro.getAltitudePressao">[docs]</a>    <span class="k">def</span> <span class="nf">getAltitudePressao</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">um</span><span class="o">=</span><span class="s2">&quot;m&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Retorna altitude-pressão. Altitude pressão é o valor da</span>
-<span class="sd">        pressão de atmosfera padrão 101325 pascal</span>
-<span class="sd">        :param um: Unidade de medida.</span>
+        <span class="sd">&quot;&quot;&quot;Retorna a altitude-pressão.</span>
+
+<span class="sd">        Altitude pressão é o valor da</span>
+<span class="sd">        pressão de atmosfera padrão 101325 pascal.</span>
+
+<span class="sd">        :param um: Unidade de medida</span>
 <span class="sd">        :returns: Altitude-pressão em relação a atmosfera padrão</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">um</span> <span class="o">==</span> <span class="s2">&quot;m&quot;</span><span class="p">:</span>
@@ -375,8 +385,10 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">altitudePressao</span></div>
 
 <div class="viewcode-block" id="Barometro.atualiza"><a class="viewcode-back" href="../../../code.libs.html#code.libs.barometro.Barometro.atualiza">[docs]</a>    <span class="k">def</span> <span class="nf">atualiza</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Pega mais uma amostra dos parâmetros relacionados ao</span>
+        <span class="sd">&quot;&quot;&quot;Retorna mais uma amostra dos parâmetros relacionados ao</span>
 <span class="sd">        barômetro e armazena-os nas variáveis da classe.</span>
+
+<span class="sd">        :param samples: Numero de samples adquiridos</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">somaTemp</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">somaPressao</span> <span class="o">=</span> <span class="mi">0</span>
