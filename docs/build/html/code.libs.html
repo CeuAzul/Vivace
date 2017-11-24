@@ -88,27 +88,19 @@
               
             
             
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">code.libs package</a><ul>
-<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-code.libs.GPSController">code.libs.GPSController module</a></li>
-<li><a class="reference internal" href="#module-code.libs.adc">code.libs.adc module</a></li>
-<li><a class="reference internal" href="#module-code.libs.barometro">code.libs.barometro module</a></li>
-<li><a class="reference internal" href="#module-code.libs.dado">code.libs.dado module</a></li>
-<li><a class="reference internal" href="#module-code.libs.datilografo">code.libs.datilografo module</a></li>
-<li><a class="reference internal" href="#module-code.libs.gps">code.libs.gps module</a></li>
-<li><a class="reference internal" href="#module-code.libs.mpu">code.libs.mpu module</a></li>
-<li><a class="reference internal" href="#module-code.libs.nano">code.libs.nano module</a></li>
-<li><a class="reference internal" href="#module-code.libs.pitot">code.libs.pitot module</a></li>
-<li><a class="reference internal" href="#module-code.libs.telepatia">code.libs.telepatia module</a></li>
-<li><a class="reference internal" href="#module-code.libs.ultrassom">code.libs.ultrassom module</a></li>
-<li><a class="reference internal" href="#module-code.libs">Module contents</a></li>
+              <p class="caption"><span class="caption-text">Gettings Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="connect_everything.html">Connecting everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run_the_code.html">Running the code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analyze_data.html">Analzing the data</a></li>
 </ul>
-</li>
+<p class="caption"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="option4.html">Option4</a></li>
+<li class="toctree-l1"><a class="reference internal" href="option5.html">Option5</a></li>
+<li class="toctree-l1"><a class="reference internal" href="option6.html">Option6</a></li>
 </ul>
-</div>
+
             
           
         </div>
@@ -240,9 +232,15 @@
 <dl class="class">
 <dt id="code.libs.adc.ADC">
 <em class="property">class </em><code class="descclassname">code.libs.adc.</code><code class="descname">ADC</code><a class="reference internal" href="_modules/code/libs/adc.html#ADC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.adc.ADC" title="Permalink to this definition">¶</a></dt>
-<dd><p>Classe utilizada para realização da interface do ADC 8 bits
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Classe utilizada para realização da interface do ADC 8 bits
 com o restante da telemetria.</p>
 <p>O ADC utilizado é o Waveshare PCF8591 ligado via I2C no endereço 48.</p>
+<dl class="attribute">
+<dt id="code.libs.adc.ADC.__dict__">
+<code class="descname">__dict__</code><em class="property"> = mappingproxy({'getCanal2': &lt;function ADC.getCanal2&gt;, 'getCanal3': &lt;function ADC.getCanal3&gt;, 'read': &lt;function ADC.read&gt;, 'getCanal1': &lt;function ADC.getCanal1&gt;, '__doc__': '\n    Classe utilizada para realização da interface do ADC 8 bits\n    com o restante da telemetria.\n\n    O ADC utilizado é o Waveshare PCF8591 ligado via I2C no endereço 48.\n    ', '__module__': 'code.libs.adc', 'getCanal0': &lt;function ADC.getCanal0&gt;, '__init__': &lt;function ADC.__init__&gt;, '__weakref__': &lt;attribute '__weakref__' of 'ADC' objects&gt;, '__dict__': &lt;attribute '__dict__' of 'ADC' objects&gt;})</em><a class="headerlink" href="#code.libs.adc.ADC.__dict__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="code.libs.adc.ADC.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/adc.html#ADC.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.adc.ADC.__init__" title="Permalink to this definition">¶</a></dt>
@@ -253,6 +251,12 @@ com o restante da telemetria.</p>
 <dt id="code.libs.adc.ADC.__module__">
 <code class="descname">__module__</code><em class="property"> = 'code.libs.adc'</em><a class="headerlink" href="#code.libs.adc.ADC.__module__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="attribute">
+<dt id="code.libs.adc.ADC.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#code.libs.adc.ADC.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="code.libs.adc.ADC.getCanal0">
@@ -334,12 +338,18 @@ com o restante da telemetria.</p>
 <dl class="class">
 <dt id="code.libs.barometro.Barometro">
 <em class="property">class </em><code class="descclassname">code.libs.barometro.</code><code class="descname">Barometro</code><span class="sig-paren">(</span><em>usePressao=True</em>, <em>useTemp=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/barometro.html#Barometro"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.barometro.Barometro" title="Permalink to this definition">¶</a></dt>
-<dd><p>Um objeto dessa classe deve ser criado quando quiser realizar a comunicação
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Um objeto dessa classe deve ser criado quando quiser realizar a comunicação
 ou obter dados do barômetro.</p>
 <p>Para utilizar a classe, criamos o construtor colocando como parâmetros
 se queremos pegar temperatura e pressão. Depois, utilizamos a função
 atualiza() para fazer a aquisição pelo I2C. Por fim, pegamos os dados
 usando os getters().</p>
+<dl class="attribute">
+<dt id="code.libs.barometro.Barometro.__dict__">
+<code class="descname">__dict__</code><em class="property"> = mappingproxy({'_Barometro__MS5611_RA_ADC': 0, 'getAltitudePressao': &lt;function Barometro.getAltitudePressao&gt;, '_Barometro__MS5611_RA_C5': 170, '_Barometro__MS5611_ADDRESS_CSB_LOW': 118, '_Barometro__MS5611_RA_D1_OSR_1024': 68, '_Barometro__MS5611_RA_C7': 174, '_Barometro__MS5611_RA_D1_OSR_2048': 70, '_Barometro__MS5611_RA_C4': 168, 'refreshPressure': &lt;function Barometro.refreshPressure&gt;, '__init__': &lt;function Barometro.__init__&gt;, '__weakref__': &lt;attribute '__weakref__' of 'Barometro' objects&gt;, 'calculatePressureAndTemperature': &lt;function Barometro.calculatePressureAndTemperature&gt;, '_Barometro__MS5611_RA_C2': 164, '_Barometro__MS5611_RA_D1_OSR_4096': 72, '_Barometro__MS5611_ADDRESS_CSB_HIGH': 119, '_Barometro__MS5611_RA_C0': 160, '_Barometro__MS5611_RA_D1_OSR_256': 64, 'getTemperatura': &lt;function Barometro.getTemperatura&gt;, 'atualizaReferencia': &lt;function Barometro.atualizaReferencia&gt;, 'getPressao': &lt;function Barometro.getPressao&gt;, '__dict__': &lt;attribute '__dict__' of 'Barometro' objects&gt;, 'readTemperature': &lt;function Barometro.readTemperature&gt;, 'atualiza': &lt;function Barometro.atualiza&gt;, '_Barometro__MS5611_RA_C6': 172, '_Barometro__MS5611_RA_D2_OSR_256': 80, '__doc__': 'Um objeto dessa classe deve ser criado quando quiser realizar a comunicação\n    ou obter dados do barômetro.\n\n    Para utilizar a classe, criamos o construtor colocando como parâmetros\n    se queremos pegar temperatura e pressão. Depois, utilizamos a função\n    atualiza() para fazer a aquisição pelo I2C. Por fim, pegamos os dados\n    usando os getters().\n    ', '_Barometro__MS5611_DEFAULT_ADDRESS': 119, '_Barometro__MS5611_RA_D2_OSR_1024': 84, '_Barometro__MS5611_RA_RESET': 30, 'getDensidadeAr': &lt;function Barometro.getDensidadeAr&gt;, '_Barometro__MS5611_RA_D2_OSR_2048': 86, '_Barometro__MS5611_RA_D2_OSR_512': 82, '_Barometro__MS5611_RA_D1_OSR_512': 66, 'getAltitudeRelativa': &lt;function Barometro.getAltitudeRelativa&gt;, '_Barometro__MS5611_RA_D2_OSR_4096': 88, '__module__': 'code.libs.barometro', 'refreshTemperature': &lt;function Barometro.refreshTemperature&gt;, 'readPressure': &lt;function Barometro.readPressure&gt;, '_Barometro__MS5611_RA_C3': 166, '_Barometro__MS5611_RA_C1': 162})</em><a class="headerlink" href="#code.libs.barometro.Barometro.__dict__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="code.libs.barometro.Barometro.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>usePressao=True</em>, <em>useTemp=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/barometro.html#Barometro.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.barometro.Barometro.__init__" title="Permalink to this definition">¶</a></dt>
@@ -367,6 +377,12 @@ para que a comunicação I2C seja feita corretamente.</div></blockquote>
 <dt id="code.libs.barometro.Barometro.__module__">
 <code class="descname">__module__</code><em class="property"> = 'code.libs.barometro'</em><a class="headerlink" href="#code.libs.barometro.Barometro.__module__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="attribute">
+<dt id="code.libs.barometro.Barometro.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#code.libs.barometro.Barometro.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="code.libs.barometro.Barometro.atualiza">
@@ -505,11 +521,17 @@ pressão de atmosfera padrão 101325 pascal.</p>
 <dl class="class">
 <dt id="code.libs.dado.Dado">
 <em class="property">class </em><code class="descclassname">code.libs.dado.</code><code class="descname">Dado</code><span class="sig-paren">(</span><em>nome</em>, <em>unidadeMedida</em>, <em>apelido</em>, <em>gravaDado=True</em>, <em>transmiteDado=False</em>, <em>printaDado=False</em>, <em>casasDecimais=3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/dado.html#Dado"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.dado.Dado" title="Permalink to this definition">¶</a></dt>
-<dd><p>Esta classe é criada com o objetivo de servir como objeto para um dado.
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Esta classe é criada com o objetivo de servir como objeto para um dado.
 Cada dado será uma instância dessa classe e terá o mesmo padrão de atributos.</p>
 <p>Cada vez que atualizarmos os sensores, iremos setar o valor do dado para
 o ultimo valor captado pelo sensor, dessa forma, sabemos exatamente o valor
 atual do dado.</p>
+<dl class="attribute">
+<dt id="code.libs.dado.Dado.__dict__">
+<code class="descname">__dict__</code><em class="property"> = mappingproxy({'setTransmissao': &lt;function Dado.setTransmissao&gt;, '__weakref__': &lt;attribute '__weakref__' of 'Dado' objects&gt;, '__dict__': &lt;attribute '__dict__' of 'Dado' objects&gt;, '__doc__': 'Esta classe é criada com o objetivo de servir como objeto para um dado.\n    Cada dado será uma instância dessa classe e terá o mesmo padrão de atributos.\n\n    Cada vez que atualizarmos os sensores, iremos setar o valor do dado para\n    o ultimo valor captado pelo sensor, dessa forma, sabemos exatamente o valor\n    atual do dado.\n    ', '__module__': 'code.libs.dado', 'getValor': &lt;function Dado.getValor&gt;, 'setValor': &lt;function Dado.setValor&gt;, '__init__': &lt;function Dado.__init__&gt;, 'setGravacao': &lt;function Dado.setGravacao&gt;, 'setPrintDado': &lt;function Dado.setPrintDado&gt;})</em><a class="headerlink" href="#code.libs.dado.Dado.__dict__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="code.libs.dado.Dado.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>nome</em>, <em>unidadeMedida</em>, <em>apelido</em>, <em>gravaDado=True</em>, <em>transmiteDado=False</em>, <em>printaDado=False</em>, <em>casasDecimais=3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/dado.html#Dado.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.dado.Dado.__init__" title="Permalink to this definition">¶</a></dt>
@@ -537,6 +559,12 @@ atual do dado.</p>
 <dt id="code.libs.dado.Dado.__module__">
 <code class="descname">__module__</code><em class="property"> = 'code.libs.dado'</em><a class="headerlink" href="#code.libs.dado.Dado.__module__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="attribute">
+<dt id="code.libs.dado.Dado.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#code.libs.dado.Dado.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="code.libs.dado.Dado.getValor">
@@ -616,7 +644,8 @@ atual do dado.</p>
 <dl class="class">
 <dt id="code.libs.datilografo.Escritor">
 <em class="property">class </em><code class="descclassname">code.libs.datilografo.</code><code class="descname">Escritor</code><span class="sig-paren">(</span><em>separador='</em>, <em>'</em>, <em>printaNome=True</em>, <em>printaUM=True</em>, <em>nomeArquivo='Telemetria - '</em>, <em>extensao='.csv'</em>, <em>pasta='/home/pi/Telemetria/Codigos/Plataforma/telemetria/Dados'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/datilografo.html#Escritor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.datilografo.Escritor" title="Permalink to this definition">¶</a></dt>
-<dd><p>É responsável pela escrita dos dados em um arquivo de texto.
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>É responsável pela escrita dos dados em um arquivo de texto.
 Esta classe será chamada toda vez que queremos gravar os valores
 que estão sendo adquirido pelos sensores em um arquivo de texto.</p>
 <p>A classe pode ser modificada das seguintes maneiras:</p>
@@ -642,6 +671,11 @@ que estão sendo adquirido pelos sensores em um arquivo de texto.</p>
 <li>Nome arquivo - 03.</li>
 <li>…</li>
 </ul>
+<dl class="attribute">
+<dt id="code.libs.datilografo.Escritor.__dict__">
+<code class="descname">__dict__</code><em class="property"> = mappingproxy({'addDado': &lt;function Escritor.addDado&gt;, 'verificaTamanhoArquivo': &lt;function Escritor.verificaTamanhoArquivo&gt;, 'fazCabecalho': &lt;function Escritor.fazCabecalho&gt;, 'passaProPendrive': &lt;function Escritor.passaProPendrive&gt;, '__doc__': 'É responsável pela escrita dos dados em um arquivo de texto.\n    Esta classe será chamada toda vez que queremos gravar os valores\n    que estão sendo adquirido pelos sensores em um arquivo de texto.\n\n    A classe pode ser modificada das seguintes maneiras:\n\n    * Indicar o tipo de separador dos dados (virgula, espaço, tabulação etc..).\n    * Se deve colocar o nome dos dados na primeira linha.\n    * Se deve colocar a unidade de medida na segunda linha.\n    * Nome do arquivo.\n    * Extensão do arquivo.\n\n    Para utilizar a classe seguimos os seguintes passos:\n\n    1. Inicializamos a classe configurando o escritor para criar o arquivo do jeito que quisermo.\n    2. Chamamos a função setDado com um vetor de objetos criados da classe &quot;Dado&quot;, já com nome e unidade de medida.\n    3. Quando quisermos que a gravação de dados inicie, devemos chamar &quot;fazCabecalho()&quot;.\n    4. Cada vez que quiser que o Escritor grave uma linha dado, primeiro atualize o vetor de dados &quot;setDados()&quot; e depois invoque &quot;escreveLinhaDado(self)&quot;.\n    5. Veja o dado sendo gravado e corra para o abraço.\n\n    Multiplos inicializações são criadas arquivos com o mesmo nome, mas com número diferente ex:\n\n    - Nome arquivo - 01.\n    - Nome arquivo - 02.\n    - Nome arquivo - 03.\n    - ...\n    ', 'escreveLinhaDado': &lt;function Escritor.escreveLinhaDado&gt;, 'setDados': &lt;function Escritor.setDados&gt;, '__module__': 'code.libs.datilografo', '__init__': &lt;function Escritor.__init__&gt;, '__weakref__': &lt;attribute '__weakref__' of 'Escritor' objects&gt;, '__dict__': &lt;attribute '__dict__' of 'Escritor' objects&gt;})</em><a class="headerlink" href="#code.libs.datilografo.Escritor.__dict__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="code.libs.datilografo.Escritor.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>separador='</em>, <em>'</em>, <em>printaNome=True</em>, <em>printaUM=True</em>, <em>nomeArquivo='Telemetria - '</em>, <em>extensao='.csv'</em>, <em>pasta='/home/pi/Telemetria/Codigos/Plataforma/telemetria/Dados'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/datilografo.html#Escritor.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.datilografo.Escritor.__init__" title="Permalink to this definition">¶</a></dt>
@@ -668,6 +702,12 @@ No construtor ele já cria o arquivo, verifica se nome já existe, caso já exis
 <dt id="code.libs.datilografo.Escritor.__module__">
 <code class="descname">__module__</code><em class="property"> = 'code.libs.datilografo'</em><a class="headerlink" href="#code.libs.datilografo.Escritor.__module__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="attribute">
+<dt id="code.libs.datilografo.Escritor.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#code.libs.datilografo.Escritor.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="code.libs.datilografo.Escritor.addDado">
@@ -738,12 +778,18 @@ No construtor ele já cria o arquivo, verifica se nome já existe, caso já exis
 <dl class="class">
 <dt id="code.libs.mpu.MPU">
 <em class="property">class </em><code class="descclassname">code.libs.mpu.</code><code class="descname">MPU</code><span class="sig-paren">(</span><em>useGyx=True</em>, <em>useGyy=True</em>, <em>useGyz=True</em>, <em>useAcx=True</em>, <em>useAcy=True</em>, <em>useAcz=True</em>, <em>usePitch=True</em>, <em>useRoll=True</em>, <em>useTemp=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/mpu.html#MPU"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.mpu.MPU" title="Permalink to this definition">¶</a></dt>
-<dd><p>Um objeto dessa classe deve ser criado quando quiser realizar a comunicação
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Um objeto dessa classe deve ser criado quando quiser realizar a comunicação
 ou obter dados da MPU (Acelerômetro e Giroscópio).
 Para utilizar a classe, criamos o construtor colocando como parâmetros
 se queremos pegar os parâmetros. Depois, utilizamos a função
 atualiza() para fazer a aquisição pelo I2C. Por fim, acessa os dados
 usando os getters().</p>
+<dl class="attribute">
+<dt id="code.libs.mpu.MPU.__dict__">
+<code class="descname">__dict__</code><em class="property"> = mappingproxy({'getGyx': &lt;function MPU.getGyx&gt;, 'atualiza': &lt;function MPU.atualiza&gt;, 'read_byte': &lt;function MPU.read_byte&gt;, 'getGyz': &lt;function MPU.getGyz&gt;, 'read_word_2c': &lt;function MPU.read_word_2c&gt;, 'getGyy': &lt;function MPU.getGyy&gt;, '__doc__': '\n    Um objeto dessa classe deve ser criado quando quiser realizar a comunicação\n    ou obter dados da MPU (Acelerômetro e Giroscópio).\n    Para utilizar a classe, criamos o construtor colocando como parâmetros\n    se queremos pegar os parâmetros. Depois, utilizamos a função\n    atualiza() para fazer a aquisição pelo I2C. Por fim, acessa os dados\n    usando os getters().\n    ', 'getPitch': &lt;function MPU.getPitch&gt;, '__module__': 'code.libs.mpu', '__init__': &lt;function MPU.__init__&gt;, '__weakref__': &lt;attribute '__weakref__' of 'MPU' objects&gt;, 'getTemp': &lt;function MPU.getTemp&gt;, 'read_word': &lt;function MPU.read_word&gt;, 'getAcx': &lt;function MPU.getAcx&gt;, 'get_x_rotation': &lt;function MPU.get_x_rotation&gt;, 'getAcy': &lt;function MPU.getAcy&gt;, 'getRoll': &lt;function MPU.getRoll&gt;, 'get_y_rotation': &lt;function MPU.get_y_rotation&gt;, 'getAcz': &lt;function MPU.getAcz&gt;, 'dist': &lt;function MPU.dist&gt;, '__dict__': &lt;attribute '__dict__' of 'MPU' objects&gt;})</em><a class="headerlink" href="#code.libs.mpu.MPU.__dict__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="code.libs.mpu.MPU.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>useGyx=True</em>, <em>useGyy=True</em>, <em>useGyz=True</em>, <em>useAcx=True</em>, <em>useAcy=True</em>, <em>useAcz=True</em>, <em>usePitch=True</em>, <em>useRoll=True</em>, <em>useTemp=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/mpu.html#MPU.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.mpu.MPU.__init__" title="Permalink to this definition">¶</a></dt>
@@ -774,6 +820,12 @@ realiza configurações para aquisição do I2C.</p>
 <dt id="code.libs.mpu.MPU.__module__">
 <code class="descname">__module__</code><em class="property"> = 'code.libs.mpu'</em><a class="headerlink" href="#code.libs.mpu.MPU.__module__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="attribute">
+<dt id="code.libs.mpu.MPU.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#code.libs.mpu.MPU.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="code.libs.mpu.MPU.atualiza">
@@ -952,7 +1004,13 @@ e atualiza as variaveis locais).</p>
 <dl class="class">
 <dt id="code.libs.nano.Nano">
 <em class="property">class </em><code class="descclassname">code.libs.nano.</code><code class="descname">Nano</code><a class="reference internal" href="_modules/code/libs/nano.html#Nano"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.nano.Nano" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retorna dados do nano - Tacometro e Ultrassom</p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Retorna dados do nano - Tacometro e Ultrassom</p>
+<dl class="attribute">
+<dt id="code.libs.nano.Nano.__dict__">
+<code class="descname">__dict__</code><em class="property"> = mappingproxy({'getTempoVoo': &lt;function Nano.getTempoVoo&gt;, 'getDistRef': &lt;function Nano.getDistRef&gt;, 'atualiza': &lt;function Nano.atualiza&gt;, 'getRpmE': &lt;function Nano.getRpmE&gt;, 'getDistancia': &lt;function Nano.getDistancia&gt;, 'getWowRaw': &lt;function Nano.getWowRaw&gt;, '__doc__': ' Retorna dados do nano - Tacometro e Ultrassom\n    ', '__module__': 'code.libs.nano', '__init__': &lt;function Nano.__init__&gt;, '__weakref__': &lt;attribute '__weakref__' of 'Nano' objects&gt;, 'getRpmD': &lt;function Nano.getRpmD&gt;, '__dict__': &lt;attribute '__dict__' of 'Nano' objects&gt;, 'getWow': &lt;function Nano.getWow&gt;})</em><a class="headerlink" href="#code.libs.nano.Nano.__dict__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="code.libs.nano.Nano.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/nano.html#Nano.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.nano.Nano.__init__" title="Permalink to this definition">¶</a></dt>
@@ -963,6 +1021,12 @@ e atualiza as variaveis locais).</p>
 <dt id="code.libs.nano.Nano.__module__">
 <code class="descname">__module__</code><em class="property"> = 'code.libs.nano'</em><a class="headerlink" href="#code.libs.nano.Nano.__module__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="attribute">
+<dt id="code.libs.nano.Nano.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#code.libs.nano.Nano.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="code.libs.nano.Nano.atualiza">
@@ -1015,13 +1079,19 @@ Biblioteca irá converter os dados do ADC para um valor de velocidade e pressão
 <dl class="class">
 <dt id="code.libs.pitot.Pitot">
 <em class="property">class </em><code class="descclassname">code.libs.pitot.</code><code class="descname">Pitot</code><span class="sig-paren">(</span><em>numADC=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/pitot.html#Pitot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.pitot.Pitot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Biblioteca Pitot:</p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Biblioteca Pitot:</p>
 <ol class="arabic simple">
 <li>Biblioteca irá converter os dados do ADC para um valor de velocidade e pressão.</li>
 <li>Primeiramente será convertido o valor do ADC para um nível de tensão.</li>
 <li>Depois, essa tensão é convertida em pressão.</li>
 <li>E por fim, é convertida em velocidade.</li>
 </ol>
+<dl class="attribute">
+<dt id="code.libs.pitot.Pitot.__dict__">
+<code class="descname">__dict__</code><em class="property"> = mappingproxy({'getRPM': &lt;function Pitot.getRPM&gt;, 'atualiza': &lt;function Pitot.atualiza&gt;, 'setReferenciaAqui': &lt;function Pitot.setReferenciaAqui&gt;, 'getPressaoDinamica': &lt;function Pitot.getPressaoDinamica&gt;, '__doc__': 'Biblioteca Pitot:\n\n    1. Biblioteca irá converter os dados do ADC para um valor de velocidade e pressão.\n    2. Primeiramente será convertido o valor do ADC para um nível de tensão.\n    3. Depois, essa tensão é convertida em pressão.\n    4. E por fim, é convertida em velocidade.\n    ', '__module__': 'code.libs.pitot', 'getValADC': &lt;function Pitot.getValADC&gt;, 'getVelocidade': &lt;function Pitot.getVelocidade&gt;, '__init__': &lt;function Pitot.__init__&gt;, '__weakref__': &lt;attribute '__weakref__' of 'Pitot' objects&gt;, 'getValTensao': &lt;function Pitot.getValTensao&gt;, '__dict__': &lt;attribute '__dict__' of 'Pitot' objects&gt;})</em><a class="headerlink" href="#code.libs.pitot.Pitot.__dict__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="code.libs.pitot.Pitot.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>numADC=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/pitot.html#Pitot.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.pitot.Pitot.__init__" title="Permalink to this definition">¶</a></dt>
@@ -1031,6 +1101,12 @@ Biblioteca irá converter os dados do ADC para um valor de velocidade e pressão
 <dt id="code.libs.pitot.Pitot.__module__">
 <code class="descname">__module__</code><em class="property"> = 'code.libs.pitot'</em><a class="headerlink" href="#code.libs.pitot.Pitot.__module__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="attribute">
+<dt id="code.libs.pitot.Pitot.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#code.libs.pitot.Pitot.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="code.libs.pitot.Pitot.atualiza">
@@ -1133,7 +1209,8 @@ Biblioteca irá converter os dados do ADC para um valor de velocidade e pressão
 <dl class="class">
 <dt id="code.libs.telepatia.Transmissor">
 <em class="property">class </em><code class="descclassname">code.libs.telepatia.</code><code class="descname">Transmissor</code><span class="sig-paren">(</span><em>separador='</em>, <em>'</em>, <em>protocolo=True</em>, <em>baudRate=57600</em>, <em>codificacao='UTF-8'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/telepatia.html#Transmissor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.telepatia.Transmissor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Esta classe é chamada toda vez que queremos transmitir um dado usando o transceiver da 3DR.
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Esta classe é chamada toda vez que queremos transmitir um dado usando o transceiver da 3DR.
 Depois de criar os dados, utiza-se a função setDados() para popular o vetor dessa classe com os
 dados a serem transmitidos.</p>
 <p>Para utilizar a classe:</p>
@@ -1142,6 +1219,11 @@ dados a serem transmitidos.</p>
 <li>Depois, popule o vetor de dados com a função setDados().</li>
 <li>Por fim, chame a função transmiteLinha().</li>
 </ul>
+<dl class="attribute">
+<dt id="code.libs.telepatia.Transmissor.__dict__">
+<code class="descname">__dict__</code><em class="property"> = mappingproxy({'__doc__': ' Esta classe é chamada toda vez que queremos transmitir um dado usando o transceiver da 3DR.\n    Depois de criar os dados, utiza-se a função setDados() para popular o vetor dessa classe com os\n    dados a serem transmitidos.\n\n    Para utilizar a classe:\n\n    - Primeiramente utilize o construtor para setar propriedades.\n    - Depois, popule o vetor de dados com a função setDados().\n    - Por fim, chame a função transmiteLinha().\n\n    ', 'leLinha': &lt;function Transmissor.leLinha&gt;, 'setDados': &lt;function Transmissor.setDados&gt;, '__module__': 'code.libs.telepatia', '__init__': &lt;function Transmissor.__init__&gt;, '__weakref__': &lt;attribute '__weakref__' of 'Transmissor' objects&gt;, '__dict__': &lt;attribute '__dict__' of 'Transmissor' objects&gt;, 'transmiteLinha': &lt;function Transmissor.transmiteLinha&gt;})</em><a class="headerlink" href="#code.libs.telepatia.Transmissor.__dict__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="code.libs.telepatia.Transmissor.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>separador='</em>, <em>'</em>, <em>protocolo=True</em>, <em>baudRate=57600</em>, <em>codificacao='UTF-8'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/telepatia.html#Transmissor.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.telepatia.Transmissor.__init__" title="Permalink to this definition">¶</a></dt>
@@ -1175,6 +1257,12 @@ Exitem dois métodos de transmissão, utilizando o protolo ou não.</p>
 <dt id="code.libs.telepatia.Transmissor.__module__">
 <code class="descname">__module__</code><em class="property"> = 'code.libs.telepatia'</em><a class="headerlink" href="#code.libs.telepatia.Transmissor.__module__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="attribute">
+<dt id="code.libs.telepatia.Transmissor.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#code.libs.telepatia.Transmissor.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="code.libs.telepatia.Transmissor.leLinha">
@@ -1222,7 +1310,13 @@ Recomenda-se a utilização do protocolo para verificar a integridade do dado.</
 <dl class="class">
 <dt id="code.libs.ultrassom.Ultrassom">
 <em class="property">class </em><code class="descclassname">code.libs.ultrassom.</code><code class="descname">Ultrassom</code><span class="sig-paren">(</span><em>distMax=30</em>, <em>elevacaoMin=3</em>, <em>trigPin=23</em>, <em>echoPin=24</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/ultrassom.html#Ultrassom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.ultrassom.Ultrassom" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="attribute">
+<dt id="code.libs.ultrassom.Ultrassom.__dict__">
+<code class="descname">__dict__</code><em class="property"> = mappingproxy({'atualiza': &lt;function Ultrassom.atualiza&gt;, 'calculaDistancia': &lt;function Ultrassom.calculaDistancia&gt;, 'inicializa': &lt;function Ultrassom.inicializa&gt;, 'getElevacaoMin': &lt;function Ultrassom.getElevacaoMin&gt;, 'getWowRaw': &lt;function Ultrassom.getWowRaw&gt;, 'getDistanciaReferencia': &lt;function Ultrassom.getDistanciaReferencia&gt;, '__doc__': None, 'calibraAqui': &lt;function Ultrassom.calibraAqui&gt;, '__module__': 'code.libs.ultrassom', 'finaliza': &lt;function Ultrassom.finaliza&gt;, '__init__': &lt;function Ultrassom.__init__&gt;, '__weakref__': &lt;attribute '__weakref__' of 'Ultrassom' objects&gt;, 'getDistanciaAtual': &lt;function Ultrassom.getDistanciaAtual&gt;, '__dict__': &lt;attribute '__dict__' of 'Ultrassom' objects&gt;, 'getDistanciaMax': &lt;function Ultrassom.getDistanciaMax&gt;})</em><a class="headerlink" href="#code.libs.ultrassom.Ultrassom.__dict__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="code.libs.ultrassom.Ultrassom.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>distMax=30</em>, <em>elevacaoMin=3</em>, <em>trigPin=23</em>, <em>echoPin=24</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/ultrassom.html#Ultrassom.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.ultrassom.Ultrassom.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -1231,6 +1325,12 @@ Recomenda-se a utilização do protocolo para verificar a integridade do dado.</
 <dt id="code.libs.ultrassom.Ultrassom.__module__">
 <code class="descname">__module__</code><em class="property"> = 'code.libs.ultrassom'</em><a class="headerlink" href="#code.libs.ultrassom.Ultrassom.__module__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="attribute">
+<dt id="code.libs.ultrassom.Ultrassom.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#code.libs.ultrassom.Ultrassom.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="code.libs.ultrassom.Ultrassom.atualiza">
