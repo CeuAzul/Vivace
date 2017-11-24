@@ -88,19 +88,19 @@
               
             
             
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">code.libs.gps package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-code.libs.gps.client">code.libs.gps.client module</a></li>
-<li><a class="reference internal" href="#code-libs-gps-fake-module">code.libs.gps.fake module</a></li>
-<li><a class="reference internal" href="#module-code.libs.gps.gps">code.libs.gps.gps module</a></li>
-<li><a class="reference internal" href="#module-code.libs.gps.misc">code.libs.gps.misc module</a></li>
-<li><a class="reference internal" href="#module-code.libs.gps">Module contents</a></li>
+              <p class="caption"><span class="caption-text">Gettings Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="connect_everything.html">Connecting everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run_the_code.html">Running the code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analyze_data.html">Analzing the data</a></li>
 </ul>
-</li>
+<p class="caption"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="option4.html">Option4</a></li>
+<li class="toctree-l1"><a class="reference internal" href="option5.html">Option5</a></li>
+<li class="toctree-l1"><a class="reference internal" href="option6.html">Option6</a></li>
 </ul>
-</div>
+
             
           
         </div>
@@ -172,10 +172,16 @@
 <dl class="class">
 <dt id="code.libs.gps.client.DictWrapper">
 <em class="property">class </em><code class="descclassname">code.libs.gps.client.</code><code class="descname">DictWrapper</code><span class="sig-paren">(</span><em>ddict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/gps/client.html#DictWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.gps.client.DictWrapper" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrapper that yields both class and dictionary behavior</p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Wrapper that yields both class and dictionary behavior</p>
 <dl class="method">
 <dt id="code.libs.gps.client.DictWrapper.__contains__">
 <code class="descname">__contains__</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/gps/client.html#DictWrapper.__contains__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.gps.client.DictWrapper.__contains__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="code.libs.gps.client.DictWrapper.__dict__">
+<code class="descname">__dict__</code><em class="property"> = mappingproxy({'get': &lt;function DictWrapper.get&gt;, 'json_encode': &lt;function DictWrapper.json_encode&gt;, '__repr__': &lt;function DictWrapper.__repr__&gt;, '__str__': &lt;function DictWrapper.__str__&gt;, '__contains__': &lt;function DictWrapper.__contains__&gt;, '__getitem__': &lt;function DictWrapper.__getitem__&gt;, '__setitem__': &lt;function DictWrapper.__setitem__&gt;, '__doc__': ' Wrapper that yields both class and dictionary behavior ', '__module__': 'code.libs.gps.client', '__init__': &lt;function DictWrapper.__init__&gt;, '__weakref__': &lt;attribute '__weakref__' of 'DictWrapper' objects&gt;, 'keys': &lt;function DictWrapper.keys&gt;, '__dict__': &lt;attribute '__dict__' of 'DictWrapper' objects&gt;})</em><a class="headerlink" href="#code.libs.gps.client.DictWrapper.__dict__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -210,6 +216,12 @@
 <code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/gps/client.html#DictWrapper.__str__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.gps.client.DictWrapper.__str__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="attribute">
+<dt id="code.libs.gps.client.DictWrapper.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#code.libs.gps.client.DictWrapper.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="code.libs.gps.client.DictWrapper.get">
 <code class="descname">get</code><span class="sig-paren">(</span><em>k</em>, <em>d=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/gps/client.html#DictWrapper.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.gps.client.DictWrapper.get" title="Permalink to this definition">¶</a></dt>
@@ -231,10 +243,16 @@
 <dl class="class">
 <dt id="code.libs.gps.client.GPSCommon">
 <em class="property">class </em><code class="descclassname">code.libs.gps.client.</code><code class="descname">GPSCommon</code><span class="sig-paren">(</span><em>host='127.0.0.1'</em>, <em>port='2947'</em>, <em>verbose=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/gps/client.html#GPSCommon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.gps.client.GPSCommon" title="Permalink to this definition">¶</a></dt>
-<dd><p>Isolate socket handling and buffering from the protocol interpretation.</p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Isolate socket handling and buffering from the protocol interpretation.</p>
 <dl class="method">
 <dt id="code.libs.gps.client.GPSCommon.__del__">
 <code class="descname">__del__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/gps/client.html#GPSCommon.__del__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.gps.client.GPSCommon.__del__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="code.libs.gps.client.GPSCommon.__dict__">
+<code class="descname">__dict__</code><em class="property"> = mappingproxy({'waiting': &lt;function GPSCommon.waiting&gt;, 'send': &lt;function GPSCommon.send&gt;, '__weakref__': &lt;attribute '__weakref__' of 'GPSCommon' objects&gt;, '__del__': &lt;function GPSCommon.__del__&gt;, 'read': &lt;function GPSCommon.read&gt;, 'data': &lt;function GPSCommon.data&gt;, '__doc__': ' Isolate socket handling and buffering from the protocol interpretation. ', '__init__': &lt;function GPSCommon.__init__&gt;, '__module__': 'code.libs.gps.client', 'connect': &lt;function GPSCommon.connect&gt;, 'close': &lt;function GPSCommon.close&gt;, '__dict__': &lt;attribute '__dict__' of 'GPSCommon' objects&gt;})</em><a class="headerlink" href="#code.libs.gps.client.GPSCommon.__dict__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -246,6 +264,12 @@
 <dt id="code.libs.gps.client.GPSCommon.__module__">
 <code class="descname">__module__</code><em class="property"> = 'code.libs.gps.client'</em><a class="headerlink" href="#code.libs.gps.client.GPSCommon.__module__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="attribute">
+<dt id="code.libs.gps.client.GPSCommon.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#code.libs.gps.client.GPSCommon.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="code.libs.gps.client.GPSCommon.close">
@@ -290,7 +314,13 @@ number interpreted as the port number to use.</p>
 <dl class="class">
 <dt id="code.libs.gps.client.GPSJson">
 <em class="property">class </em><code class="descclassname">code.libs.gps.client.</code><code class="descname">GPSJson</code><a class="reference internal" href="_modules/code/libs/gps/client.html#GPSJson"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.gps.client.GPSJson" title="Permalink to this definition">¶</a></dt>
-<dd><p>Basic JSON decoding.</p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Basic JSON decoding.</p>
+<dl class="attribute">
+<dt id="code.libs.gps.client.GPSJson.__dict__">
+<code class="descname">__dict__</code><em class="property"> = mappingproxy({'__doc__': ' Basic JSON decoding. ', '__module__': 'code.libs.gps.client', 'unpack': &lt;function GPSJson.unpack&gt;, '__weakref__': &lt;attribute '__weakref__' of 'GPSJson' objects&gt;, 'stream': &lt;function GPSJson.stream&gt;, '__iter__': &lt;function GPSJson.__iter__&gt;, '__dict__': &lt;attribute '__dict__' of 'GPSJson' objects&gt;})</em><a class="headerlink" href="#code.libs.gps.client.GPSJson.__dict__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="code.libs.gps.client.GPSJson.__iter__">
 <code class="descname">__iter__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/gps/client.html#GPSJson.__iter__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.gps.client.GPSJson.__iter__" title="Permalink to this definition">¶</a></dt>
@@ -300,6 +330,12 @@ number interpreted as the port number to use.</p>
 <dt id="code.libs.gps.client.GPSJson.__module__">
 <code class="descname">__module__</code><em class="property"> = 'code.libs.gps.client'</em><a class="headerlink" href="#code.libs.gps.client.GPSJson.__module__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="attribute">
+<dt id="code.libs.gps.client.GPSJson.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#code.libs.gps.client.GPSJson.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="code.libs.gps.client.GPSJson.stream">
@@ -317,7 +353,7 @@ number interpreted as the port number to use.</p>
 <dl class="exception">
 <dt id="code.libs.gps.client.JsonError">
 <em class="property">exception </em><code class="descclassname">code.libs.gps.client.</code><code class="descname">JsonError</code><span class="sig-paren">(</span><em>data</em>, <em>explanation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/gps/client.html#JsonError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.gps.client.JsonError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.Exception" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></p>
 <dl class="method">
 <dt id="code.libs.gps.client.JsonError.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>data</em>, <em>explanation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/gps/client.html#JsonError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.gps.client.JsonError.__init__" title="Permalink to this definition">¶</a></dt>
@@ -379,11 +415,18 @@ number interpreted as the port number to use.</p>
 <dl class="class">
 <dt id="code.libs.gps.gps.GPSData">
 <em class="property">class </em><code class="descclassname">code.libs.gps.gps.</code><code class="descname">GPSData</code><a class="reference internal" href="_modules/code/libs/gps/gps.html#GPSData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.gps.gps.GPSData" title="Permalink to this definition">¶</a></dt>
-<dd><p>Position, track, velocity and status information returned by a GPS.</p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Position, track, velocity and status information returned by a GPS.</p>
 <dl class="class">
 <dt id="code.libs.gps.gps.GPSData.Satellite">
 <em class="property">class </em><code class="descname">Satellite</code><span class="sig-paren">(</span><em>PRN</em>, <em>elevation</em>, <em>azimuth</em>, <em>ss</em>, <em>used=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/gps/gps.html#GPSData.Satellite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.gps.gps.GPSData.Satellite" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="attribute">
+<dt id="code.libs.gps.gps.GPSData.Satellite.__dict__">
+<code class="descname">__dict__</code><em class="property"> = mappingproxy({'__doc__': None, '__module__': 'code.libs.gps.gps', '__repr__': &lt;function GPSData.Satellite.__repr__&gt;, '__init__': &lt;function GPSData.Satellite.__init__&gt;, '__weakref__': &lt;attribute '__weakref__' of 'Satellite' objects&gt;, '__dict__': &lt;attribute '__dict__' of 'Satellite' objects&gt;})</em><a class="headerlink" href="#code.libs.gps.gps.GPSData.Satellite.__dict__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="code.libs.gps.gps.GPSData.Satellite.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>PRN</em>, <em>elevation</em>, <em>azimuth</em>, <em>ss</em>, <em>used=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/gps/gps.html#GPSData.Satellite.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.gps.gps.GPSData.Satellite.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -398,7 +441,18 @@ number interpreted as the port number to use.</p>
 <code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/gps/gps.html#GPSData.Satellite.__repr__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.gps.gps.GPSData.Satellite.__repr__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="attribute">
+<dt id="code.libs.gps.gps.GPSData.Satellite.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#code.libs.gps.gps.GPSData.Satellite.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="code.libs.gps.gps.GPSData.__dict__">
+<code class="descname">__dict__</code><em class="property"> = mappingproxy({'__doc__': ' Position, track, velocity and status information returned by a GPS. ', '__module__': 'code.libs.gps.gps', '__repr__': &lt;function GPSData.__repr__&gt;, 'Satellite': &lt;class 'code.libs.gps.gps.GPSData.Satellite'&gt;, '__init__': &lt;function GPSData.__init__&gt;, '__weakref__': &lt;attribute '__weakref__' of 'GPSData' objects&gt;, '__dict__': &lt;attribute '__dict__' of 'GPSData' objects&gt;})</em><a class="headerlink" href="#code.libs.gps.gps.GPSData.__dict__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="code.libs.gps.gps.GPSData.__init__">
@@ -415,12 +469,24 @@ number interpreted as the port number to use.</p>
 <code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/gps/gps.html#GPSData.__repr__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.gps.gps.GPSData.__repr__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="attribute">
+<dt id="code.libs.gps.gps.GPSData.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#code.libs.gps.gps.GPSData.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="code.libs.gps.gps.GPSFix">
 <em class="property">class </em><code class="descclassname">code.libs.gps.gps.</code><code class="descname">GPSFix</code><a class="reference internal" href="_modules/code/libs/gps/gps.html#GPSFix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.gps.gps.GPSFix" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="attribute">
+<dt id="code.libs.gps.gps.GPSFix.__dict__">
+<code class="descname">__dict__</code><em class="property"> = mappingproxy({'__doc__': None, '__module__': 'code.libs.gps.gps', '__init__': &lt;function GPSFix.__init__&gt;, '__weakref__': &lt;attribute '__weakref__' of 'GPSFix' objects&gt;, '__dict__': &lt;attribute '__dict__' of 'GPSFix' objects&gt;})</em><a class="headerlink" href="#code.libs.gps.gps.GPSFix.__dict__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="code.libs.gps.gps.GPSFix.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/code/libs/gps/gps.html#GPSFix.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#code.libs.gps.gps.GPSFix.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -429,6 +495,12 @@ number interpreted as the port number to use.</p>
 <dt id="code.libs.gps.gps.GPSFix.__module__">
 <code class="descname">__module__</code><em class="property"> = 'code.libs.gps.gps'</em><a class="headerlink" href="#code.libs.gps.gps.GPSFix.__module__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="attribute">
+<dt id="code.libs.gps.gps.GPSFix.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#code.libs.gps.gps.GPSFix.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
 
 </dd></dl>
 
