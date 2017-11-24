@@ -7,17 +7,18 @@ A documentaçao da plataforma Vivace, incluindo as *docstrings* de todas as clas
 
 ## Instalar dependencias
 
-Para instalar as dependencias Python basta abrir um terminal na raiz do projeto e usar o comando ```make init```.
+Para instalar as dependencias Python abra um terminal na raiz do projeto e use o comando:
+```
+make init
+```
 
 Caso voce prefira fazer isso manualmente, todas as dependencias Python necessarias estao listadas no arquivo *requirements.txt*.
 
 ## Atualizar documentaçao
 
-1. Realize as mudanças desejadas na documentaçao.
-2. Entre na pasta docs e use os comandos:
+Para atualizar a documentaçao realize as mudanças desejadas, entre na pasta docs e use os comandos:
 ```
-make clean-docs
-make docs
+make clean
 make html
 ```
 
