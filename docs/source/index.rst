@@ -6,9 +6,23 @@
 Welcome to Vivace's documentation!
 ==================================
 
+This is a preview for the intro text.
+
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Gettings Started
+
+   connect_everything
+   run_the_code
+   analyze_data
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents
+
+   option4
+   option5
+   option6
 
 
 
