@@ -9,6 +9,7 @@ A documentaçao da plataforma Vivace, incluindo as *docstrings* de todas as clas
 
 Para instalar as dependencias Python abra um terminal na raiz do projeto e use o comando:
 ```
+regregrgcadc
 make init
 ```
 
