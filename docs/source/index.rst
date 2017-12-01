@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Bem vindo a documentaçao da plataforma Vivace!
-==================================
+================================================
 
 Bem vindo ao repositorio da Vivace!
 

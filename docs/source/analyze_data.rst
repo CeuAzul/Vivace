@@ -1,5 +1,5 @@
 Analizando os dados
-===========
+=========================
 
 Text for Option3
 
@@ -10,4 +10,4 @@ Section2
 ----------
 
 Subsection2.1
-~~~~~~~~~~~
+~~~~~~~~~~~~~~~~
