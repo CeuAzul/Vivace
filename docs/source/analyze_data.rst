@@ -1,4 +1,4 @@
-Analzing the data
+Analizando os dados
 ===========
 
 Text for Option3

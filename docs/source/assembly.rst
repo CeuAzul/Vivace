@@ -1,7 +1,7 @@
-Running the code
+Montagem da plataforma
 ===========
 
-Text for Option2
+Instruçoes sobre como montar a plataforma, passo a passo.
 
 Section1
 -----------
