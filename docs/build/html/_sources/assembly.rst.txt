@@ -1,7 +1,7 @@
-Analizando os dados
+Montagem da plataforma
 =========================
 
-Text for Option3
+Instruçoes sobre como montar a plataforma, passo a passo.
 
 Section1
 -----------
