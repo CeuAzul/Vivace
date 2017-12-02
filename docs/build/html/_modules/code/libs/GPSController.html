@@ -180,12 +180,20 @@
 
 
 <div class="viewcode-block" id="GpsController"><a class="viewcode-back" href="../../../code.libs.html#code.libs.GPSController.GpsController">[docs]</a><span class="k">class</span> <span class="nc">GpsController</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Classe responsavel pela comunicaçao com a biblioteca GPS.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
 <div class="viewcode-block" id="GpsController.__init__"><a class="viewcode-back" href="../../../code.libs.html#code.libs.GPSController.GpsController.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Cria o objeto GpsController em uma Thread separada.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gpsd</span> <span class="o">=</span> <span class="n">GPS</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">WATCH_ENABLE</span><span class="p">)</span>  <span class="c1"># starting the stream of info</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">running</span> <span class="o">=</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="GpsController.run"><a class="viewcode-back" href="../../../code.libs.html#code.libs.GPSController.GpsController.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Inicia o recebimento de dados do GPS.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">running</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">running</span><span class="p">:</span>
             <span class="c1"># grab EACH set of gpsd info to clear the buffer</span>
@@ -195,18 +203,32 @@
                 <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="GpsController.stopController"><a class="viewcode-back" href="../../../code.libs.html#code.libs.GPSController.GpsController.stopController">[docs]</a>    <span class="k">def</span> <span class="nf">stopController</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Corta o recebimento de dados do GPS.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">running</span> <span class="o">=</span> <span class="kc">False</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">fix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retorna o valor de indicaçao de Fix.</span>
+
+<span class="sd">        :returns: Valor de Fix</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gpsd</span><span class="o">.</span><span class="n">fix</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">utc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retorna a posiçao em UTC.</span>
+
+<span class="sd">        :returns: Posiçao em UTC</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gpsd</span><span class="o">.</span><span class="n">utc</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">satellites</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retorna o numero de satelites visiveis.</span>
+
+<span class="sd">        :returns: Numero de satelites visiveis</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gpsd</span><span class="o">.</span><span class="n">satellites</span></div>
 
 

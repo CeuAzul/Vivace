@@ -179,11 +179,19 @@
 
 
 <div class="viewcode-block" id="Nano"><a class="viewcode-back" href="../../../code.libs.html#code.libs.nano.Nano">[docs]</a><span class="k">class</span> <span class="nc">Nano</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot; Retorna dados do nano - Tacometro e Ultrassom</span>
+    <span class="sd">&quot;&quot;&quot; Responsavel pela comunicaçao do RaspberryPi com um Arduino Nano</span>
+<span class="sd">    conectado via porta USB e se comunicando através de protocolo Serial.abs</span>
+
+<span class="sd">    Para utilizar esta classe basta que se crie um objeto da classe, sem</span>
+<span class="sd">    parametros extras.</span>
+
+<span class="sd">    Estao implementados nesta classe o retorno de variaveis relacionadas</span>
+<span class="sd">    ao sensor de ultrassom e o tacometro.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Nano.__init__"><a class="viewcode-back" href="../../../code.libs.html#code.libs.nano.Nano.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construtor: Bota os métodos para funcionar.</span>
+        <span class="sd">&quot;&quot;&quot;Construtor: Inicializa o objeto da classe e inicializa a</span>
+<span class="sd">        comunicaçao serial via porta USB1, com baudrate igual a 9600bps.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ser</span> <span class="o">=</span> <span class="n">serial</span><span class="o">.</span><span class="n">Serial</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="s1">&#39;/dev/ttyUSB1&#39;</span><span class="p">,</span> <span class="n">baudrate</span><span class="o">=</span><span class="mi">9600</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -197,7 +205,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">distRef</span> <span class="o">=</span> <span class="mi">0</span></div>
 
 <div class="viewcode-block" id="Nano.atualiza"><a class="viewcode-back" href="../../../code.libs.html#code.libs.nano.Nano.atualiza">[docs]</a>    <span class="k">def</span> <span class="nf">atualiza</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Atualiza a parada.</span>
+        <span class="sd">&quot;&quot;&quot;Atualiza todas as variaveis setadas dentro da classe.</span>
+<span class="sd">        Atualmente as variaveis usadas sao:</span>
+
+<span class="sd">        - wow</span>
+<span class="sd">        - rpmD</span>
+<span class="sd">        - rpmE</span>
+<span class="sd">        - wowRaw</span>
+<span class="sd">        - tempoVoo</span>
+<span class="sd">        - distancia</span>
+<span class="sd">        - distRef</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ser</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
         <span class="k">if</span><span class="p">(</span><span class="n">x</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
@@ -214,24 +231,52 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">distRef</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="Nano.getWow"><a class="viewcode-back" href="../../../code.libs.html#code.libs.nano.Nano.getWow">[docs]</a>    <span class="k">def</span> <span class="nf">getWow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Retorna o valor de WeightOnWhells.</span>
+
+<span class="sd">        :returns: WeightOnWhells</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">wow</span></div>
 
 <div class="viewcode-block" id="Nano.getRpmD"><a class="viewcode-back" href="../../../code.libs.html#code.libs.nano.Nano.getRpmD">[docs]</a>    <span class="k">def</span> <span class="nf">getRpmD</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Retorna o valor de RPM no motor direito.</span>
+
+<span class="sd">        :returns: RPM no motor direito</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rpmD</span></div>
 
 <div class="viewcode-block" id="Nano.getRpmE"><a class="viewcode-back" href="../../../code.libs.html#code.libs.nano.Nano.getRpmE">[docs]</a>    <span class="k">def</span> <span class="nf">getRpmE</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Retorna o valor de RPM no motor esquerdo.</span>
+
+<span class="sd">        :returns: RPM no motor esquerdo</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rpmE</span></div>
 
 <div class="viewcode-block" id="Nano.getWowRaw"><a class="viewcode-back" href="../../../code.libs.html#code.libs.nano.Nano.getWowRaw">[docs]</a>    <span class="k">def</span> <span class="nf">getWowRaw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Retorna o valor de WeightOnWhells cru.</span>
+
+<span class="sd">        :returns: WeightOnWhells cru</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">wowRaw</span></div>
 
 <div class="viewcode-block" id="Nano.getTempoVoo"><a class="viewcode-back" href="../../../code.libs.html#code.libs.nano.Nano.getTempoVoo">[docs]</a>    <span class="k">def</span> <span class="nf">getTempoVoo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Retorna o valor de tempo atual de voo.</span>
+
+<span class="sd">        :returns: Tempo atual de voo</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tempoVoo</span></div>
 
 <div class="viewcode-block" id="Nano.getDistancia"><a class="viewcode-back" href="../../../code.libs.html#code.libs.nano.Nano.getDistancia">[docs]</a>    <span class="k">def</span> <span class="nf">getDistancia</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Retorna o valor de distancia percorrida em pista.</span>
+
+<span class="sd">        :returns: Distancia percorrida em pista</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">distancia</span></div>
 
 <div class="viewcode-block" id="Nano.getDistRef"><a class="viewcode-back" href="../../../code.libs.html#code.libs.nano.Nano.getDistRef">[docs]</a>    <span class="k">def</span> <span class="nf">getDistRef</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Retorna o valor da distancia usada como referencia.</span>
+
+<span class="sd">        :returns: Distancia de referencia</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">distRef</span></div></div>
 </pre></div>
 

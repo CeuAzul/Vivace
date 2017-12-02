@@ -181,8 +181,19 @@
 
 
 <div class="viewcode-block" id="Ultrassom"><a class="viewcode-back" href="../../../code.libs.html#code.libs.ultrassom.Ultrassom">[docs]</a><span class="k">class</span> <span class="nc">Ultrassom</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Classe do sensor de ultrassom, responsavel por avaliar se o aviao</span>
+<span class="sd">    ja decolou ou se ainda se encontra em solo.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Ultrassom.__init__"><a class="viewcode-back" href="../../../code.libs.html#code.libs.ultrassom.Ultrassom.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">distMax</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">elevacaoMin</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">trigPin</span><span class="o">=</span><span class="mi">23</span><span class="p">,</span> <span class="n">echoPin</span><span class="o">=</span><span class="mi">24</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Inicializa o objeto ultrassom com os parametros especificados.</span>
+
+<span class="sd">        :param distMax: Distancia de pista percorrida (?)</span>
+<span class="sd">        :param elevacaoMin: Elevaçao minima para que se considere uma decolagem</span>
+<span class="sd">        :param trigPin: Porta do pino de Trig do ultrassom</span>
+<span class="sd">        :param echoPin: Porta do pino de Echo do ultrassom</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">GPIO</span><span class="o">.</span><span class="n">setmode</span><span class="p">(</span><span class="n">GPIO</span><span class="o">.</span><span class="n">BCM</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">trigPin</span> <span class="o">=</span> <span class="n">trigPin</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">echoPin</span> <span class="o">=</span> <span class="n">echoPin</span>
@@ -193,6 +204,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">elevacaoMin</span> <span class="o">=</span> <span class="n">elevacaoMin</span></div>
 
 <div class="viewcode-block" id="Ultrassom.calculaDistancia"><a class="viewcode-back" href="../../../code.libs.html#code.libs.ultrassom.Ultrassom.calculaDistancia">[docs]</a>    <span class="k">def</span> <span class="nf">calculaDistancia</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calcula a distancia entre o ultrassom e o objeto que esta</span>
+<span class="sd">        &quot;tapando&quot; ele, idealmente o chao.</span>
+
+<span class="sd">        :returns: Distancia do ultrassom ao chao.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">distance</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">cont</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">while</span><span class="p">(</span><span class="n">distance</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">distance</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">distMax</span><span class="p">):</span>
@@ -225,6 +242,10 @@
         <span class="k">return</span> <span class="n">distance</span></div>
 
 <div class="viewcode-block" id="Ultrassom.calibraAqui"><a class="viewcode-back" href="../../../code.libs.html#code.libs.ultrassom.Ultrassom.calibraAqui">[docs]</a>    <span class="k">def</span> <span class="nf">calibraAqui</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">calibracoes</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Zera a altura do ultrassom de modo a se ter uma referencia da</span>
+<span class="sd">        altura em que ele foi instalado com relaçao ao solo.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">dist</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">calibracoes</span><span class="p">):</span>
             <span class="n">dist</span> <span class="o">=</span> <span class="n">dist</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculaDistancia</span><span class="p">()</span>
@@ -232,6 +253,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">distReferencia</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Ultrassom.inicializa"><a class="viewcode-back" href="../../../code.libs.html#code.libs.ultrassom.Ultrassom.inicializa">[docs]</a>    <span class="k">def</span> <span class="nf">inicializa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Inicializa as portas GPIO de Trig como output e Echo como input,</span>
+<span class="sd">        coloca a porta trig como baixa e calibra a altura de ultrassom.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">GPIO</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trigPin</span><span class="p">,</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">OUT</span><span class="p">)</span>
         <span class="n">GPIO</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">echoPin</span><span class="p">,</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">IN</span><span class="p">)</span>
         <span class="n">GPIO</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trigPin</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
@@ -239,6 +264,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">calibraAqui</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Ultrassom.atualiza"><a class="viewcode-back" href="../../../code.libs.html#code.libs.ultrassom.Ultrassom.atualiza">[docs]</a>    <span class="k">def</span> <span class="nf">atualiza</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Atualiza as variaveis de distancia atual e a booleana wowRaw.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">distAtual</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculaDistancia</span><span class="p">()</span>
         <span class="c1"># 0 = no solo</span>
         <span class="c1"># 1 = Voando</span>
@@ -248,21 +275,43 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">wowRaw</span> <span class="o">=</span> <span class="mi">0</span></div>
 
 <div class="viewcode-block" id="Ultrassom.finaliza"><a class="viewcode-back" href="../../../code.libs.html#code.libs.ultrassom.Ultrassom.finaliza">[docs]</a>    <span class="k">def</span> <span class="nf">finaliza</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Limpa as portas GPIO</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">GPIO</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Ultrassom.getDistanciaAtual"><a class="viewcode-back" href="../../../code.libs.html#code.libs.ultrassom.Ultrassom.getDistanciaAtual">[docs]</a>    <span class="k">def</span> <span class="nf">getDistanciaAtual</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retorna o valor de distancia percorrida em pista.</span>
+
+<span class="sd">        :returns: Distancia percorrida em pista</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">distAtual</span></div>
 
 <div class="viewcode-block" id="Ultrassom.getWowRaw"><a class="viewcode-back" href="../../../code.libs.html#code.libs.ultrassom.Ultrassom.getWowRaw">[docs]</a>    <span class="k">def</span> <span class="nf">getWowRaw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retorna o valor de WeightOnWhells cru.</span>
+
+<span class="sd">        :returns: WeightOnWhells cru</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">wowRaw</span></div>
 
 <div class="viewcode-block" id="Ultrassom.getDistanciaReferencia"><a class="viewcode-back" href="../../../code.libs.html#code.libs.ultrassom.Ultrassom.getDistanciaReferencia">[docs]</a>    <span class="k">def</span> <span class="nf">getDistanciaReferencia</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retorna o valor da distancia usada como referencia.</span>
+
+<span class="sd">        :returns: Distancia de referencia</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">distReferencia</span></div>
 
 <div class="viewcode-block" id="Ultrassom.getDistanciaMax"><a class="viewcode-back" href="../../../code.libs.html#code.libs.ultrassom.Ultrassom.getDistanciaMax">[docs]</a>    <span class="k">def</span> <span class="nf">getDistanciaMax</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retorna o valor da distancia final de pista percorrida.</span>
+
+<span class="sd">        :returns: Distancia de pista percorrida</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">distMax</span></div>
 
 <div class="viewcode-block" id="Ultrassom.getElevacaoMin"><a class="viewcode-back" href="../../../code.libs.html#code.libs.ultrassom.Ultrassom.getElevacaoMin">[docs]</a>    <span class="k">def</span> <span class="nf">getElevacaoMin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retorna o valor da elevaçao minima para ser considerada decolagem.</span>
+
+<span class="sd">        :returns: Elevaçao minima de decolagem</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">elevacaoMin</span></div></div>
 </pre></div>
 
