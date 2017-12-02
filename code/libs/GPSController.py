@@ -8,12 +8,20 @@ import math
 
 
 class GpsController(threading.Thread):
+    """Classe responsavel pela comunicaçao com a biblioteca GPS.
+    """
+
     def __init__(self):
+        """Cria o objeto GpsController em uma Thread separada.
+        """
+
         threading.Thread.__init__(self)
         self.gpsd = GPS(mode=WATCH_ENABLE)  # starting the stream of info
         self.running = False
 
     def run(self):
+        """Inicia o recebimento de dados do GPS.
+        """
         self.running = True
         while self.running:
             # grab EACH set of gpsd info to clear the buffer
@@ -23,18 +31,32 @@ class GpsController(threading.Thread):
                 pass
 
     def stopController(self):
+        """Corta o recebimento de dados do GPS.
+        """
         self.running = False
 
     @property
     def fix(self):
+        """Retorna o valor de indicaçao de Fix.
+
+        :returns: Valor de Fix
+        """
         return self.gpsd.fix
 
     @property
     def utc(self):
+        """Retorna a posiçao em UTC.
+
+        :returns: Posiçao em UTC
+        """
         return self.gpsd.utc
 
     @property
     def satellites(self):
+        """Retorna o numero de satelites visiveis.
+
+        :returns: Numero de satelites visiveis
+        """
         return self.gpsd.satellites
 
 

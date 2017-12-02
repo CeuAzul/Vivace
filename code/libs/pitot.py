@@ -1,25 +1,26 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-"""Biblioteca Pitot
-Biblioteca irá converter os dados do ADC para um valor de velocidade e pressão
-"""
-
 import time
 from .adc import ADC
 from random import randint
 
 
 class Pitot:
-    """Biblioteca Pitot:
+    """Classe responsavel pela criaçao e comunicaçao de objetos do tipo Pitot.
+    Esta classe ira converter os dados analogicos vindos do ADC em dados de
+    pressao e velocidade:
 
-    1. Biblioteca irá converter os dados do ADC para um valor de velocidade e pressão.
-    2. Primeiramente será convertido o valor do ADC para um nível de tensão.
-    3. Depois, essa tensão é convertida em pressão.
-    4. E por fim, é convertida em velocidade.
+    1. Primeiramente será convertido o valor do ADC para um nível de tensão.
+    2. Depois, essa tensão é convertida em pressão.
+    3. E por fim, é convertida em velocidade.
     """
 
     def __init__(self, numADC=0):
+        """Inicializa o objeto Pitot na porta analogica especificada.
+
+        :param numADC: Numero da porta ADC a ser utilizada
+        """
         # Cria objeto do ADC
         self.adc8 = ADC()
         self.numADC = numADC
@@ -31,15 +32,25 @@ class Pitot:
         self.setReferenciaAqui()
 
     def setReferenciaAqui(self, samples=20):
+        """Seta um valor de referencia para as futuras aquisiçoes.
+        Sera coletado um numero de samples analogicos especificado,
+        uma media desses valores sera realizada e este valor medio
+        sera utilizado futuramente como "zero" de referencia.
+
+        :param: samples: Número de amostras para oversampling
+        """
+
         for x in range(samples):
             self.atualiza(10)
             self.valorInicial = self.valADC
             time.sleep(0.01)
 
     def atualiza(self, samples=20, densAr=1.218):
-        """Le valor analogico do ADC e transforma isso em pressão e velocidade.
+        """Le valor analogico do ADC e transforma isso em pressão e
+        velocidade. Todas as variaveis sao entao atualizadas.
 
         :param samples: Número de amostras para oversampling
+        :param densAr: Densidade local do ar
         """
         self.valADC = 0
         for x in range(samples):
@@ -106,8 +117,8 @@ class Pitot:
     def getPressaoDinamica(self, um="m/s"):
         """Retorna valor da pressão dinâmica.
 
-            :returns: pressão dinâmica
             :param um: Unidade de medida
+            :returns: pressão dinâmica
         """
         if um == "PA":
             return self.pressaoDinamica
@@ -121,8 +132,8 @@ class Pitot:
     def getVelocidade(self, um="m/s"):
         """Retorna valor da velocidade calibrada.
 
-            :returns: Velocidade calibrada
             :param um: Unidade de medida
+            :returns: Velocidade calibrada
         """
         if um == "m/s":
             return self.velocidade
