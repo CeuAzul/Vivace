@@ -9,8 +9,19 @@ import datetime
 
 
 class Ultrassom:
+    """Classe do sensor de ultrassom, responsavel por avaliar se o aviao
+    ja decolou ou se ainda se encontra em solo.
+    """
 
     def __init__(self, distMax=30, elevacaoMin=3, trigPin=23, echoPin=24):
+        """Inicializa o objeto ultrassom com os parametros especificados.
+
+        :param distMax: Distancia de pista percorrida (?)
+        :param elevacaoMin: Elevaçao minima para que se considere uma decolagem
+        :param trigPin: Porta do pino de Trig do ultrassom
+        :param echoPin: Porta do pino de Echo do ultrassom
+        """
+
         GPIO.setmode(GPIO.BCM)
         self.trigPin = trigPin
         self.echoPin = echoPin
@@ -21,6 +32,12 @@ class Ultrassom:
         self.elevacaoMin = elevacaoMin
 
     def calculaDistancia(self):
+        """Calcula a distancia entre o ultrassom e o objeto que esta
+        "tapando" ele, idealmente o chao.
+
+        :returns: Distancia do ultrassom ao chao.
+        """
+
         distance = 0
         cont = 0
         while(distance <= 0 or distance >= self.distMax):
@@ -53,6 +70,10 @@ class Ultrassom:
         return distance
 
     def calibraAqui(self, calibracoes=20):
+        """Zera a altura do ultrassom de modo a se ter uma referencia da
+        altura em que ele foi instalado com relaçao ao solo.
+        """
+
         dist = 0
         for i in range(calibracoes):
             dist = dist + self.calculaDistancia()
@@ -60,6 +81,10 @@ class Ultrassom:
         self.distReferencia = round(dist, 2)
 
     def inicializa(self):
+        """Inicializa as portas GPIO de Trig como output e Echo como input,
+        coloca a porta trig como baixa e calibra a altura de ultrassom.
+        """
+
         GPIO.setup(self.trigPin, GPIO.OUT)
         GPIO.setup(self.echoPin, GPIO.IN)
         GPIO.output(self.trigPin, False)
@@ -67,6 +92,8 @@ class Ultrassom:
         self.calibraAqui()
 
     def atualiza(self):
+        """Atualiza as variaveis de distancia atual e a booleana wowRaw.
+        """
         self.distAtual = self.calculaDistancia()
         # 0 = no solo
         # 1 = Voando
@@ -76,19 +103,41 @@ class Ultrassom:
             self.wowRaw = 0
 
     def finaliza(self):
+        """Limpa as portas GPIO
+        """
         GPIO.cleanup()
 
     def getDistanciaAtual(self):
+        """Retorna o valor de distancia percorrida em pista.
+
+        :returns: Distancia percorrida em pista
+        """
         return self.distAtual
 
     def getWowRaw(self):
+        """Retorna o valor de WeightOnWhells cru.
+
+        :returns: WeightOnWhells cru
+        """
         return self.wowRaw
 
     def getDistanciaReferencia(self):
+        """Retorna o valor da distancia usada como referencia.
+
+        :returns: Distancia de referencia
+        """
         return self.distReferencia
 
     def getDistanciaMax(self):
+        """Retorna o valor da distancia final de pista percorrida.
+
+        :returns: Distancia de pista percorrida
+        """
         return self.distMax
 
     def getElevacaoMin(self):
+        """Retorna o valor da elevaçao minima para ser considerada decolagem.
+
+        :returns: Elevaçao minima de decolagem
+        """
         return self.elevacaoMin
