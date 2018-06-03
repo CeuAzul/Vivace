@@ -62,14 +62,14 @@ class Escritor:
         self.nomeCompleto = self.pasta + "/" + self.nomeArquivo + \
             str(self.numeroArquivo) + self.extensao
 
-    def addDado(self, d):
+    def addDado(self, dados):
         """Adiciona um dado no vetor de dados.
 
         :param d: Dado a ser adicionado.
         """
-        self.dados.append(d)
+        self.dados.append(dados)
 
-    def setDados(self, d):
+    def setDados(self, dados):
         """Atualiza o vetor de dados do Escritor com os dados que vem como parâmetro dessa função.
 
         O Escritor apenas consegue ver os dados que foram passados por meio dessa função.
@@ -78,7 +78,7 @@ class Escritor:
 
         :param d: Vetor de Dado que será escrito na ordem do vetor.
         """
-        self.dados = d
+        self.dados = dados
 
     def verificaTamanhoArquivo(self):
         """Retorna o tamanho do arquivo.
