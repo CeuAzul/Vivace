@@ -21,7 +21,7 @@ class Transmissor:
 
     """
 
-    def __init__(self, separador=",", protocolo=True,  baudRate=57600, codificacao='UTF-8'):
+    def __init__(self, separador=",", usarProtocolo=True,  baudRate=57600, codificacao='UTF-8'):
         """Construtor: Inicializa parâmetros de configuração do Transmissor.
         Exitem dois métodos de transmissão, utilizando o protolo ou não.
 
@@ -41,18 +41,18 @@ class Transmissor:
         self.separador = separador
         self.baudRate = baudRate
         self.separador = separador
-        self.protocolo = protocolo
+        self.usarProtocolo = usarProtocolo
         self.codificacao = codificacao
-        self.ser = serial.Serial('/dev/ttyUSB0', baudRate, timeout=0.001)
+        self.serial = serial.Serial('/dev/ttyUSB0', baudRate, timeout=0.001)
 
-    def setDados(self, d):
+    def setDados(self, dados):
         """Função que atualiza o vetor de dados do Transmissor com os dados que vem como parâmetro dessa função.
         O Transmissor apenas consegue ver os dados que foram passados por meio dessa função.
         É utilizada como a porta de entrada para os dados que serão escritos.
 
         :param d: Vetor de Dado que será escrito na ordem do vetor.
         """
-        self.dados = d
+        self.dados = dados
 
     def transmiteLinha(self):
         """Função será chamada quando os dados deverão ser transmitidos.
@@ -60,21 +60,21 @@ class Transmissor:
         A forma de transmissão dependerá da utilização do protocolo ou não.
         Recomenda-se a utilização do protocolo para verificar a integridade do dado.
         """
-        for x in self.dados:
-            if x.transmiteDado:
-                if self.protocolo:
-                    self.ser.write(bytes("!" + x.apelido + "=" +
-                                         str(x.valor) + "@\n", self.codificacao))
+        for dado in self.dados:
+            if dado.transmiteDado:
+                if self.usarProtocolo:
+                    self.serial.write(
+                        bytes("!" + dado.apelido + "=" + str(dado.valor) + "@\n", self.codificacao))
                 else:
-                    self.ser.write(
-                        bytes(str(x.valor) + self.separador, self.codificacao))
-        if not self.protocolo:
-            self.ser.write(bytes("\n", self.codificacao))
+                    self.serial.write(
+                        bytes(str(dado.valor) + self.separador, self.codificacao))
+        if not self.usarProtocolo:
+            self.serial.write(bytes("\n", self.codificacao))
 
     def leLinha(self):
         """Essa função é responsável por ler telecomandos recebidos pela serial.
 
         :returns: String do telecomando
         """
-        x = self.ser.readline().decode("utf-8")
-        return x
+        linhaLida = self.serial.readline().decode("utf-8")
+        return linhaLida
