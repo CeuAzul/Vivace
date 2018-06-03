@@ -10,7 +10,7 @@ class Dado:
     atual do dado.
     """
 
-    def __init__(self, nome, unidadeMedida, apelido, gravaDado=True, transmiteDado=False, printaDado=False, casasDecimais=3):
+    def __init__(self, nome, unidadeMedida, apelido, gravaDado=True, transmiteDado=False, printaDado=False, casasDecimais=3, sensor=""):
         """Construtor: Inicializa as variáveis necessárias.
 
         :param name: Nome completo do dado
@@ -30,6 +30,7 @@ class Dado:
         self.printaDado = printaDado
         self.valor = 0
         self.casasDecimais = casasDecimais
+        self.sensor = sensor
 
     def setValor(self, valor):
         """Função seta o valor atual da variável para a especificada no parâmetro.
