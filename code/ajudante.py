@@ -131,11 +131,14 @@ class Ajudante(object):
         if self.configurador.USAR_CELULAS == True:
             print('CELULAS dados criados!')
 
-            self.forcaH = Dado("Forca - Celula Horizontal ", "kg", "fh", False, False, True, 3, "CELULA")
-            self.forcaFD = Dado("Forca - Celula Frontal Direita ", "kg", "ffd", False, False, True, 3, "CELULA")
-            self.forcaFE = Dado("Forca - Celula Frontal Esquerda ", "kg", "ffe", False, False, True, 3, "CELULA")
-            self.forcaTD = Dado("Forca - Celula Traseira Direita ", "kg", "ftd", False, False, True, 3, "CELULA")
-            self.forcaTE = Dado("Forca - Celula Traseira Esquerda ", "kg", "fte", False, False, True, 3, "CELULA")
+            nomeDasCelulas = self.configurador.NOME_DAS_CELULAS
+            apelidoDasCelulas = self.configurador.APELIDO_DAS_CELULAS
+
+            self.forca = []
+
+            for celula in range(self.configurador.NUMERO_DE_CELULAS):
+                print(nomeDasCelulas[celula] + 'criada!')
+                self.forca.extend([Dado("Forca - " + nomeDasCelulas[celula], "kg", apelidoDasCelulas[celula], False, False, True, 3, "CELULA")])
 
     def receber_todos_os_dados(self):
         todosOsDados = []
