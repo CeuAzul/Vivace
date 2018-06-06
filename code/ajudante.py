@@ -451,11 +451,10 @@ class Ajudante(object):
 
 
         time.sleep(delay)
+class Thredeiro (threading.Thread):
 
-class Thredeiro(object):
+    def __init__(self, name, funcaoAlvo, delay):
+        threading.Thread.__init__(self, target=funcaoAlvo, args=(delay,))
+        print('Thread de ' + name + ' iniciada!')
+        self.start()
 
-    def __init__(self, funçaoAlvo, delay):
-        print('Thread iniciada!')
-        self.thread = threading.Thread(target=funçaoAlvo, args=(delay,))
-        self.thread.setDaemon(True)
-        self.thread.start()
