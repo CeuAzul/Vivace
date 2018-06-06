@@ -66,6 +66,7 @@ class Configurador(object):
         self.USAR_CELULAS = True
         self.GRAVAR_CELULAS= True
         self.TRANSMITIR_CELULAS = True
+        self.NUMERO_DE_CELULAS = 5
 
         # NANO
         self.USAR_NANO = True
