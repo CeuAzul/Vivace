@@ -137,7 +137,7 @@ class Ajudante(object):
             self.forca = []
 
             for celula in range(self.configurador.NUMERO_DE_CELULAS):
-                print(nomeDasCelulas[celula] + 'criada!')
+                print(nomeDasCelulas[celula] + ' criada!')
                 self.forca.extend([Dado("Forca - " + nomeDasCelulas[celula], "kg", apelidoDasCelulas[celula], False, False, True, 3, "CELULA")])
 
     def receber_todos_os_dados(self):
@@ -302,15 +302,15 @@ class Ajudante(object):
         self.threadsRodando = False
 
     def transmitirDados(self, delay):
-        print('Transmitindo dados!')
         while self.threadsRodando:
+            print('Transmitindo dados!')
             # self.transmissor.setDados(self.receber_novos_dados)
             # self.transmissor.transmiteLinha()
             time.sleep(delay)
 
     def gravarDados(self, delay):
-        print('Gravando dados!')
         while self.threadsRodando == True:
+            print('Gravando dados!')
             self.tempoAtual = (datetime.now() - self.inicioDoDia).total_seconds()
             self.tempo.setValor(self.tempoAtual)
             if self.modo.getValor() == 4:
@@ -319,18 +319,19 @@ class Ajudante(object):
             time.sleep(delay)
 
     def lerTelecomando(self, delay):
-        print('Lendo telecomando!')
+        while self.threadsRodando:
+            print('Lendo telecomando!')
 
-        # self.tamanho.setValor(self.escritor.verificaTamanhoArquivo())
-        # comandoRecebido = self.transmissor.leLinha()
-        # self.mensagemRecebida.setValor(comandoRecebido)
-        # if comandoRecebido == "@t#c%$0#1$":
-        #     if self.telecomandoExecutado == False:
-        #         self.telecomandoExecutado = True
-        #         self.trocarModoDeTransmissao(4)
-        #     else:
-        #         self.telecomandoExecutado = False
-        time.sleep(delay)
+            # self.tamanho.setValor(self.escritor.verificaTamanhoArquivo())
+            # comandoRecebido = self.transmissor.leLinha()
+            # self.mensagemRecebida.setValor(comandoRecebido)
+            # if comandoRecebido == "@t#c%$0#1$":
+            #     if self.telecomandoExecutado == False:
+            #         self.telecomandoExecutado = True
+            #         self.trocarModoDeTransmissao(4)
+            #     else:
+            #         self.telecomandoExecutado = False
+            time.sleep(delay)
 
     def atualizarIMU(self, delay):
         """Esta função é utilizada como o processo periódico que
@@ -338,18 +339,19 @@ class Ajudante(object):
 
         :param delay: Valor com o tempo entre cada atualização.
         """
-        print('Puxando dados da IMU!')
+        while self.threadsRodando:
+            print('Puxando dados da IMU!')
 
-        # self.mpu.atualiza()
-        # self.taxaGiroX.setValor(self.mpu.getGyx())
-        # self.taxaGiroY.setValor(self.mpu.getGyy())
-        # self.taxaGiroZ.setValor(self.mpu.getGyz())
-        # self.aceleracaoX.setValor(self.mpu.getAcx())
-        # self.aceleracaoY.setValor(self.mpu.getAcy())
-        # self.aceleracaoZ.setValor(self.mpu.getAcz())
-        # self.pitch.setValor(self.mpu.getPitch())
-        # self.roll.setValor(self.mpu.getRoll())
-        time.sleep(delay)
+            # self.mpu.atualiza()
+            # self.taxaGiroX.setValor(self.mpu.getGyx())
+            # self.taxaGiroY.setValor(self.mpu.getGyy())
+            # self.taxaGiroZ.setValor(self.mpu.getGyz())
+            # self.aceleracaoX.setValor(self.mpu.getAcx())
+            # self.aceleracaoY.setValor(self.mpu.getAcy())
+            # self.aceleracaoZ.setValor(self.mpu.getAcz())
+            # self.pitch.setValor(self.mpu.getPitch())
+            # self.roll.setValor(self.mpu.getRoll())
+            time.sleep(delay)
 
 
     def atualizarBarometro(self, delay):
@@ -358,21 +360,22 @@ class Ajudante(object):
 
         :param delay: Valor com o tempo entre cada atualização.
         """
-        print('Puxando dados do BARO!')
+        while self.threadsRodando:
+            print('Puxando dados do BARO!')
 
-        # if self.atualizandoReferenciaDoBarometro == True:
-        #     self.barometro.atualizaReferencia()
-        #     atualizaRefBar = False
-        # self.barometro.atualiza()
-        # self.pressaoEstatica.setValor(self.barometro.getPressao("PA"))
-        # self.pressaoEstaticar.setValor(self.barometro.getPressao("PA"))
-        # self.pressaoTotal.setValor(self.barometro.getPressao("PA") + self.pitot.getPressaoDinamica("PA"))
-        # self.pressaoTotalr.setValor(self.barometro.getPressao("PA") + self.pitot.getPressaoDinamica("PA"))
-        # self.temperaturaBar.setValor(self.barometro.getTemperatura())
-        # self.densidadeAr.setValor(self.barometro.getDensidadeAr())
-        # self.altitudeRelativa.setValor(self.barometro.getAltitudeRelativa("m"))
-        # self.altitudePressao.setValor(self.barometro.getAltitudePressao("ft"))
-        time.sleep(delay)
+            # if self.atualizandoReferenciaDoBarometro == True:
+            #     self.barometro.atualizaReferencia()
+            #     atualizaRefBar = False
+            # self.barometro.atualiza()
+            # self.pressaoEstatica.setValor(self.barometro.getPressao("PA"))
+            # self.pressaoEstaticar.setValor(self.barometro.getPressao("PA"))
+            # self.pressaoTotal.setValor(self.barometro.getPressao("PA") + self.pitot.getPressaoDinamica("PA"))
+            # self.pressaoTotalr.setValor(self.barometro.getPressao("PA") + self.pitot.getPressaoDinamica("PA"))
+            # self.temperaturaBar.setValor(self.barometro.getTemperatura())
+            # self.densidadeAr.setValor(self.barometro.getDensidadeAr())
+            # self.altitudeRelativa.setValor(self.barometro.getAltitudeRelativa("m"))
+            # self.altitudePressao.setValor(self.barometro.getAltitudePressao("ft"))
+            time.sleep(delay)
 
     def atualizarGps(self, delay):
         """Esta função é utilizada como o processo periódico que
@@ -380,37 +383,38 @@ class Ajudante(object):
 
         :param delay: Valor com o tempo entre cada atualização.
         """
-        print('Puxando dados do GPS!')
+        while self.threadsRodando:
+            print('Puxando dados do GPS!')
 
-        # self.gps.atualiza()
-        # self.latitude.setValor(self.gps.getLatitude())
-        # self.longitude.setValor(self.gps.getLongitude())
-        # self.altitude.setValor(self.gps.getAltitude())
-        # self.direcaoCurso.setValor(self.gps.getDirecaoCurso())
-        # self.velocidade.setValor(self.gps.getVelocidade())
-        # self.velocidadeSubida.setValor(self.gps.getVelSubida())
-        # self.erroX.setValor(self.gps.getErroX())
-        # self.erroY.setValor(self.gps.getErroY())
-        # self.erroAltitude.setValor(self.gps.getErroAltitude())
-        # self.erroVelocidade.setValor(self.gps.getErroVelocidade())
-        # self.erroVelocidadeSubida.setValor(self.gps.getErroVelSubida())
-        # self.nivelFixacao.setValor(self.gps.getNivelFixacao())
-        # self.latitudeRef.setValor(self.gps.getLatitudeRef())
-        # self.longitudeRef.setValor(self.gps.getLongitudeRef())
-        # self.posicaoX.setValor(self.gps.getPosicaoX())
-        # self.posicaoY.setValor(self.gps.getPosicaoY())
-        # self.distanciaAbsoluta.setValor(self.gps.getDistanciaAbsoluta())
-        # self.tempoGps = self.gps.getTempo()
-        # self.dadoTempoGPS.setValor(self.tempoGps)
+            # self.gps.atualiza()
+            # self.latitude.setValor(self.gps.getLatitude())
+            # self.longitude.setValor(self.gps.getLongitude())
+            # self.altitude.setValor(self.gps.getAltitude())
+            # self.direcaoCurso.setValor(self.gps.getDirecaoCurso())
+            # self.velocidade.setValor(self.gps.getVelocidade())
+            # self.velocidadeSubida.setValor(self.gps.getVelSubida())
+            # self.erroX.setValor(self.gps.getErroX())
+            # self.erroY.setValor(self.gps.getErroY())
+            # self.erroAltitude.setValor(self.gps.getErroAltitude())
+            # self.erroVelocidade.setValor(self.gps.getErroVelocidade())
+            # self.erroVelocidadeSubida.setValor(self.gps.getErroVelSubida())
+            # self.nivelFixacao.setValor(self.gps.getNivelFixacao())
+            # self.latitudeRef.setValor(self.gps.getLatitudeRef())
+            # self.longitudeRef.setValor(self.gps.getLongitudeRef())
+            # self.posicaoX.setValor(self.gps.getPosicaoX())
+            # self.posicaoY.setValor(self.gps.getPosicaoY())
+            # self.distanciaAbsoluta.setValor(self.gps.getDistanciaAbsoluta())
+            # self.tempoGps = self.gps.getTempo()
+            # self.dadoTempoGPS.setValor(self.tempoGps)
 
-        # agora = datetime.now()
-        # inicioDia = datetime(agora.year, agora.month, agora.day)
+            # agora = datetime.now()
+            # inicioDia = datetime(agora.year, agora.month, agora.day)
 
-        # if (self.gps.verificaAtualizacaoHorario()) and (self.modo.getValor() == 0):
-        #     self.trocarModoDeTransmissao(1)
+            # if (self.gps.verificaAtualizacaoHorario()) and (self.modo.getValor() == 0):
+            #     self.trocarModoDeTransmissao(1)
 
-        time.sleep(delay)
-        # self.gps.finaliza()
+            time.sleep(delay)
+            # self.gps.finaliza()
 
 
     def atualizarPitot(self, delay):
@@ -419,13 +423,14 @@ class Ajudante(object):
 
         :param delay: Valor com o tempo entre cada atualização.
         """
-        print('Puxando dados do PITOT!')
-        # self.pitot.atualiza(20, 1.218)
-        # self.pressADC.setValor(self.pitot.getValADC())
-        # self.pressTensao.setValor(self.pitot.getValTensao())
-        # self.pressaoDin.setValor(self.pitot.getPressaoDinamica("PA"))
-        # self.velCas.setValor(self.pitot.getVelocidade("m/s"))
-        time.sleep(delay)
+        while self.threadsRodando:
+            print('Puxando dados do PITOT!')
+            # self.pitot.atualiza(20, 1.218)
+            # self.pressADC.setValor(self.pitot.getValADC())
+            # self.pressTensao.setValor(self.pitot.getValTensao())
+            # self.pressaoDin.setValor(self.pitot.getPressaoDinamica("PA"))
+            # self.velCas.setValor(self.pitot.getVelocidade("m/s"))
+            time.sleep(delay)
 
 
     def atualizarNano(self, delay):
@@ -434,23 +439,25 @@ class Ajudante(object):
 
         :param delay: Valor com o tempo entre cada atualização.
         """
-        print('Puxando dados do NANO!')
+        while self.threadsRodando:
+            print('Puxando dados do NANO!')
 
-        # todosOsDados = self.receber_todos_os_dados()
-        # linhaDeDados = self.nano.receber_linha_de_dados()
+            # todosOsDados = self.receber_todos_os_dados()
+            # linhaDeDados = self.nano.receber_linha_de_dados()
 
-        # dados = linhaDeDados.split(';')
-        # for dado in dados:
-        #     valores = dado.split(',')
-        #     apelido = valores[0]
-        #     valor = valores[1]
+            # dados = linhaDeDados.split(';')
+            # for dado in dados:
+            #     valores = dado.split(',')
+            #     apelido = valores[0]
+            #     valor = valores[1]
 
-        #     for cadaDado in todosOsDados:
-        #         if cadaDado.apelido == apelido:
-        #             cadaDado.setValor(valor)
+            #     for cadaDado in todosOsDados:
+            #         if cadaDado.apelido == apelido:
+            #             cadaDado.setValor(valor)
 
 
-        time.sleep(delay)
+            time.sleep(delay)
+
 class Thredeiro (threading.Thread):
 
     def __init__(self, name, funcaoAlvo, delay):
