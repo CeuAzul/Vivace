@@ -38,7 +38,7 @@ class Escritor:
     - ...
     """
 
-    def __init__(self, separador=",", printaNome=True, printaUM=True, nomeArquivo="Telemetria - ", extensao=".csv", pasta="/home/pi/Telemetria/Codigos/Plataforma/telemetria/Dados"):
+    def __init__(self, separador=",", printaNome=True, printaUM=True, nomeArquivo="Telemetria - ", extensao=".csv", pasta= os.path.join(os.path.dirname(__file__), 'Dados')):
         """Construtor: Inicializa parâmetros de configuração do Escritor.
         No construtor ele já cria o arquivo, verifica se nome já existe, caso já exista, adiciona 1 no nome.
 

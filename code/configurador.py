@@ -66,6 +66,23 @@ class Configurador(object):
         self.USAR_CELULAS = True
         self.GRAVAR_CELULAS= True
         self.TRANSMITIR_CELULAS = True
+        self.NUMERO_DE_CELULAS = 5
+
+        self.NOME_DAS_CELULAS = [
+            'Celula Horizontal',
+            'Celula Frontal Direita',
+            'Celula Frontal Esquerda',
+            'Celula Traseira Direita',
+            'Celula Traseira Esquerda'
+        ]
+
+        self.APELIDO_DAS_CELULAS = [
+            "fh",
+            "ffd",
+            "ffe",
+            "ftd",
+            "fte"
+        ]
 
         # NANO
         self.USAR_NANO = True

@@ -28,16 +28,14 @@ def main():
     ajudante.escritor.setDados(ajudante.receber_pacote_de_dados)
     #ajudante.escritor.fazCabecalho()
 
-
-    while ajudante.threadsRodando == True:
-        threadTransmissao = Thredeiro(ajudante.transmitirDados, 0.5)
-        threadIMU = Thredeiro(ajudante.atualizarIMU, 0.03)
-        threadBARO = Thredeiro(ajudante.atualizarBarometro, 0.1)
-        threadGPS = Thredeiro(ajudante.atualizarGps, 0.5)
-        threadPITOT = Thredeiro(ajudante.atualizarPitot, 0.2)
-        threadNANO = Thredeiro(ajudante.atualizarNano, 0.5)
-        threadGravacao = Thredeiro(ajudante.gravarDados, 0.02)
-        threadTelecomando = Thredeiro(ajudante.lerTelecomando, 1)
+    threadTransmissao = Thredeiro('Transmissao', ajudante.transmitirDados, 0.5)
+    threadIMU = Thredeiro('IMU', ajudante.atualizarIMU, 0.03)
+    threadBARO = Thredeiro('BARO', ajudante.atualizarBarometro, 0.1)
+    threadGPS = Thredeiro('GPS', ajudante.atualizarGps, 0.5)
+    threadPITOT = Thredeiro('PITOT', ajudante.atualizarPitot, 0.2)
+    threadNANO = Thredeiro('NANO', ajudante.atualizarNano, 0.5)
+    threadGravacao = Thredeiro('Gravaçao', ajudante.gravarDados, 0.02)
+    threadTelecomando = Thredeiro('Telecomando', ajudante.lerTelecomando, 1)
 
 
 if __name__ == '__main__':
