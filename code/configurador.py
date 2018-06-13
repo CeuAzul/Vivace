@@ -84,5 +84,5 @@ class Configurador(object):
             "fte"
         ]
 
-        # NANO
-        self.USAR_NANO = True
+        # ARDUINONANO
+        self.USAR_ARDUINO = True
