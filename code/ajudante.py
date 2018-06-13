@@ -15,6 +15,9 @@ from libs.barometro import Barometro
 # from libs.pitot import Pitot
 from libs.nano import Nano
 
+from libs.celula import Celula
+from libs.balanca import Balanca
+
 from configurador import Configurador
 # from modos_de_transmissao import SeletorDeModos
 
@@ -55,6 +58,12 @@ class Ajudante(object):
         if self.configurador.USAR_CELULAS == True:
             print('CELULAS ativadas!')
             # self.nano = Nano()
+            # self.celula_horizontal = Celula()
+            # self.celula_frontal_direita = Celula()
+            # self.celula_frontal_esquerda = Celula()
+            # self.celula_traseira_direita = Celula()
+            # self.celula_traseira_esquerda = Celula()
+            # self.balanca = Balanca()
 
 
     def criar_dados(self):
@@ -134,11 +143,20 @@ class Ajudante(object):
             nomeDasCelulas = self.configurador.NOME_DAS_CELULAS
             apelidoDasCelulas = self.configurador.APELIDO_DAS_CELULAS
 
-            self.forca = []
+            self.Lift = []
+            self.Drag = []
+            self.Moment = []
+            self.DistCp = []
 
+            self.Lift = Dado("Lift", "N", "lft", True, False, False, 2, "CELULA")
+            self.Drag = Dado("Drag", "N", "drg", True, False, False, 2, "CELULA")
+            self.Moment = Dado("Moment", "N", "mmt", True, False, False, 2, "CELULA")
+            self.DistCp = Dado("Distance Cp", "m", "dcp", True, False, False, 2, "CELULA")
+
+            self.forca = []
             for celula in range(self.configurador.NUMERO_DE_CELULAS):
                 print(nomeDasCelulas[celula] + ' criada!')
-                self.forca.extend([Dado("Forca - " + nomeDasCelulas[celula], "kg", apelidoDasCelulas[celula], False, False, True, 3, "CELULA")])
+                self.forca.extend([Dado("Forca - " + nomeDasCelulas[celula], "N", apelidoDasCelulas[celula], False, False, True, 3, "CELULA")])
 
     def receber_todos_os_dados(self):
         todosOsDados = []
@@ -198,6 +216,13 @@ class Ajudante(object):
             todosOsDados.extend([
                 self.forca[celula],
             ])
+
+        todosOsDados.extend([
+            self.Lift,
+            self.Drag,
+            self.Moment,
+            self.DistCp
+        ])
 
         return todosOsDados
 
@@ -456,6 +481,52 @@ class Ajudante(object):
             #         if cadaDado.apelido == apelido:
             #             cadaDado.setValor(valor)
 
+
+            time.sleep(delay)
+
+    def atualizarCelulas(self, delay):
+        """Esta função é utilizada como o processo periódico que
+        irá adquirir atualizar os dados de força da balança.
+
+        :param delay: Valor com o tempo entre cada atualização.
+        """
+        while self.threadsRodando:
+            print('Puxando dados da Balança!')
+
+            todosOsDados = self.receber_todos_os_dados()
+            for cadaDado in todosOsDados:
+                if cadaDado.apelido == self.celula_horizontal.apelido:
+                    self.celula_horizontal.updateForce(cadaDado.getValor())
+                if cadaDado.apelido == self.celula_frontal_direita.apelido:
+                    self.celula_frontal_direita.updateForce(cadaDado.getValor())
+                if cadaDado.apelido == self.celula_frontal_esquerda.apelido:
+                    self.celula_frontal_esquerda.updateForce(cadaDado.getValor())
+                if cadaDado.apelido == self.celula_traseira_direita.apelido:
+                    self.celula_traseira_direita.updateForce(cadaDado.getValor())
+                if cadaDado.apelido == self.celula_traseira_esquerda.apelido:
+                    self.celula_traseira_esquerda.updateForce(cadaDado.getValor())
+
+            time.sleep(delay)
+
+    def atualizarBalanca(self, delay):
+        """Esta função é utilizada como o processo periódico que
+        irá adquirir atualizar os dados de força da balança.
+
+        :param delay: Valor com o tempo entre cada atualização.
+        """
+        while self.threadsRodando:
+            print('Puxando dados da Balança!')
+
+            self.balanca.updateForces(  self.celula_horizontal.getForce(),
+                                        self.celula_frontal_direita.getForce(),
+                                        self.celula_frontal_esquerda.getForce(),
+                                        self.celula_traseira_direita.getForce(),
+                                        self.celula_traseira_esquerda.getForce())
+
+            self.Lift = self.balanca.getLift()
+            self.Drag = self.balanca.getDrag()
+            self.Moment = self.balanca.getMoment()
+            self.DistCp = self.balanca.getDistCp()
 
             time.sleep(delay)
 
