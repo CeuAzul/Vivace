@@ -315,7 +315,7 @@ class Ajudante(object):
             self.tempoAtual = (datetime.now() - self.inicioDoDia).total_seconds()
             self.tempo.setValor(self.tempoAtual)
             if self.modo.getValor() == 4:
-                self.escritor.setDados(self.receber_pacote_de_dados)
+                self.escritor.setDados(self.receber_pacote_de_dados())
                 self.escritor.escreveLinhaDado()
             time.sleep(delay)
 
