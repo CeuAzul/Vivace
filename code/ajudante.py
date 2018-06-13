@@ -296,7 +296,7 @@ class Ajudante(object):
 
     def criar_escritor_transmissor(self):
         print('Escritor e Transmissor criados!')
-        self.escritor = Escritor("\t", True, True, "Global - ", ".txt", pasta=self.configurador.PASTA_DESTINO)
+        self.escritor = Escritor("\t", True, True, configurador.NOME_DO_ARQUIVO + "- ", ".txt", pasta=self.configurador.PASTA_DESTINO)
         # self.transmissor = Transmissor(",", True, 57600, 'UTF-8')
 
     def criar_novo_arquivo(self):

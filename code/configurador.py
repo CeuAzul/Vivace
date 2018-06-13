@@ -3,6 +3,7 @@ class Configurador(object):
     def __init__(self):
 
         # GERAIS
+        self.NOME_DO_ARQUIVO = 'Global'
         self.PASTA_DESTINO = '/home/rafael/Documents/DadosTelemetria'
 
         # IMU
