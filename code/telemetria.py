@@ -25,8 +25,8 @@ def main():
     ajudante.ativar_transmissao()
     ajudante.criar_escritor_transmissor()
     ajudante.trocarModoDeTransmissao(0)
-    ajudante.escritor.setDados(ajudante.receber_pacote_de_dados)
-    #ajudante.escritor.fazCabecalho()
+    ajudante.escritor.setDados(ajudante.receber_pacote_de_dados())
+    ajudante.escritor.fazCabecalho()
 
     threadTransmissao = Thredeiro('Transmissao', ajudante.transmitirDados, 0.5)
     threadIMU = Thredeiro('IMU', ajudante.atualizarIMU, 0.03)
