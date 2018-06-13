@@ -13,7 +13,7 @@ from libs.mpu import MPU
 from libs.barometro import Barometro
 # from libs.gps import Gps
 # from libs.pitot import Pitot
-from libs.nano import Nano
+from libs.arduino import Arduino
 
 from libs.celula import Celula
 from libs.balanca import Balanca
@@ -52,18 +52,18 @@ class Ajudante(object):
         if self.configurador.USAR_PITOTS == True:
             print('PITOTS ativados!')
             # self.pitot = Pitot(0)
-        if self.configurador.USAR_NANO == True:
-            print('NANO ativada!')
-            # self.nano = Nano()
+        if self.configurador.USAR_ARDUINO == True:
+            print('ARDUINO ativado!')
+            # self.arduino = Arduino()
         if self.configurador.USAR_CELULAS == True:
             print('CELULAS ativadas!')
-            # self.nano = Nano()
-            # self.celula_horizontal = Celula()
-            # self.celula_frontal_direita = Celula()
-            # self.celula_frontal_esquerda = Celula()
-            # self.celula_traseira_direita = Celula()
-            # self.celula_traseira_esquerda = Celula()
             # self.balanca = Balanca()
+            # self.celula_traseira_esquerda = Celula()
+            # self.celula_traseira_direita = Celula()
+            # self.celula_frontal_esquerda = Celula()
+            # self.celula_frontal_direita = Celula()
+            # self.celula_horizontal = Celula()
+            # self.arduino = Arduino()
 
 
     def criar_dados(self):
@@ -459,27 +459,21 @@ class Ajudante(object):
             time.sleep(delay)
 
 
-    def atualizarNano(self, delay):
+    def atualizarArduino(self, delay):
         """Esta função é utilizada como o processo periódico que
-        irá adquirir dados do nano.
+        irá adquirir dados do Arduino.
 
         :param delay: Valor com o tempo entre cada atualização.
         """
         while self.threadsRodando:
-            print('Puxando dados do NANO!')
+            print('Puxando dados do ARDUINO!')
 
-            # todosOsDados = self.receber_todos_os_dados()
-            # linhaDeDados = self.nano.receber_linha_de_dados()
+            todosOsDados = self.receber_todos_os_dados()
+            dicioDeDados = self.arduino.getData()
 
-            # dados = linhaDeDados.split(';')
-            # for dado in dados:
-            #     valores = dado.split(',')
-            #     apelido = valores[0]
-            #     valor = valores[1]
-
-            #     for cadaDado in todosOsDados:
-            #         if cadaDado.apelido == apelido:
-            #             cadaDado.setValor(valor)
+            for cadaDado in todosOsDados:
+                if cadaDado.apelido in dicioDeDados:
+                    cadaDado.setValor(dicioDeDados[apelido])
 
 
             time.sleep(delay)
