@@ -23,6 +23,7 @@ class Arduino:
         """
 
         self.ser = serial.Serial(port='/dev/ttyUSB1', baudrate=9600, timeout=1)
+        self.codificacao = "utf-8"
 
     def getData(self):
         """Puxa linha de dados pela porta serial (Arduino).
@@ -33,7 +34,7 @@ class Arduino:
 
         dict = {}
 
-        linha_de_dados = self.ser.readline().decode("utf-8")
+        linha_de_dados = self.ser.readline().decode(self.codificacao)
         if(linha_de_dados != ""):
             linha_de_dados = linha_de_dados.replace("\r\n", "")
             linha_de_dados = linha_de_dados.replace(" ", "")
@@ -43,3 +44,7 @@ class Arduino:
                 dict[apelido] = valor
 
         return dict
+
+    def sendCommand(self, comando):
+
+        self.ser.write(bytes("!" + comando + "@\n", self.codificacao))
