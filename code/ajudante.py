@@ -205,6 +205,7 @@ class Ajudante(object):
 
         pacoteDeDados = []
         todosOsDados = self.receber_todos_os_dados()
+
         for dado in todosOsDados:
             if dado.sensor == "IMU":
                 if self.configurador.USAR_IMU == True:
@@ -255,23 +256,23 @@ class Ajudante(object):
             if dado.sensor == "IMU":
                 if self.configurador.TRANSMITIR_IMU == True:
                     print(dado.nome + ' sendo transmitido')
-                    dado.setGravacao(True)
+                    dado.setTransmissao(True)
             if dado.sensor == "BARO":
                 if self.configurador.TRANSMITIR_BARO == True:
                     print(dado.nome + ' sendo transmitido')
-                    dado.setGravacao(True)
+                    dado.setTransmissao(True)
             if dado.sensor == "GPS":
                 if self.configurador.TRANSMITIR_GPS == True:
                     print(dado.nome + ' sendo transmitido')
-                    dado.setGravacao(True)
+                    dado.setTransmissao(True)
             if dado.sensor == "PITOT":
                 if self.configurador.TRANSMITIR_PITOTS == True:
                     print(dado.nome + ' sendo transmitido')
-                    dado.setGravacao(True)
+                    dado.setTransmissao(True)
             if dado.sensor == "CELULA":
                 if self.configurador.TRANSMITIR_CELULAS == True:
                     print(dado.nome + ' sendo transmitida')
-                    dado.setGravacao(True)
+                    dado.setTransmissao(True)
 
     def criar_escritor_transmissor(self):
         print('Escritor e Transmissor criados!')
