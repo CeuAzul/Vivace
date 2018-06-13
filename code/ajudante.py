@@ -290,8 +290,8 @@ class Ajudante(object):
         self.trocarModoDeTransmissao(modoAtual)
 
     def trocarModoDeTransmissao(self, modo):
-        print('Trocando para modo ' + str(modo) + ' de transmissao!')
         self.modo.setValor(modo)
+        print('Trocando para modo ' + str(modo) + ' de transmissao!')
         # seletorDeModos.set
 
     def liga_threads(self):
