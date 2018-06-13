@@ -3,7 +3,7 @@ class Configurador(object):
     def __init__(self):
 
         # GERAIS
-        self.PASTA_DESTINO = '/home/rafael/Documents'
+        self.PASTA_DESTINO = '/home/rafael/Documents/DadosTelemetria'
 
         # IMU
         self.USAR_IMU = True
