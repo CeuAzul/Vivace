@@ -57,12 +57,12 @@ class Ajudante(object):
             self.arduino = Arduino()
         if self.configurador.USAR_CELULAS == True:
             print('CELULAS ativadas!')
-            # self.balanca = Balanca()
-            # self.celula_traseira_esquerda = Celula()
-            # self.celula_traseira_direita = Celula()
-            # self.celula_frontal_esquerda = Celula()
-            # self.celula_frontal_direita = Celula()
-            # self.celula_horizontal = Celula()
+            self.balanca = Balanca()
+            self.celula_traseira_esquerda = Celula(nome="celula_traseira_esquerda", apelido="fte")
+            self.celula_traseira_direita = Celula(nome="celula_traseira_direita", apelido="ftd")
+            self.celula_frontal_esquerda = Celula(nome="celula_frontal_esquerda", apelido="ffe")
+            self.celula_frontal_direita = Celula(nome="celula_frontal_direita", apelido="ffd")
+            self.celula_horizontal = Celula(nome="celula_horizontal", apelido="fh")
             # self.arduino = Arduino()
 
 
