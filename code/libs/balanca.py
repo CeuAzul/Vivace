@@ -40,7 +40,7 @@ class Balanca(object):
         self.Drag =  F_horiz + F_atr
 
         # The "Fake lifts" are forces measured on the vertical cells that are in fact resultant from drag
-        F_fake_lift = self.Drag * Coef_fake_lift
+        F_fake_lift = self.Drag * self.Coef_fake_lift
 
         # The resulting Lift force is the subtract of the Fake lift from the measured vertical forces
         self.Lift = F_vert - F_fake_lift
@@ -49,7 +49,10 @@ class Balanca(object):
         self.Moment = self.Dist_025_back * F_vert_back - self.Dist_025_front * F_vert_front
 
         # The Center of Pressure is the point were the forces act (so the moment is zero)
-        self.Dist_Cp_front = (self.Dist_025_front + self.Dist_025_back) / ((F_vert_front/F_vert_back) + 1)
+        try:
+            self.Dist_Cp_front = (self.Dist_025_front + self.Dist_025_back) / ((F_vert_front/F_vert_back) + 1)
+        except:
+            pass
 
     def getLift(self):
         return self.Lift
