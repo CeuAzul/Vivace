@@ -43,17 +43,24 @@ class Arduino:
 
         dict = {}
 
-        if(linha_de_dados != ""):
-            linha_de_dados = linha_de_dados.replace("\r\n", "")
-            linha_de_dados = linha_de_dados.replace(" ", "")
-            dados = linha_de_dados.split(";")
-            for dado in dados:
-                apelido, valor = dado.split("=")
-                dict[apelido] = valor
         try:
             self.linha_de_dados = self.ser.readline().decode(self.codificacao)
         except:
             pass
+
+        if(self.linha_de_dados != ""):
+            self.linha_de_dados = self.linha_de_dados.replace("\r\n", "")
+            if self.linha_de_dados.startswith("!") and self.linha_de_dados.endswith("@"):
+                self.linha_de_dados = self.linha_de_dados.replace(" ", "")
+                self.linha_de_dados = self.linha_de_dados.replace("!", "")
+                self.linha_de_dados = self.linha_de_dados.replace("@", "")
+                dados = self.linha_de_dados.split(";")
+                for dado in dados:
+                    try:
+                        apelido, valor = dado.split("=")
+                        dict[apelido] = float(valor)
+                    except:
+                        pass
 
         return dict
 
