@@ -2,8 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 if os.uname()[1] == 'raspberrypi':
     import serial
+
+import serial
 
 
 class Arduino:
@@ -22,8 +25,14 @@ class Arduino:
         comunicaçao serial via porta USB1, com baudrate igual a 9600bps.
         """
 
-        self.ser = serial.Serial(port='/dev/ttyUSB1', baudrate=9600, timeout=1)
+        try:
+            self.ser = serial.Serial(port='/dev/ttyUSB2', baudrate=115200, timeout=1)
+            print("########## Arduino connected! ##########")
+        except:
+            sys.exit("########## Arduino not detected! ##########")
+
         self.codificacao = "utf-8"
+        self.linha_de_dados = ""
 
     def getData(self):
         """Puxa linha de dados pela porta serial (Arduino).
@@ -34,7 +43,6 @@ class Arduino:
 
         dict = {}
 
-        linha_de_dados = self.ser.readline().decode(self.codificacao)
         if(linha_de_dados != ""):
             linha_de_dados = linha_de_dados.replace("\r\n", "")
             linha_de_dados = linha_de_dados.replace(" ", "")
@@ -42,6 +50,10 @@ class Arduino:
             for dado in dados:
                 apelido, valor = dado.split("=")
                 dict[apelido] = valor
+        try:
+            self.linha_de_dados = self.ser.readline().decode(self.codificacao)
+        except:
+            pass
 
         return dict
 
