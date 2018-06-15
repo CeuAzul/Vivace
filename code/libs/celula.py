@@ -10,7 +10,7 @@ class Celula(object):
         self.UM = UM
         self.force = 0
 
-    def updateForce(force):
+    def updateForce(self, force):
         self.force = force
 
     def getForce(self):

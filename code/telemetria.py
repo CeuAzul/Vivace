@@ -35,7 +35,7 @@ def main():
     threadPITOT = Thredeiro('PITOT', ajudante.atualizarPitot, 0.2)
     threadBALANCA = Thredeiro('BALANCA', ajudante.atualizarBalanca, 0.05)
     threadCELULAS = Thredeiro('CELULAS', ajudante.atualizarCelulas, 0.05)
-    threadARDUINO = Thredeiro('ARDUINO', ajudante.atualizarArduino, 0.5)
+    threadARDUINO = Thredeiro('ARDUINO', ajudante.atualizarArduino, 0.05)
     threadGravacao = Thredeiro('Gravaçao', ajudante.gravarDados, 0.02)
     threadTelecomando = Thredeiro('Telecomando', ajudante.lerTelecomando, 1)
 

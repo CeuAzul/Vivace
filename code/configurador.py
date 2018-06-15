@@ -26,6 +26,7 @@ class Configurador(object):
         self.TRANSMITIR_PITOTS = True
         self.NUMERO_DE_PITOTS = 4
         self.NOME_DOS_PITOTS = [
+            'Pitot 0',
             'Pitot 1',
             'Pitot 2',
             'Pitot 3',
@@ -40,10 +41,10 @@ class Configurador(object):
             'Pitot 12',
             'Pitot 13',
             'Pitot 14',
-            'Pitot 15',
-            'Pitot 16'
+            'Pitot 15'
         ]
         self.APELIDO_DOS_PITOTS = [
+            'pitot0',
             'pitot1',
             'pitot2',
             'pitot3',
@@ -58,8 +59,7 @@ class Configurador(object):
             'pitot12',
             'pitot13',
             'pitot14',
-            'pitot15',
-            'pitot16'
+            'pitot15'
         ]
 
         # CELULAS
