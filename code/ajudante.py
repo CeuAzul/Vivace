@@ -54,7 +54,7 @@ class Ajudante(object):
             # self.pitot = Pitot(0)
         if self.configurador.USAR_ARDUINO == True:
             print('ARDUINO ativado!')
-            # self.arduino = Arduino()
+            self.arduino = Arduino()
         if self.configurador.USAR_CELULAS == True:
             print('CELULAS ativadas!')
             # self.balanca = Balanca()
