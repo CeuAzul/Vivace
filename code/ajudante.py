@@ -143,11 +143,6 @@ class Ajudante(object):
             nomeDasCelulas = self.configurador.NOME_DAS_CELULAS
             apelidoDasCelulas = self.configurador.APELIDO_DAS_CELULAS
 
-            self.Lift = []
-            self.Drag = []
-            self.Moment = []
-            self.DistCp = []
-
             self.Lift = Dado("Lift", "N", "lft", True, False, False, 2, "CELULA")
             self.Drag = Dado("Drag", "N", "drg", True, False, False, 2, "CELULA")
             self.Moment = Dado("Moment", "N", "mmt", True, False, False, 2, "CELULA")
