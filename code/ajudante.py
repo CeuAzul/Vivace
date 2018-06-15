@@ -468,7 +468,7 @@ class Ajudante(object):
 
             for cadaDado in todosOsDados:
                 if cadaDado.apelido in dicioDeDados:
-                    cadaDado.setValor(dicioDeDados[apelido])
+                    cadaDado.setValor(dicioDeDados[cadaDado.apelido])
 
 
             time.sleep(delay)
@@ -483,6 +483,7 @@ class Ajudante(object):
             print('Puxando dados da Balança!')
 
             todosOsDados = self.receber_todos_os_dados()
+
             for cadaDado in todosOsDados:
                 if cadaDado.apelido == self.celula_horizontal.apelido:
                     self.celula_horizontal.updateForce(cadaDado.getValor())
@@ -512,10 +513,10 @@ class Ajudante(object):
                                         self.celula_traseira_direita.getForce(),
                                         self.celula_traseira_esquerda.getForce())
 
-            self.Lift = self.balanca.getLift()
-            self.Drag = self.balanca.getDrag()
-            self.Moment = self.balanca.getMoment()
-            self.DistCp = self.balanca.getDistCp()
+            self.Lift.setValor(self.balanca.getLift())
+            self.Drag.setValor(self.balanca.getDrag())
+            self.Moment.setValor(self.balanca.getMoment())
+            self.DistCp.setValor(self.balanca.getDistCp())
 
             time.sleep(delay)
 
