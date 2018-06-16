@@ -20,19 +20,36 @@ class Arduino:
     ao sensor de ultrassom e o tacometro.
     """
 
-    def __init__(self):
+    def __init__(self, baudrate=115200):
         """Construtor: Inicializa o objeto da classe e inicializa a
         comunicaçao serial via porta USB1, com baudrate igual a 9600bps.
         """
 
+        self.codificacao = "utf-8"
+        self.baudrate = baudrate
+        self.linha_de_dados = ""
+
+        print("########## Trying Arduino on port ttyUSB0! ##########")
         try:
-            self.ser = serial.Serial(port='/dev/ttyUSB2', baudrate=115200, timeout=1)
+            self.ser = serial.Serial(port='/dev/ttyUSB0', baudrate=self.baudrate, timeout=1)
             print("########## Arduino connected! ##########")
         except:
-            sys.exit("########## Arduino not detected! ##########")
-
-        self.codificacao = "utf-8"
-        self.linha_de_dados = ""
+            print("########## Trying Arduino on port ttyUSB1! ##########")
+            try:
+                self.ser = serial.Serial(port='/dev/ttyUSB1', baudrate=self.baudrate, timeout=1)
+                print("########## Arduino connected! ##########")
+            except:
+                print("########## Trying Arduino on port ttyUSB2! ##########")
+                try:
+                    self.ser = serial.Serial(port='/dev/ttyUSB2', baudrate=self.baudrate, timeout=1)
+                    print("########## Arduino connected! ##########")
+                except:
+                    print("########## Trying Arduino on port ttyACM0! ##########")
+                    try:
+                        self.ser = serial.Serial(port='/dev/ttyACM0', baudrate=self.baudrate, timeout=1)
+                        print("########## Arduino connected! ##########")
+                    except:
+                        sys.exit("########## Arduino not detected! ##########")
 
     def getData(self):
         """Puxa linha de dados pela porta serial (Arduino).
