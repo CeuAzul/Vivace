@@ -33,27 +33,6 @@ class Gps:
 
     """
 
-    def haversine(self, lon1, lat1, lon2, lat2):
-        """
-        Calcula a distância em metros entre dois pontos de coodenadas de latitude e longitude
-
-        :param lon1: Valor da longitude 1
-        :param lat1: Valor da latitude 1
-        :param lon2: Valor da longitude 2
-        :param lat2: Valor da latitude 2
-        :returns: Distância em metros entre os pontos
-        """
-        # convert decimal degrees to radians
-        lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
-        # haversine formula
-        dlon = lon2 - lon1
-        dlat = lat2 - lat1
-        a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
-        c = 2 * asin(sqrt(a))
-        km = 6367 * c
-        metros = km * 1000
-        return metros
-
     def __init__(self):
         """
         Construtor: Inicializa variáveis.
@@ -105,6 +84,27 @@ class Gps:
         self.ultPosicaoX = 0
         self.ultPosicaoY = 0
         self.ultDistanciaAbsoluta = 0
+
+    def haversine(self, lon1, lat1, lon2, lat2):
+        """
+        Calcula a distância em metros entre dois pontos de coodenadas de latitude e longitude
+
+        :param lon1: Valor da longitude 1
+        :param lat1: Valor da latitude 1
+        :param lon2: Valor da longitude 2
+        :param lat2: Valor da latitude 2
+        :returns: Distância em metros entre os pontos
+        """
+        # convert decimal degrees to radians
+        lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
+        # haversine formula
+        dlon = lon2 - lon1
+        dlat = lat2 - lat1
+        a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+        c = 2 * asin(sqrt(a))
+        km = 6367 * c
+        metros = km * 1000
+        return metros
 
     def atualiza(self):
         """ Essa função atualiza as variáveis relacionadas ao GPS. Chame-a
