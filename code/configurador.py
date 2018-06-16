@@ -5,6 +5,8 @@ class Configurador(object):
         # GERAIS
         self.NOME_DO_ARQUIVO = 'Global'
         self.PASTA_DESTINO = '/home/rafael/Documents/DadosTelemetria'
+        self.ATIVAR_TRANSMISSAO = True
+        self.ATIVAR_GRAVACAO = True
 
         # IMU
         self.USAR_IMU = True
@@ -85,5 +87,8 @@ class Configurador(object):
             "fte"
         ]
 
-        # ARDUINONANO
+        # ARDUINO
         self.USAR_ARDUINO = True
+
+        # BALANCA
+        self.USAR_BALANCA = True
