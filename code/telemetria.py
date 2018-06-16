@@ -18,6 +18,7 @@ from configurador import Configurador
 def main():
 
     ajudante = Ajudante()
+    configurador = Configurador()
 
     ajudante.ativar_sensores()
     ajudante.criar_dados()
@@ -28,16 +29,26 @@ def main():
     ajudante.escritor.setDados(ajudante.receber_pacote_de_dados())
     ajudante.escritor.fazCabecalho()
 
-    threadTransmissao = Thredeiro('Transmissao', ajudante.transmitirDados, 0.5)
-    threadIMU = Thredeiro('IMU', ajudante.atualizarIMU, 0.03)
-    threadBARO = Thredeiro('BARO', ajudante.atualizarBarometro, 0.1)
-    threadGPS = Thredeiro('GPS', ajudante.atualizarGps, 0.5)
-    threadPITOT = Thredeiro('PITOT', ajudante.atualizarPitot, 0.2)
-    threadBALANCA = Thredeiro('BALANCA', ajudante.atualizarBalanca, 0.05)
-    threadCELULAS = Thredeiro('CELULAS', ajudante.atualizarCelulas, 0.05)
-    threadARDUINO = Thredeiro('ARDUINO', ajudante.atualizarArduino, 0.05)
-    threadGravacao = Thredeiro('Gravaçao', ajudante.gravarDados, 0.02)
-    threadTelecomando = Thredeiro('Telecomando', ajudante.lerTelecomando, 1)
+    if(configurador.ATIVAR_TRANSMISSAO):
+        threadTransmissao = Thredeiro('Transmissao', ajudante.transmitirDados, 0.5)
+    if(configurador.USAR_IMU):
+        threadIMU = Thredeiro('IMU', ajudante.atualizarIMU, 0.03)
+    if(configurador.USAR_BARO):
+        threadBARO = Thredeiro('BARO', ajudante.atualizarBarometro, 0.1)
+    if(configurador.USAR_GPS):
+        threadGPS = Thredeiro('GPS', ajudante.atualizarGps, 0.5)
+    if(configurador.USAR_PITOTS):
+        threadPITOT = Thredeiro('PITOT', ajudante.atualizarPitot, 0.2)
+    if(configurador.USAR_BALANCA):
+        threadBALANCA = Thredeiro('BALANCA', ajudante.atualizarBalanca, 0.05)
+    if(configurador.USAR_CELULAS):
+        threadCELULAS = Thredeiro('CELULAS', ajudante.atualizarCelulas, 0.05)
+    if(configurador.USAR_ARDUINO):
+        threadARDUINO = Thredeiro('ARDUINO', ajudante.atualizarArduino, 0.05)
+    if(configurador.ATIVAR_GRAVACAO):
+        threadGravacao = Thredeiro('Gravaçao', ajudante.gravarDados, 0.02)
+    if(configurador.ATIVAR_TRANSMISSAO):
+        threadTelecomando = Thredeiro('Telecomando', ajudante.lerTelecomando, 1)
 
 
 if __name__ == '__main__':
