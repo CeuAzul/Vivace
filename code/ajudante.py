@@ -343,15 +343,15 @@ class Ajudante(object):
         while self.threadsRodando:
             print('Lendo telecomando!')
 
-            # self.tamanho.setValor(self.escritor.verificaTamanhoArquivo())
-            # comandoRecebido = self.transmissor.leLinha()
-            # self.mensagemRecebida.setValor(comandoRecebido)
-            # if comandoRecebido == "@t#c%$0#1$":
-            #     if self.telecomandoExecutado == False:
-            #         self.telecomandoExecutado = True
-            #         self.trocarModoDeTransmissao(4)
-            #     else:
-            #         self.telecomandoExecutado = False
+            self.tamanho.setValor(self.escritor.verificaTamanhoArquivo())
+            comandoRecebido = self.transmissor.leLinha()
+            self.mensagemRecebida.setValor(comandoRecebido)
+            if comandoRecebido == "@t#c%$0#1$":
+                if self.telecomandoExecutado == False:
+                    self.telecomandoExecutado = True
+                    self.trocarModoDeTransmissao(4)
+                else:
+                    self.telecomandoExecutado = False
             time.sleep(delay)
 
     def atualizarIMU(self, delay):
@@ -363,15 +363,15 @@ class Ajudante(object):
         while self.threadsRodando:
             print('Puxando dados da IMU!')
 
-            # self.mpu.atualiza()
-            # self.taxaGiroX.setValor(self.mpu.getGyx())
-            # self.taxaGiroY.setValor(self.mpu.getGyy())
-            # self.taxaGiroZ.setValor(self.mpu.getGyz())
-            # self.aceleracaoX.setValor(self.mpu.getAcx())
-            # self.aceleracaoY.setValor(self.mpu.getAcy())
-            # self.aceleracaoZ.setValor(self.mpu.getAcz())
-            # self.pitch.setValor(self.mpu.getPitch())
-            # self.roll.setValor(self.mpu.getRoll())
+            self.mpu.atualiza()
+            self.taxaGiroX.setValor(self.mpu.getGyx())
+            self.taxaGiroY.setValor(self.mpu.getGyy())
+            self.taxaGiroZ.setValor(self.mpu.getGyz())
+            self.aceleracaoX.setValor(self.mpu.getAcx())
+            self.aceleracaoY.setValor(self.mpu.getAcy())
+            self.aceleracaoZ.setValor(self.mpu.getAcz())
+            self.pitch.setValor(self.mpu.getPitch())
+            self.roll.setValor(self.mpu.getRoll())
             time.sleep(delay)
 
 
@@ -384,18 +384,18 @@ class Ajudante(object):
         while self.threadsRodando:
             print('Puxando dados do BARO!')
 
-            # if self.atualizandoReferenciaDoBarometro == True:
-            #     self.barometro.atualizaReferencia()
-            #     atualizaRefBar = False
-            # self.barometro.atualiza()
-            # self.pressaoEstatica.setValor(self.barometro.getPressao("PA"))
-            # self.pressaoEstaticar.setValor(self.barometro.getPressao("PA"))
-            # self.pressaoTotal.setValor(self.barometro.getPressao("PA") + self.pitot.getPressaoDinamica("PA"))
-            # self.pressaoTotalr.setValor(self.barometro.getPressao("PA") + self.pitot.getPressaoDinamica("PA"))
-            # self.temperaturaBar.setValor(self.barometro.getTemperatura())
-            # self.densidadeAr.setValor(self.barometro.getDensidadeAr())
-            # self.altitudeRelativa.setValor(self.barometro.getAltitudeRelativa("m"))
-            # self.altitudePressao.setValor(self.barometro.getAltitudePressao("ft"))
+            if self.atualizandoReferenciaDoBarometro == True:
+                self.barometro.atualizaReferencia()
+                atualizaRefBar = False
+            self.barometro.atualiza()
+            self.pressaoEstatica.setValor(self.barometro.getPressao("PA"))
+            self.pressaoEstaticar.setValor(self.barometro.getPressao("PA"))
+            self.pressaoTotal.setValor(self.barometro.getPressao("PA") + self.pitot.getPressaoDinamica("PA"))
+            self.pressaoTotalr.setValor(self.barometro.getPressao("PA") + self.pitot.getPressaoDinamica("PA"))
+            self.temperaturaBar.setValor(self.barometro.getTemperatura())
+            self.densidadeAr.setValor(self.barometro.getDensidadeAr())
+            self.altitudeRelativa.setValor(self.barometro.getAltitudeRelativa("m"))
+            self.altitudePressao.setValor(self.barometro.getAltitudePressao("ft"))
             time.sleep(delay)
 
     def atualizarGps(self, delay):
@@ -407,35 +407,35 @@ class Ajudante(object):
         while self.threadsRodando:
             print('Puxando dados do GPS!')
 
-            # self.gps.atualiza()
-            # self.latitude.setValor(self.gps.getLatitude())
-            # self.longitude.setValor(self.gps.getLongitude())
-            # self.altitude.setValor(self.gps.getAltitude())
-            # self.direcaoCurso.setValor(self.gps.getDirecaoCurso())
-            # self.velocidade.setValor(self.gps.getVelocidade())
-            # self.velocidadeSubida.setValor(self.gps.getVelSubida())
-            # self.erroX.setValor(self.gps.getErroX())
-            # self.erroY.setValor(self.gps.getErroY())
-            # self.erroAltitude.setValor(self.gps.getErroAltitude())
-            # self.erroVelocidade.setValor(self.gps.getErroVelocidade())
-            # self.erroVelocidadeSubida.setValor(self.gps.getErroVelSubida())
-            # self.nivelFixacao.setValor(self.gps.getNivelFixacao())
-            # self.latitudeRef.setValor(self.gps.getLatitudeRef())
-            # self.longitudeRef.setValor(self.gps.getLongitudeRef())
-            # self.posicaoX.setValor(self.gps.getPosicaoX())
-            # self.posicaoY.setValor(self.gps.getPosicaoY())
-            # self.distanciaAbsoluta.setValor(self.gps.getDistanciaAbsoluta())
-            # self.tempoGps = self.gps.getTempo()
-            # self.dadoTempoGPS.setValor(self.tempoGps)
+            self.gps.atualiza()
+            self.latitude.setValor(self.gps.getLatitude())
+            self.longitude.setValor(self.gps.getLongitude())
+            self.altitude.setValor(self.gps.getAltitude())
+            self.direcaoCurso.setValor(self.gps.getDirecaoCurso())
+            self.velocidade.setValor(self.gps.getVelocidade())
+            self.velocidadeSubida.setValor(self.gps.getVelSubida())
+            self.erroX.setValor(self.gps.getErroX())
+            self.erroY.setValor(self.gps.getErroY())
+            self.erroAltitude.setValor(self.gps.getErroAltitude())
+            self.erroVelocidade.setValor(self.gps.getErroVelocidade())
+            self.erroVelocidadeSubida.setValor(self.gps.getErroVelSubida())
+            self.nivelFixacao.setValor(self.gps.getNivelFixacao())
+            self.latitudeRef.setValor(self.gps.getLatitudeRef())
+            self.longitudeRef.setValor(self.gps.getLongitudeRef())
+            self.posicaoX.setValor(self.gps.getPosicaoX())
+            self.posicaoY.setValor(self.gps.getPosicaoY())
+            self.distanciaAbsoluta.setValor(self.gps.getDistanciaAbsoluta())
+            self.tempoGps = self.gps.getTempo()
+            self.dadoTempoGPS.setValor(self.tempoGps)
 
-            # agora = datetime.now()
-            # inicioDia = datetime(agora.year, agora.month, agora.day)
+            agora = datetime.now()
+            inicioDia = datetime(agora.year, agora.month, agora.day)
 
-            # if (self.gps.verificaAtualizacaoHorario()) and (self.modo.getValor() == 0):
-            #     self.trocarModoDeTransmissao(1)
+            if (self.gps.verificaAtualizacaoHorario()) and (self.modo.getValor() == 0):
+                self.trocarModoDeTransmissao(1)
 
             time.sleep(delay)
-            # self.gps.finaliza()
+            self.gps.finaliza()
 
 
     def atualizarPitot(self, delay):
@@ -446,11 +446,11 @@ class Ajudante(object):
         """
         while self.threadsRodando:
             print('Puxando dados do PITOT!')
-            # self.pitot.atualiza(20, 1.218)
-            # self.pressADC.setValor(self.pitot.getValADC())
-            # self.pressTensao.setValor(self.pitot.getValTensao())
-            # self.pressaoDin.setValor(self.pitot.getPressaoDinamica("PA"))
-            # self.velCas.setValor(self.pitot.getVelocidade("m/s"))
+            self.pitot.atualiza(20, 1.218)
+            self.pressADC.setValor(self.pitot.getValADC())
+            self.pressTensao.setValor(self.pitot.getValTensao())
+            self.pressaoDin.setValor(self.pitot.getPressaoDinamica("PA"))
+            self.velCas.setValor(self.pitot.getVelocidade("m/s"))
             time.sleep(delay)
 
 
