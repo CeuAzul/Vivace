@@ -3,8 +3,7 @@
 
 import os
 import sys
-if os.uname()[1] == 'raspberrypi':
-    import serial
+import serial
 
 import serial
 
