@@ -163,68 +163,73 @@ class Ajudante(object):
     def receber_todos_os_dados(self):
         todosOsDados = []
 
-        todosOsDados.extend([
-            self.taxaGiroX,
-            self.taxaGiroY,
-            self.taxaGiroZ,
-            self.aceleracaoX,
-            self.aceleracaoY,
-            self.aceleracaoZ,
-            self.pitch,
-            self.roll
-        ])
-
-        todosOsDados.extend([
-            self.pressaoTotal,
-            self.pressaoEstatica,
-            self.pressaoTotalr,
-            self.pressaoEstaticar,
-            self.temperaturaBar,
-            self.densidadeAr,
-            self.altitudeRelativa,
-            self.altitudePressao
-        ])
-
-        todosOsDados.extend([
-            self.dadoTempoGPS,
-            self.latitude,
-            self.longitude,
-            self.altitude,
-            self.direcaoCurso,
-            self.velocidade,
-            self.velocidadeSubida,
-            self.erroX,
-            self.erroY,
-            self.erroAltitude,
-            self.erroVelocidade,
-            self.erroVelocidadeSubida,
-            self.nivelFixacao,
-            self.latitudeRef,
-            self.longitudeRef,
-            self.posicaoX,
-            self.posicaoY,
-            self.distanciaAbsoluta
-        ])
-
-        for pitot in range(self.configurador.NUMERO_DE_PITOTS):
+        if self.configurador.USAR_IMU:
             todosOsDados.extend([
-                self.pressADC[pitot],
-                self.pressTensao[pitot],
-                self.pressaoDin[pitot],
-                self.velCas[pitot]
+                self.taxaGiroX,
+                self.taxaGiroY,
+                self.taxaGiroZ,
+                self.aceleracaoX,
+                self.aceleracaoY,
+                self.aceleracaoZ,
+                self.pitch,
+                self.roll
             ])
 
-        for celula in range(self.configurador.NUMERO_DE_CELULAS):
+        if self.configurador.USAR_BARO:
             todosOsDados.extend([
-                self.forca[celula],
+                self.pressaoTotal,
+                self.pressaoEstatica,
+                self.pressaoTotalr,
+                self.pressaoEstaticar,
+                self.temperaturaBar,
+                self.densidadeAr,
+                self.altitudeRelativa,
+                self.altitudePressao
             ])
 
-        todosOsDados.extend([
-            self.Lift,
-            self.Drag,
-            self.Moment,
-            self.DistCp
-        ])
+        if self.configurador.USAR_GPS:
+            todosOsDados.extend([
+                self.dadoTempoGPS,
+                self.latitude,
+                self.longitude,
+                self.altitude,
+                self.direcaoCurso,
+                self.velocidade,
+                self.velocidadeSubida,
+                self.erroX,
+                self.erroY,
+                self.erroAltitude,
+                self.erroVelocidade,
+                self.erroVelocidadeSubida,
+                self.nivelFixacao,
+                self.latitudeRef,
+                self.longitudeRef,
+                self.posicaoX,
+                self.posicaoY,
+                self.distanciaAbsoluta
+            ])
+
+        if self.configurador.USAR_PITOTS:
+            for pitot in range(self.configurador.NUMERO_DE_PITOTS):
+                todosOsDados.extend([
+                    self.pressADC[pitot],
+                    self.pressTensao[pitot],
+                    self.pressaoDin[pitot],
+                    self.velCas[pitot]
+                ])
+
+        if self.configurador.USAR_CELULAS:
+            for celula in range(self.configurador.NUMERO_DE_CELULAS):
+                todosOsDados.extend([
+                    self.forca[celula],
+                ])
+
+            todosOsDados.extend([
+                self.Lift,
+                self.Drag,
+                self.Moment,
+                self.DistCp
+            ])
 
         return todosOsDados
 
