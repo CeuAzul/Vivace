@@ -279,8 +279,8 @@ class Ajudante(object):
         modoAtual = self.modo.getValor()
         self.trocarModoDeTransmissao(0)
         del self.escritor
-        self.escritor = Escritor("\t", True, True, self.configurador.NOME_DO_ARQUIVO + "- ", ".txt")
-        self.escritor.setDados(self.receber_pacote_de_dados())
+        self.escritor = Escritor("\t", True, True, self.configurador.NOME_DO_ARQUIVO + "- ", ".txt", pasta=self.configurador.PASTA_DESTINO)
+        self.escritor.setDados(self.receber_dados_usados())
         self.trocarModoDeTransmissao(modoAtual)
 
     def trocarModoDeTransmissao(self, modo):
