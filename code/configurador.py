@@ -47,22 +47,22 @@ class Configurador(object):
             'Pitot 15'
         ]
         self.APELIDO_DOS_PITOTS = [
-            'pitot0',
-            'pitot1',
-            'pitot2',
-            'pitot3',
-            'pitot4',
-            'pitot5',
-            'pitot6',
-            'pitot7',
-            'pitot8',
-            'pitot9',
-            'pitot10',
-            'pitot11',
-            'pitot12',
-            'pitot13',
-            'pitot14',
-            'pitot15'
+            'pt0',
+            'pt1',
+            'pt2',
+            'pt3',
+            'pt4',
+            'pt5',
+            'pt6',
+            'pt7',
+            'pt8',
+            'pt9',
+            'pt10',
+            'pt11',
+            'pt12',
+            'pt13',
+            'pt14',
+            'pt15'
         ]
 
         # CELULAS

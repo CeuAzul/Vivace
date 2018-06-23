@@ -23,7 +23,6 @@ def main():
         configurador.USAR_BARO = False
         configurador.USAR_IMU = False
         configurador.USAR_GPS = False
-        configurador.USAR_PITOTS = False
         configurador.ATIVAR_TRANSMISSAO = False
         print("Rodando programa fora do RaspberryPi. Desativando Barometro, IMU, GPS, Pitots e Transmissao.")
 

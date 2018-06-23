@@ -51,7 +51,10 @@ class Ajudante(object):
             self.gps = GPS()
         if self.configurador.USAR_PITOTS == True:
             print('PITOTS ativados!')
-            self.pitot = Pitot(0)
+            self.pitots = []
+            for i in range(self.configurador.NUMERO_DE_PITOTS):
+                self.pitots.append(Pitot(self.configurador.NOME_DOS_PITOTS[i],
+                                            self.configurador.APELIDO_DOS_PITOTS[i]))
         if self.configurador.USAR_ARDUINO == True:
             print('ARDUINO ativado!')
             self.arduino = Arduino()
@@ -125,15 +128,13 @@ class Ajudante(object):
             nomeDosPitots = self.configurador.NOME_DOS_PITOTS
             apelidoDosPitots = self.configurador.APELIDO_DOS_PITOTS
 
-            self.pressADC = []
-            self.pressTensao = []
+            self.pitotTensao = []
             self.pressaoDin = []
             self.velCas = []
 
             for pitot in range(self.configurador.NUMERO_DE_PITOTS):
                 print(nomeDosPitots[pitot] + ' criado!')
-                self.pressADC.extend([Dado("Valor ADC - " + nomeDosPitots[pitot], "Int", apelidoDosPitots[pitot], False, False, True, 3, "PITOT")])
-                self.pressTensao.extend([Dado("Tensao - " + nomeDosPitots[pitot], "V", "ppv_" + apelidoDosPitots[pitot], False, False, False, 6, "PITOT")])
+                self.pitotTensao.extend([Dado("Tensao - " + nomeDosPitots[pitot], "V", apelidoDosPitots[pitot], False, False, False, 6, "PITOT")])
                 self.pressaoDin.extend([Dado("Pressao Dinamica - " + nomeDosPitots[pitot], "PA", "ppp_" + apelidoDosPitots[pitot], True, True, False, 3, "PITOT")])
                 self.velCas.extend([Dado("VCAS - " + nomeDosPitots[pitot], "m/s", "vcs_" + apelidoDosPitots[pitot], True, True, True, 4, "PITOT")])
 
@@ -206,8 +207,7 @@ class Ajudante(object):
         if self.configurador.USAR_PITOTS:
             for pitot in range(self.configurador.NUMERO_DE_PITOTS):
                 todosOsDados.extend([
-                    self.pressADC[pitot],
-                    self.pressTensao[pitot],
+                    self.pitotTensao[pitot],
                     self.pressaoDin[pitot],
                     self.velCas[pitot]
                 ])
@@ -452,11 +452,16 @@ class Ajudante(object):
         """
         while self.threadsRodando:
             print('Puxando dados do PITOT!')
-            self.pitot.atualiza(20, 1.218)
-            self.pressADC.setValor(self.pitot.getValADC())
-            self.pressTensao.setValor(self.pitot.getValTensao())
-            self.pressaoDin.setValor(self.pitot.getPressaoDinamica("PA"))
-            self.velCas.setValor(self.pitot.getVelocidade("m/s"))
+
+            todosOsDados = self.receber_todos_os_dados()
+
+            for cadaDado in todosOsDados:
+                for i in range(self.configurador.NUMERO_DE_PITOTS):
+                    if cadaDado.apelido == self.pitots[i].apelido:
+                        self.pitots[i].atualiza(cadaDado.getValor(), 1.218)
+                        self.pitotTensao[i].setValor(self.pitot.getValTensao())
+                        self.pressaoDin[i].setValor(self.pitot.getPressaoDinamica("Pa"))
+                        self.velCas[i].setValor(self.pitot.getVelocidade("m/s"))
             time.sleep(delay)
 
 
