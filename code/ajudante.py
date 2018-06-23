@@ -245,21 +245,7 @@ class Ajudante(object):
         ])
 
         for dado in todosOsDados:
-            if dado.sensor == "IMU":
-                if self.configurador.USAR_IMU == True:
-                    pacoteDeDados.extend([dado])
-            if dado.sensor == "BARO":
-                if self.configurador.USAR_BARO == True:
-                    pacoteDeDados.extend([dado])
-            if dado.sensor == "GPS":
-                if self.configurador.USAR_GPS == True:
-                    pacoteDeDados.extend([dado])
-            if dado.sensor == "PITOT":
-                if self.configurador.USAR_PITOTS == True:
-                    pacoteDeDados.extend([dado])
-            if dado.sensor == "CELULA":
-                if self.configurador.USAR_CELULAS == True:
-                    pacoteDeDados.extend([dado])
+            pacoteDeDados.extend([dado])
 
         return pacoteDeDados
 
