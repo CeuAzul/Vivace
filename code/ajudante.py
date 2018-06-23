@@ -303,7 +303,7 @@ class Ajudante(object):
     def criar_escritor_transmissor(self):
         print('Escritor e Transmissor criados!')
         self.escritor = Escritor("\t", True, True, self.configurador.NOME_DO_ARQUIVO + "- ", ".txt", pasta=self.configurador.PASTA_DESTINO)
-        # self.transmissor = Transmissor(",", True, 57600, 'UTF-8')
+        self.transmissor = Transmissor(",", True, 57600, 'UTF-8')
 
     def criar_novo_arquivo(self):
         print('Novo arquivo sendo criado!')
@@ -331,8 +331,8 @@ class Ajudante(object):
     def transmitirDados(self, delay):
         while self.threadsRodando:
             print('Transmitindo dados!')
-            # self.transmissor.setDados(self.receber_novos_dados)
-            # self.transmissor.transmiteLinha()
+            self.transmissor.setDados(self.receber_novos_dados)
+            self.transmissor.transmiteLinha()
             time.sleep(delay)
 
     def gravarDados(self, delay):
