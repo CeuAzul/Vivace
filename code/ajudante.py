@@ -39,12 +39,6 @@ class Ajudante(object):
         self.utc = self.NaN
         self.sensores = ["IMU", "BARO", "GPS", "PITOT", "CELULA"]
 
-        if os.uname()[1] != 'raspberrypi':
-            self.configurador.USAR_BARO = False
-            self.configurador.USAR_IMU = False
-            self.configurador.USAR_GPS = False
-            self.configurador.USAR_PITOTS = False
-
     def ativar_sensores(self):
         if self.configurador.USAR_IMU == True:
             print('IMU ativada!')
