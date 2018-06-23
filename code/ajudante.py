@@ -228,7 +228,7 @@ class Ajudante(object):
 
         return todosOsDados
 
-    def receber_pacote_de_dados(self):
+    def receber_dados_usados(self):
 
         pacoteDeDados = []
         todosOsDados = self.receber_todos_os_dados()
@@ -241,18 +241,23 @@ class Ajudante(object):
         ])
 
         for dado in todosOsDados:
-            pacoteDeDados.extend([dado])
+            if dado.sensor == 'IMU':
+                if self.configurador.USAR_IMU:
+                    pacoteDeDados.extend([dado])
+            if dado.sensor == 'BARO':
+                if self.configurador.USAR_BARO:
+                    pacoteDeDados.extend([dado])
+            if dado.sensor == 'GPS':
+                if self.configurador.USAR_GPS:
+                    pacoteDeDados.extend([dado])
+            if dado.sensor == 'PITOT':
+                if self.configurador.USAR_PITOT:
+                    pacoteDeDados.extend([dado])
+            if dado.sensor == 'CELULA':
+                if self.configurador.USAR_CELULA:
+                    pacoteDeDados.extend([dado])
 
         return pacoteDeDados
-
-    def ativar_gravacao(self, sensor):
-
-        dados = self.receber_pacote_de_dados()
-
-        for dado in todosOsDados:
-            if dado.sensor == sensor:
-                print(dado.nome + ' sendo gravado')
-                dado.setGravacao(True)
 
     def ativar_transmissao(self, sensor):
 
@@ -294,7 +299,7 @@ class Ajudante(object):
     def transmitirDados(self, delay):
         while self.threadsRodando:
             print('Transmitindo dados!')
-            self.transmissor.setDados(self.receber_novos_dados)
+            self.transmissor.setDados(self.receber_dados_usados)
             self.transmissor.transmiteLinha()
             time.sleep(delay)
 
@@ -304,7 +309,7 @@ class Ajudante(object):
             self.tempoAtual = (datetime.now() - self.inicioDoDia).total_seconds()
             self.tempo.setValor(self.tempoAtual)
             if self.modo.getValor() == 4:
-                self.escritor.setDados(self.receber_pacote_de_dados())
+                self.escritor.setDados(self.receber_dados_usados())
                 self.escritor.escreveLinhaDado()
             time.sleep(delay)
 
@@ -416,7 +421,7 @@ class Ajudante(object):
         while self.threadsRodando:
             print('Puxando dados do PITOT!')
 
-            todosOsDados = self.receber_todos_os_dados()
+            todosOsDados = self.receber_dados_usados()
 
             for cadaDado in todosOsDados:
                 for i in range(self.configurador.NUMERO_DE_PITOTS):
@@ -437,7 +442,7 @@ class Ajudante(object):
         while self.threadsRodando:
             print('Puxando dados do ARDUINO!')
 
-            todosOsDados = self.receber_todos_os_dados()
+            todosOsDados = self.receber_dados_usados()
             dicioDeDados = self.arduino.getData()
 
             for cadaDado in todosOsDados:
@@ -456,7 +461,7 @@ class Ajudante(object):
         while self.threadsRodando:
             print('Puxando dados da Balança!')
 
-            todosOsDados = self.receber_todos_os_dados()
+            todosOsDados = self.receber_dados_usados()
 
             for cadaDado in todosOsDados:
                 for i in range(self.configurador.NUMERO_DE_CELULAS):
