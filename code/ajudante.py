@@ -11,8 +11,8 @@ from libs.dado import Dado
 
 from libs.mpu import MPU
 from libs.barometro import Barometro
-# from libs.gps import Gps
-# from libs.pitot import Pitot
+from libs.gps import GPS
+from libs.pitot import Pitot
 from libs.arduino import Arduino
 
 from libs.celula import Celula
@@ -42,16 +42,16 @@ class Ajudante(object):
     def ativar_sensores(self):
         if self.configurador.USAR_IMU == True:
             print('IMU ativada!')
-            # self.mpu = MPU(True, True, True, True, True, True, True, True)
+            self.mpu = MPU(True, True, True, True, True, True, True, True)
         if self.configurador.USAR_BARO == True:
             print('BARO ativada!')
-            # self.barometro = Barometro(True, True)
+            self.barometro = Barometro(True, True)
         if self.configurador.USAR_GPS == True:
             print('GPS ativada!')
-            # self.gps = Gps()
+            self.gps = GPS()
         if self.configurador.USAR_PITOTS == True:
             print('PITOTS ativados!')
-            # self.pitot = Pitot(0)
+            self.pitot = Pitot(0)
         if self.configurador.USAR_ARDUINO == True:
             print('ARDUINO ativado!')
             self.arduino = Arduino()
