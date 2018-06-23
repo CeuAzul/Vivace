@@ -17,8 +17,9 @@ from configurador import Configurador
 
 def main():
 
-    ajudante = Ajudante()
     configurador = Configurador()
+
+    ajudante = Ajudante(configurador)
 
     ajudante.ativar_sensores()
     ajudante.criar_dados()

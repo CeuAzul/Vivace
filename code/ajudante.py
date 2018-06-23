@@ -24,8 +24,8 @@ from configurador import Configurador
 
 class Ajudante(object):
 
-    def __init__(self):
-        self.configurador = Configurador()
+    def __init__(self, configurador):
+        self.configurador = configurador
         # self.seletorDeModos = SeletorDeModos()
         self.telecomandoExecutado = False
         self.threadsRodando = True
