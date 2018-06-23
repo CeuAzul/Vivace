@@ -14,6 +14,7 @@ import threading
 from ajudante import Ajudante
 from thredeiro import Thredeiro
 from configurador import Configurador
+from atualizador import Atualizador
 from criador import Criador
 
 def main():
@@ -29,6 +30,7 @@ def main():
 
     criador = Criador(configurador)
     ajudante = Ajudante(configurador, criador)
+    atualizador = Atualizador(configurador, criador, ajudante)
 
     ajudante.ativar_sensores()
     ajudante.criar_escritor_transmissor()
@@ -39,19 +41,19 @@ def main():
     if(configurador.ATIVAR_TRANSMISSAO):
         threadTransmissao = Thredeiro('Transmissao', ajudante.transmitirDados, 0.5)
     if(configurador.USAR_IMU):
-        threadIMU = Thredeiro('IMU', ajudante.atualizarIMU, 0.03)
+        threadIMU = Thredeiro('IMU', atualizador.atualizarIMU, 0.03)
     if(configurador.USAR_BARO):
-        threadBARO = Thredeiro('BARO', ajudante.atualizarBarometro, 0.1)
+        threadBARO = Thredeiro('BARO', atualizador.atualizarBarometro, 0.1)
     if(configurador.USAR_GPS):
-        threadGPS = Thredeiro('GPS', ajudante.atualizarGps, 0.5)
+        threadGPS = Thredeiro('GPS', atualizador.atualizarGps, 0.5)
     if(configurador.USAR_PITOTS):
-        threadPITOT = Thredeiro('PITOT', ajudante.atualizarPitot, 0.2)
+        threadPITOT = Thredeiro('PITOT', atualizador.atualizarPitot, 0.2)
     if(configurador.USAR_BALANCA):
-        threadBALANCA = Thredeiro('BALANCA', ajudante.atualizarBalanca, 0.05)
+        threadBALANCA = Thredeiro('BALANCA', atualizador.atualizarBalanca, 0.05)
     if(configurador.USAR_CELULAS):
-        threadCELULAS = Thredeiro('CELULAS', ajudante.atualizarCelulas, 0.05)
+        threadCELULAS = Thredeiro('CELULAS', atualizador.atualizarCelulas, 0.05)
     if(configurador.USAR_ARDUINO):
-        threadARDUINO = Thredeiro('ARDUINO', ajudante.atualizarArduino, 0.05)
+        threadARDUINO = Thredeiro('ARDUINO', atualizador.atualizarArduino, 0.05)
     if(configurador.ATIVAR_GRAVACAO):
         threadGravacao = Thredeiro('Gravaçao', ajudante.gravarDados, 0.02)
     if(configurador.ATIVAR_TRANSMISSAO):
