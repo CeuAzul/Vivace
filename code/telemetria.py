@@ -14,6 +14,7 @@ import threading
 from ajudante import Ajudante
 from thredeiro import Thredeiro
 from configurador import Configurador
+from criador import Criador
 
 def main():
 
@@ -26,13 +27,13 @@ def main():
         configurador.ATIVAR_TRANSMISSAO = False
         print("Rodando programa fora do RaspberryPi. Desativando Barometro, IMU, GPS, Pitots e Transmissao.")
 
-    ajudante = Ajudante(configurador)
+    criador = Criador(configurador)
+    ajudante = Ajudante(configurador, criador)
 
     ajudante.ativar_sensores()
-    ajudante.criar_dados()
     ajudante.criar_escritor_transmissor()
     ajudante.trocarModoDeTransmissao(4)
-    ajudante.escritor.setDados(ajudante.receber_pacote_de_dados())
+    ajudante.escritor.setDados(ajudante.receber_dados_usados())
     ajudante.escritor.fazCabecalho()
 
     if(configurador.ATIVAR_TRANSMISSAO):

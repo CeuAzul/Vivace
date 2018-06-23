@@ -4,7 +4,6 @@
 import os
 import time
 from datetime import datetime
-import threading
 
 from libs.datilografo import Escritor
 from libs.telepatia import Transmissor
@@ -19,13 +18,13 @@ from libs.arduino import Arduino
 from libs.celula import Celula
 from libs.balanca import Balanca
 
-from configurador import Configurador
 # from modos_de_transmissao import SeletorDeModos
 
 class Ajudante(object):
 
-    def __init__(self, configurador):
+    def __init__(self, configurador, criador):
         self.configurador = configurador
+        self.criador = criador
         # self.seletorDeModos = SeletorDeModos()
         self.telecomandoExecutado = False
         self.threadsRodando = True
@@ -33,7 +32,6 @@ class Ajudante(object):
                                     datetime.now().month,
                                     datetime.now().day)
         self.tempoAtual = (datetime.now() - self.inicioDoDia).total_seconds()
-        self.atualizandoReferenciaDoBarometro = False
         self.NaN = float('nan')
         self.tempoGPS = self.NaN
         self.utc = self.NaN
@@ -67,177 +65,16 @@ class Ajudante(object):
                     self.celulas.append(Celula(self.configurador.NOME_DAS_CELULAS[i],
                                                 self.configurador.APELIDO_DAS_CELULAS[i]))
 
-    def criar_dados(self):
-
-        print('Dados gerais criados')
-
-        self.tempo = Dado("Tempo", "seg", "tmp", True, True, False, 4)
-        self.mensagemRecebida = Dado("Mensagem", "str", "str", True, False, False)
-        self.modo = Dado("Modo", "int", "sin", False, True, True)
-        self.tamanho = Dado("Tamanho do arquivo", "int", "agr", False, True, True, 3)
-
-        print('Dados da IMU criados!')
-
-        self.taxaGiroX = Dado("Taxa de giro em X", "º/s", "gyx", True, False, False, 2, "IMU")
-        self.taxaGiroY = Dado("Taxa de giro em Y", "º/s", "gyy", True, False, False, 2, "IMU")
-        self.taxaGiroZ = Dado("Taxa de giro em Z", "º/s", "gyz", True, False, False, 2, "IMU")
-        self.aceleracaoX = Dado("Aceleração em X", "g", "acx", True, False, False, 2, "IMU")
-        self.aceleracaoY = Dado("Aceleração em Y", "g", "acy", True, False, False, 2, "IMU")
-        self.aceleracaoZ = Dado("Aceleração em Z", "g", "acz", True, False, False, 2, "IMU")
-        self.pitch = Dado("Pitch", "º", "pit", True, False, False, 2, "IMU")
-        self.roll = Dado("Roll", "º", "rol", True, False, False, 2, "IMU")
-
-        print('Dados do BARO criados!')
-
-        self.pressaoTotal = Dado("Pressao total", "PA", "ptt", True, True, False, 3, "BARO")
-        self.pressaoEstatica = Dado("Pressao estática", "PA", "pts", True, True, False, 3, "BARO")
-        self.pressaoTotalr = Dado("PTtotal", "PA", "ptt", True, False, False, 3, "BARO")
-        self.pressaoEstaticar = Dado("PTstatic", "PA", "psr", True, False, False, 3, "BARO")
-        self.temperaturaBar = Dado("Temperatura", "ºC", "tem", True, False, False, 3, "BARO")
-        self.densidadeAr = Dado("Densidade do ar", "Kg/m³", "den", True, False, False, 3, "BARO")
-        self.altitudeRelativa = Dado("Altitude relativa", "m", "alt", True, False, False, 3, "BARO")
-        self.altitudePressao = Dado("HP", "ft", "hps", True, True, False, 3, "BARO")
-
-        print('Dados do GPS criados!')
-
-        self.dadoTempoGPS = Dado("Tempo GPS", "-", "tmg", True, False, False, "GPS")
-        self.latitude = Dado("Latitude", "º", "lat", True, False, False, 6, "GPS")
-        self.longitude = Dado("Longitude", "º", "lng", True, False, False, 6, "GPS")
-        self.altitude = Dado("ZGPS", "m", "atg", True, False, False, 2, "GPS")
-        self.direcaoCurso = Dado("Direção de curso", "º", "cog", True, False, False, 1, "GPS")
-        self.velocidade = Dado("Velocidade GPS", "m/s", "vel", True, True, False, 2, "GPS")
-        self.velocidadeSubida = Dado("Velocidade de subida", "m/s","ves", False, False, False, 2, "GPS")
-        self.erroX = Dado("Erro em X", "m", "erx", False, False, False, 1, "GPS")
-        self.erroY = Dado("Erro em Y", "m", "ery", False, False, False, 1, "GPS")
-        self.erroAltitude = Dado("Erro da altitude", "m", "era", False, False, False, 1, "GPS")
-        self.erroVelocidade = Dado("Erro de velocidade", "nós", "ers", False, False, False, 1, "GPS")
-        self.erroVelocidadeSubida = Dado("Erro da velocidade de subida", "m/s", "ves", False, False, False, 1, "GPS")
-        self.nivelFixacao = Dado("Nivel de fixação GPS", "-", "nfx", True, False, False, 1, "GPS")
-        self.latitudeRef = Dado("Latitude de referência", "-", "ltr", False, True, False, 6, "GPS")
-        self.longitudeRef = Dado("Longitude de referência", "-", "lgr", False, True, False, 6, "GPS")
-        self.posicaoX = Dado("XGPS", "m", "gpx", True, True, False, 2, "GPS")
-        self.posicaoY = Dado("YGPS", "m", "gpy", True, True, False, 2, "GPS")
-        self.distanciaAbsoluta = Dado("Distancia absoluta", "m", "dtr", False, False, False, 2, "GPS")
-
-        print('Dados dos PITOTS criados!')
-
-        nomeDosPitots = self.configurador.NOME_DOS_PITOTS
-        apelidoDosPitots = self.configurador.APELIDO_DOS_PITOTS
-
-        self.pitotTensao = []
-        self.pressaoDin = []
-        self.velCas = []
-
-        for pitot in range(self.configurador.NUMERO_DE_PITOTS):
-            print(nomeDosPitots[pitot] + ' criado!')
-            self.pitotTensao.extend([Dado("Tensao - " + nomeDosPitots[pitot], "V", apelidoDosPitots[pitot], False, False, False, 6, "PITOT")])
-            self.pressaoDin.extend([Dado("Pressao Dinamica - " + nomeDosPitots[pitot], "PA", "ppp_" + apelidoDosPitots[pitot], True, True, False, 3, "PITOT")])
-            self.velCas.extend([Dado("VCAS - " + nomeDosPitots[pitot], "m/s", "vcs_" + apelidoDosPitots[pitot], True, True, True, 4, "PITOT")])
-
-        print('Dados das CELULAS criados!')
-
-        nomeDasCelulas = self.configurador.NOME_DAS_CELULAS
-        apelidoDasCelulas = self.configurador.APELIDO_DAS_CELULAS
-
-        self.Lift = Dado("Lift", "N", "lft", True, False, False, 2, "CELULA")
-        self.Drag = Dado("Drag", "N", "drg", True, False, False, 2, "CELULA")
-        self.Moment = Dado("Moment", "N", "mmt", True, False, False, 2, "CELULA")
-        self.DistCp = Dado("Distance Cp", "m", "dcp", True, False, False, 2, "CELULA")
-
-        self.forca = []
-        for celula in range(self.configurador.NUMERO_DE_CELULAS):
-            print(nomeDasCelulas[celula] + ' criada!')
-            self.forca.extend([Dado("Forca - " + nomeDasCelulas[celula], "N", apelidoDasCelulas[celula], True, False, True, 3, "CELULA")])
-
-    def receber_todos_os_dados(self):
-        todosOsDados = []
-
-        todosOsDados.extend([
-            self.tempo,
-            self.mensagemRecebida,
-            self.modo,
-            self.tamanho
-        ])
-
-        #IMU Data
-        todosOsDados.extend([
-            self.taxaGiroX,
-            self.taxaGiroY,
-            self.taxaGiroZ,
-            self.aceleracaoX,
-            self.aceleracaoY,
-            self.aceleracaoZ,
-            self.pitch,
-            self.roll
-        ])
-
-        #BARO Data
-        todosOsDados.extend([
-            self.pressaoTotal,
-            self.pressaoEstatica,
-            self.pressaoTotalr,
-            self.pressaoEstaticar,
-            self.temperaturaBar,
-            self.densidadeAr,
-            self.altitudeRelativa,
-            self.altitudePressao
-        ])
-
-        #GPS Data
-        todosOsDados.extend([
-            self.dadoTempoGPS,
-            self.latitude,
-            self.longitude,
-            self.altitude,
-            self.direcaoCurso,
-            self.velocidade,
-            self.velocidadeSubida,
-            self.erroX,
-            self.erroY,
-            self.erroAltitude,
-            self.erroVelocidade,
-            self.erroVelocidadeSubida,
-            self.nivelFixacao,
-            self.latitudeRef,
-            self.longitudeRef,
-            self.posicaoX,
-            self.posicaoY,
-            self.distanciaAbsoluta
-        ])
-
-        #PITOT Data
-        for pitot in range(self.configurador.NUMERO_DE_PITOTS):
-            todosOsDados.extend([
-                self.pitotTensao[pitot],
-                self.pressaoDin[pitot],
-                self.velCas[pitot]
-            ])
-
-        #CELULA Data
-        for celula in range(self.configurador.NUMERO_DE_CELULAS):
-            todosOsDados.extend([
-                self.forca[celula],
-            ])
-
-            todosOsDados.extend([
-                self.Lift,
-                self.Drag,
-                self.Moment,
-                self.DistCp
-            ])
-
-        return todosOsDados
-
     def receber_dados_usados(self):
 
         pacoteDeDados = []
-        todosOsDados = self.receber_todos_os_dados()
+        todosOsDados = self.criador.receber_todos_os_dados()
 
         pacoteDeDados.extend([
-            self.tempo,
-            self.mensagemRecebida,
-            self.modo,
-            self.tamanho
+            self.criador.tempo,
+            self.criador.mensagemRecebida,
+            self.criador.modo,
+            self.criador.tamanho
         ])
 
         for dado in todosOsDados:
@@ -251,10 +88,10 @@ class Ajudante(object):
                 if self.configurador.USAR_GPS:
                     pacoteDeDados.extend([dado])
             if dado.sensor == 'PITOT':
-                if self.configurador.USAR_PITOT:
+                if self.configurador.USAR_PITOTS:
                     pacoteDeDados.extend([dado])
             if dado.sensor == 'CELULA':
-                if self.configurador.USAR_CELULA:
+                if self.configurador.USAR_CELULAS:
                     pacoteDeDados.extend([dado])
 
         return pacoteDeDados
@@ -284,7 +121,7 @@ class Ajudante(object):
         self.trocarModoDeTransmissao(modoAtual)
 
     def trocarModoDeTransmissao(self, modo):
-        self.modo.setValor(modo)
+        self.criador.modo.setValor(modo)
         print('Trocando para modo ' + str(modo) + ' de transmissao!')
         # seletorDeModos.set
 
@@ -307,8 +144,8 @@ class Ajudante(object):
         while self.threadsRodando == True:
             print('Gravando dados!')
             self.tempoAtual = (datetime.now() - self.inicioDoDia).total_seconds()
-            self.tempo.setValor(self.tempoAtual)
-            if self.modo.getValor() == 4:
+            self.criador.tempo.setValor(self.tempoAtual)
+            if self.criador.modo.getValor() == 4:
                 self.escritor.setDados(self.receber_dados_usados())
                 self.escritor.escreveLinhaDado()
             time.sleep(delay)
@@ -317,9 +154,9 @@ class Ajudante(object):
         while self.threadsRodando:
             print('Lendo telecomando!')
 
-            self.tamanho.setValor(self.escritor.verificaTamanhoArquivo())
+            self.criador.tamanho.setValor(self.escritor.verificaTamanhoArquivo())
             comandoRecebido = self.transmissor.leLinha()
-            self.mensagemRecebida.setValor(comandoRecebido)
+            self.criador.mensagemRecebida.setValor(comandoRecebido)
             if comandoRecebido == "@t#c%$0#1$":
                 if self.telecomandoExecutado == False:
                     self.telecomandoExecutado = True
