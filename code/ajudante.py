@@ -309,7 +309,7 @@ class Ajudante(object):
         modoAtual = self.modo.getValor()
         self.trocarModoDeTransmissao(0)
         del self.escritor
-        self.escritor = Escritor("\t", True, True, "Dados da Telemetria - ", ".txt")
+        self.escritor = Escritor("\t", True, True, self.configurador.NOME_DO_ARQUIVO + "- ", ".txt")
         self.escritor.setDados(self.receber_pacote_de_dados())
         self.trocarModoDeTransmissao(modoAtual)
 
