@@ -61,15 +61,15 @@ class Ajudante(object):
         if self.configurador.USAR_ARDUINO == True:
             print('ARDUINO ativado!')
             self.arduino = Arduino()
-        if self.configurador.USAR_CELULAS == True:
-            print('CELULAS ativadas!')
-            self.balanca = Balanca()
-            self.celula_traseira_esquerda = Celula(nome="celula_traseira_esquerda", apelido="fte")
-            self.celula_traseira_direita = Celula(nome="celula_traseira_direita", apelido="ftd")
-            self.celula_frontal_esquerda = Celula(nome="celula_frontal_esquerda", apelido="ffe")
-            self.celula_frontal_direita = Celula(nome="celula_frontal_direita", apelido="ffd")
-            self.celula_horizontal = Celula(nome="celula_horizontal", apelido="fh")
-            # self.arduino = Arduino()
+
+            if self.configurador.USAR_CELULAS == True:
+                print('CELULAS ativadas!')
+                self.balanca = Balanca()
+                self.celula_traseira_esquerda = Celula(nome="celula_traseira_esquerda", apelido="fte")
+                self.celula_traseira_direita = Celula(nome="celula_traseira_direita", apelido="ftd")
+                self.celula_frontal_esquerda = Celula(nome="celula_frontal_esquerda", apelido="ffe")
+                self.celula_frontal_direita = Celula(nome="celula_frontal_direita", apelido="ffd")
+                self.celula_horizontal = Celula(nome="celula_horizontal", apelido="fh")
 
 
     def criar_dados(self):
@@ -143,21 +143,22 @@ class Ajudante(object):
                 self.pressaoDin.extend([Dado("Pressao Dinamica - " + nomeDosPitots[pitot], "PA", "ppp_" + apelidoDosPitots[pitot], True, True, False, 3, "PITOT")])
                 self.velCas.extend([Dado("VCAS - " + nomeDosPitots[pitot], "m/s", "vcs_" + apelidoDosPitots[pitot], True, True, True, 4, "PITOT")])
 
-        if self.configurador.USAR_CELULAS == True:
-            print('CELULAS dados criados!')
+        if self.configurador.USAR_ARDUINO:
+            if self.configurador.USAR_CELULAS == True:
+                print('CELULAS dados criados!')
 
-            nomeDasCelulas = self.configurador.NOME_DAS_CELULAS
-            apelidoDasCelulas = self.configurador.APELIDO_DAS_CELULAS
+                nomeDasCelulas = self.configurador.NOME_DAS_CELULAS
+                apelidoDasCelulas = self.configurador.APELIDO_DAS_CELULAS
 
-            self.Lift = Dado("Lift", "N", "lft", True, False, False, 2, "CELULA")
-            self.Drag = Dado("Drag", "N", "drg", True, False, False, 2, "CELULA")
-            self.Moment = Dado("Moment", "N", "mmt", True, False, False, 2, "CELULA")
-            self.DistCp = Dado("Distance Cp", "m", "dcp", True, False, False, 2, "CELULA")
+                self.Lift = Dado("Lift", "N", "lft", True, False, False, 2, "CELULA")
+                self.Drag = Dado("Drag", "N", "drg", True, False, False, 2, "CELULA")
+                self.Moment = Dado("Moment", "N", "mmt", True, False, False, 2, "CELULA")
+                self.DistCp = Dado("Distance Cp", "m", "dcp", True, False, False, 2, "CELULA")
 
-            self.forca = []
-            for celula in range(self.configurador.NUMERO_DE_CELULAS):
-                print(nomeDasCelulas[celula] + ' criada!')
-                self.forca.extend([Dado("Forca - " + nomeDasCelulas[celula], "N", apelidoDasCelulas[celula], False, False, True, 3, "CELULA")])
+                self.forca = []
+                for celula in range(self.configurador.NUMERO_DE_CELULAS):
+                    print(nomeDasCelulas[celula] + ' criada!')
+                    self.forca.extend([Dado("Forca - " + nomeDasCelulas[celula], "N", apelidoDasCelulas[celula], False, False, True, 3, "CELULA")])
 
     def receber_todos_os_dados(self):
         todosOsDados = []
