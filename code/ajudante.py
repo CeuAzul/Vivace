@@ -249,54 +249,23 @@ class Ajudante(object):
 
         return pacoteDeDados
 
-    def ativar_gravacao(self):
+    def ativar_gravacao(self, sensor):
 
         dados = self.receber_pacote_de_dados()
-        for dado in dados:
-            if dado.sensor == "IMU":
-                if self.configurador.GRAVAR_IMU == True:
-                    print(dado.nome + ' sendo gravado')
-                    dado.setGravacao(True)
-            if dado.sensor == "BARO":
-                if self.configurador.GRAVAR_BARO == True:
-                    print(dado.nome + ' sendo gravado')
-                    dado.setGravacao(True)
-            if dado.sensor == "GPS":
-                if self.configurador.GRAVAR_GPS == True:
-                    print(dado.nome + ' sendo gravado')
-                    dado.setGravacao(True)
-            if dado.sensor == "PITOT":
-                if self.configurador.GRAVAR_PITOTS == True:
-                    print(dado.nome + ' sendo gravado')
-                    dado.setGravacao(True)
-            if dado.sensor == "CELULA":
-                if self.configurador.GRAVAR_CELULAS == True:
-                    print(dado.nome + ' sendo gravada')
-                    dado.setGravacao(True)
 
-    def ativar_transmissao(self):
+        for dado in todosOsDados:
+            if dado.sensor == sensor:
+                print(dado.nome + ' sendo gravado')
+                dado.setGravacao(True)
+
+    def ativar_transmissao(self, sensor):
+
         dados = self.receber_pacote_de_dados()
-        for dado in dados:
-            if dado.sensor == "IMU":
-                if self.configurador.TRANSMITIR_IMU == True:
-                    print(dado.nome + ' sendo transmitido')
-                    dado.setTransmissao(True)
-            if dado.sensor == "BARO":
-                if self.configurador.TRANSMITIR_BARO == True:
-                    print(dado.nome + ' sendo transmitido')
-                    dado.setTransmissao(True)
-            if dado.sensor == "GPS":
-                if self.configurador.TRANSMITIR_GPS == True:
-                    print(dado.nome + ' sendo transmitido')
-                    dado.setTransmissao(True)
-            if dado.sensor == "PITOT":
-                if self.configurador.TRANSMITIR_PITOTS == True:
-                    print(dado.nome + ' sendo transmitido')
-                    dado.setTransmissao(True)
-            if dado.sensor == "CELULA":
-                if self.configurador.TRANSMITIR_CELULAS == True:
-                    print(dado.nome + ' sendo transmitida')
-                    dado.setTransmissao(True)
+
+        for dado in todosOsDados:
+            if dado.sensor == sensor:
+                print(dado.nome + ' sendo transmitido')
+                dado.setTransmissao(True)
 
     def criar_escritor_transmissor(self):
         print('Escritor e Transmissor criados!')
