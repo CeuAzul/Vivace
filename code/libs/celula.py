@@ -4,7 +4,7 @@ class Celula(object):
     Esta classe ira receber e tratar os dados de força vindos
     de cada uma das células (através do Arduino)."""
 
-    def __init__(self, nome, apelido, UM = "Kg"):
+    def __init__(self, nome, apelido, UM = "N"):
         self.nome =  nome
         self.apelido = apelido
         self.UM = UM

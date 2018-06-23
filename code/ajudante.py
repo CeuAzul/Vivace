@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import os
 import time
 from datetime import datetime
 import threading
@@ -11,8 +12,8 @@ from libs.dado import Dado
 
 from libs.mpu import MPU
 from libs.barometro import Barometro
-# from libs.gps import Gps
-# from libs.pitot import Pitot
+from libs.gps import GPS
+from libs.pitot import Pitot
 from libs.arduino import Arduino
 
 from libs.celula import Celula
@@ -23,8 +24,8 @@ from configurador import Configurador
 
 class Ajudante(object):
 
-    def __init__(self):
-        self.configurador = Configurador()
+    def __init__(self, configurador):
+        self.configurador = configurador
         # self.seletorDeModos = SeletorDeModos()
         self.telecomandoExecutado = False
         self.threadsRodando = True
@@ -38,33 +39,33 @@ class Ajudante(object):
         self.utc = self.NaN
         self.sensores = ["IMU", "BARO", "GPS", "PITOT", "CELULA"]
 
-
     def ativar_sensores(self):
         if self.configurador.USAR_IMU == True:
             print('IMU ativada!')
-            # self.mpu = MPU(True, True, True, True, True, True, True, True)
+            self.mpu = MPU(True, True, True, True, True, True, True, True)
         if self.configurador.USAR_BARO == True:
             print('BARO ativada!')
-            # self.barometro = Barometro(True, True)
+            self.barometro = Barometro(True, True)
         if self.configurador.USAR_GPS == True:
             print('GPS ativada!')
-            # self.gps = Gps()
+            self.gps = GPS()
         if self.configurador.USAR_PITOTS == True:
             print('PITOTS ativados!')
-            # self.pitot = Pitot(0)
+            self.pitots = []
+            for i in range(self.configurador.NUMERO_DE_PITOTS):
+                self.pitots.append(Pitot(self.configurador.NOME_DOS_PITOTS[i],
+                                            self.configurador.APELIDO_DOS_PITOTS[i]))
         if self.configurador.USAR_ARDUINO == True:
             print('ARDUINO ativado!')
             self.arduino = Arduino()
-        if self.configurador.USAR_CELULAS == True:
-            print('CELULAS ativadas!')
-            self.balanca = Balanca()
-            self.celula_traseira_esquerda = Celula(nome="celula_traseira_esquerda", apelido="fte")
-            self.celula_traseira_direita = Celula(nome="celula_traseira_direita", apelido="ftd")
-            self.celula_frontal_esquerda = Celula(nome="celula_frontal_esquerda", apelido="ffe")
-            self.celula_frontal_direita = Celula(nome="celula_frontal_direita", apelido="ffd")
-            self.celula_horizontal = Celula(nome="celula_horizontal", apelido="fh")
-            # self.arduino = Arduino()
 
+            if self.configurador.USAR_CELULAS == True:
+                print('CELULAS ativadas!')
+                self.balanca = Balanca()
+                self.celulas = []
+                for i in range(self.configurador.NUMERO_DE_CELULAS):
+                    self.celulas.append(Celula(self.configurador.NOME_DAS_CELULAS[i],
+                                                self.configurador.APELIDO_DAS_CELULAS[i]))
 
     def criar_dados(self):
 
@@ -125,99 +126,102 @@ class Ajudante(object):
             nomeDosPitots = self.configurador.NOME_DOS_PITOTS
             apelidoDosPitots = self.configurador.APELIDO_DOS_PITOTS
 
-            self.pressADC = []
-            self.pressTensao = []
+            self.pitotTensao = []
             self.pressaoDin = []
             self.velCas = []
 
             for pitot in range(self.configurador.NUMERO_DE_PITOTS):
                 print(nomeDosPitots[pitot] + ' criado!')
-                self.pressADC.extend([Dado("Valor ADC - " + nomeDosPitots[pitot], "Int", apelidoDosPitots[pitot], False, False, True, 3, "PITOT")])
-                self.pressTensao.extend([Dado("Tensao - " + nomeDosPitots[pitot], "V", "ppv_" + apelidoDosPitots[pitot], False, False, False, 6, "PITOT")])
+                self.pitotTensao.extend([Dado("Tensao - " + nomeDosPitots[pitot], "V", apelidoDosPitots[pitot], False, False, False, 6, "PITOT")])
                 self.pressaoDin.extend([Dado("Pressao Dinamica - " + nomeDosPitots[pitot], "PA", "ppp_" + apelidoDosPitots[pitot], True, True, False, 3, "PITOT")])
                 self.velCas.extend([Dado("VCAS - " + nomeDosPitots[pitot], "m/s", "vcs_" + apelidoDosPitots[pitot], True, True, True, 4, "PITOT")])
 
-        if self.configurador.USAR_CELULAS == True:
-            print('CELULAS dados criados!')
+        if self.configurador.USAR_ARDUINO:
+            if self.configurador.USAR_CELULAS == True:
+                print('CELULAS dados criados!')
 
-            nomeDasCelulas = self.configurador.NOME_DAS_CELULAS
-            apelidoDasCelulas = self.configurador.APELIDO_DAS_CELULAS
+                nomeDasCelulas = self.configurador.NOME_DAS_CELULAS
+                apelidoDasCelulas = self.configurador.APELIDO_DAS_CELULAS
 
-            self.Lift = Dado("Lift", "N", "lft", True, False, False, 2, "CELULA")
-            self.Drag = Dado("Drag", "N", "drg", True, False, False, 2, "CELULA")
-            self.Moment = Dado("Moment", "N", "mmt", True, False, False, 2, "CELULA")
-            self.DistCp = Dado("Distance Cp", "m", "dcp", True, False, False, 2, "CELULA")
+                self.Lift = Dado("Lift", "N", "lft", True, False, False, 2, "CELULA")
+                self.Drag = Dado("Drag", "N", "drg", True, False, False, 2, "CELULA")
+                self.Moment = Dado("Moment", "N", "mmt", True, False, False, 2, "CELULA")
+                self.DistCp = Dado("Distance Cp", "m", "dcp", True, False, False, 2, "CELULA")
 
-            self.forca = []
-            for celula in range(self.configurador.NUMERO_DE_CELULAS):
-                print(nomeDasCelulas[celula] + ' criada!')
-                self.forca.extend([Dado("Forca - " + nomeDasCelulas[celula], "N", apelidoDasCelulas[celula], False, False, True, 3, "CELULA")])
+                self.forca = []
+                for celula in range(self.configurador.NUMERO_DE_CELULAS):
+                    print(nomeDasCelulas[celula] + ' criada!')
+                    self.forca.extend([Dado("Forca - " + nomeDasCelulas[celula], "N", apelidoDasCelulas[celula], False, False, True, 3, "CELULA")])
 
     def receber_todos_os_dados(self):
         todosOsDados = []
 
-        todosOsDados.extend([
-            self.taxaGiroX,
-            self.taxaGiroY,
-            self.taxaGiroZ,
-            self.aceleracaoX,
-            self.aceleracaoY,
-            self.aceleracaoZ,
-            self.pitch,
-            self.roll
-        ])
-
-        todosOsDados.extend([
-            self.pressaoTotal,
-            self.pressaoEstatica,
-            self.pressaoTotalr,
-            self.pressaoEstaticar,
-            self.temperaturaBar,
-            self.densidadeAr,
-            self.altitudeRelativa,
-            self.altitudePressao
-        ])
-
-        todosOsDados.extend([
-            self.dadoTempoGPS,
-            self.latitude,
-            self.longitude,
-            self.altitude,
-            self.direcaoCurso,
-            self.velocidade,
-            self.velocidadeSubida,
-            self.erroX,
-            self.erroY,
-            self.erroAltitude,
-            self.erroVelocidade,
-            self.erroVelocidadeSubida,
-            self.nivelFixacao,
-            self.latitudeRef,
-            self.longitudeRef,
-            self.posicaoX,
-            self.posicaoY,
-            self.distanciaAbsoluta
-        ])
-
-        for pitot in range(self.configurador.NUMERO_DE_PITOTS):
+        if self.configurador.USAR_IMU:
             todosOsDados.extend([
-                self.pressADC[pitot],
-                self.pressTensao[pitot],
-                self.pressaoDin[pitot],
-                self.velCas[pitot]
+                self.taxaGiroX,
+                self.taxaGiroY,
+                self.taxaGiroZ,
+                self.aceleracaoX,
+                self.aceleracaoY,
+                self.aceleracaoZ,
+                self.pitch,
+                self.roll
             ])
 
-        for celula in range(self.configurador.NUMERO_DE_CELULAS):
+        if self.configurador.USAR_BARO:
             todosOsDados.extend([
-                self.forca[celula],
+                self.pressaoTotal,
+                self.pressaoEstatica,
+                self.pressaoTotalr,
+                self.pressaoEstaticar,
+                self.temperaturaBar,
+                self.densidadeAr,
+                self.altitudeRelativa,
+                self.altitudePressao
             ])
 
-        todosOsDados.extend([
-            self.Lift,
-            self.Drag,
-            self.Moment,
-            self.DistCp
-        ])
+        if self.configurador.USAR_GPS:
+            todosOsDados.extend([
+                self.dadoTempoGPS,
+                self.latitude,
+                self.longitude,
+                self.altitude,
+                self.direcaoCurso,
+                self.velocidade,
+                self.velocidadeSubida,
+                self.erroX,
+                self.erroY,
+                self.erroAltitude,
+                self.erroVelocidade,
+                self.erroVelocidadeSubida,
+                self.nivelFixacao,
+                self.latitudeRef,
+                self.longitudeRef,
+                self.posicaoX,
+                self.posicaoY,
+                self.distanciaAbsoluta
+            ])
+
+        if self.configurador.USAR_PITOTS:
+            for pitot in range(self.configurador.NUMERO_DE_PITOTS):
+                todosOsDados.extend([
+                    self.pitotTensao[pitot],
+                    self.pressaoDin[pitot],
+                    self.velCas[pitot]
+                ])
+
+        if self.configurador.USAR_CELULAS:
+            for celula in range(self.configurador.NUMERO_DE_CELULAS):
+                todosOsDados.extend([
+                    self.forca[celula],
+                ])
+
+            todosOsDados.extend([
+                self.Lift,
+                self.Drag,
+                self.Moment,
+                self.DistCp
+            ])
 
         return todosOsDados
 
@@ -297,7 +301,7 @@ class Ajudante(object):
     def criar_escritor_transmissor(self):
         print('Escritor e Transmissor criados!')
         self.escritor = Escritor("\t", True, True, self.configurador.NOME_DO_ARQUIVO + "- ", ".txt", pasta=self.configurador.PASTA_DESTINO)
-        # self.transmissor = Transmissor(",", True, 57600, 'UTF-8')
+        self.transmissor = Transmissor(",", True, 57600, 'UTF-8')
 
     def criar_novo_arquivo(self):
         print('Novo arquivo sendo criado!')
@@ -325,8 +329,8 @@ class Ajudante(object):
     def transmitirDados(self, delay):
         while self.threadsRodando:
             print('Transmitindo dados!')
-            # self.transmissor.setDados(self.receber_novos_dados)
-            # self.transmissor.transmiteLinha()
+            self.transmissor.setDados(self.receber_novos_dados)
+            self.transmissor.transmiteLinha()
             time.sleep(delay)
 
     def gravarDados(self, delay):
@@ -343,15 +347,15 @@ class Ajudante(object):
         while self.threadsRodando:
             print('Lendo telecomando!')
 
-            # self.tamanho.setValor(self.escritor.verificaTamanhoArquivo())
-            # comandoRecebido = self.transmissor.leLinha()
-            # self.mensagemRecebida.setValor(comandoRecebido)
-            # if comandoRecebido == "@t#c%$0#1$":
-            #     if self.telecomandoExecutado == False:
-            #         self.telecomandoExecutado = True
-            #         self.trocarModoDeTransmissao(4)
-            #     else:
-            #         self.telecomandoExecutado = False
+            self.tamanho.setValor(self.escritor.verificaTamanhoArquivo())
+            comandoRecebido = self.transmissor.leLinha()
+            self.mensagemRecebida.setValor(comandoRecebido)
+            if comandoRecebido == "@t#c%$0#1$":
+                if self.telecomandoExecutado == False:
+                    self.telecomandoExecutado = True
+                    self.trocarModoDeTransmissao(4)
+                else:
+                    self.telecomandoExecutado = False
             time.sleep(delay)
 
     def atualizarIMU(self, delay):
@@ -363,15 +367,15 @@ class Ajudante(object):
         while self.threadsRodando:
             print('Puxando dados da IMU!')
 
-            # self.mpu.atualiza()
-            # self.taxaGiroX.setValor(self.mpu.getGyx())
-            # self.taxaGiroY.setValor(self.mpu.getGyy())
-            # self.taxaGiroZ.setValor(self.mpu.getGyz())
-            # self.aceleracaoX.setValor(self.mpu.getAcx())
-            # self.aceleracaoY.setValor(self.mpu.getAcy())
-            # self.aceleracaoZ.setValor(self.mpu.getAcz())
-            # self.pitch.setValor(self.mpu.getPitch())
-            # self.roll.setValor(self.mpu.getRoll())
+            self.mpu.atualiza()
+            self.taxaGiroX.setValor(self.mpu.getGyx())
+            self.taxaGiroY.setValor(self.mpu.getGyy())
+            self.taxaGiroZ.setValor(self.mpu.getGyz())
+            self.aceleracaoX.setValor(self.mpu.getAcx())
+            self.aceleracaoY.setValor(self.mpu.getAcy())
+            self.aceleracaoZ.setValor(self.mpu.getAcz())
+            self.pitch.setValor(self.mpu.getPitch())
+            self.roll.setValor(self.mpu.getRoll())
             time.sleep(delay)
 
 
@@ -384,18 +388,18 @@ class Ajudante(object):
         while self.threadsRodando:
             print('Puxando dados do BARO!')
 
-            # if self.atualizandoReferenciaDoBarometro == True:
-            #     self.barometro.atualizaReferencia()
-            #     atualizaRefBar = False
-            # self.barometro.atualiza()
-            # self.pressaoEstatica.setValor(self.barometro.getPressao("PA"))
-            # self.pressaoEstaticar.setValor(self.barometro.getPressao("PA"))
-            # self.pressaoTotal.setValor(self.barometro.getPressao("PA") + self.pitot.getPressaoDinamica("PA"))
-            # self.pressaoTotalr.setValor(self.barometro.getPressao("PA") + self.pitot.getPressaoDinamica("PA"))
-            # self.temperaturaBar.setValor(self.barometro.getTemperatura())
-            # self.densidadeAr.setValor(self.barometro.getDensidadeAr())
-            # self.altitudeRelativa.setValor(self.barometro.getAltitudeRelativa("m"))
-            # self.altitudePressao.setValor(self.barometro.getAltitudePressao("ft"))
+            if self.atualizandoReferenciaDoBarometro == True:
+                self.barometro.atualizaReferencia()
+                atualizaRefBar = False
+            self.barometro.atualiza()
+            self.pressaoEstatica.setValor(self.barometro.getPressao("PA"))
+            self.pressaoEstaticar.setValor(self.barometro.getPressao("PA"))
+            self.pressaoTotal.setValor(self.barometro.getPressao("PA") + self.pitot.getPressaoDinamica("PA"))
+            self.pressaoTotalr.setValor(self.barometro.getPressao("PA") + self.pitot.getPressaoDinamica("PA"))
+            self.temperaturaBar.setValor(self.barometro.getTemperatura())
+            self.densidadeAr.setValor(self.barometro.getDensidadeAr())
+            self.altitudeRelativa.setValor(self.barometro.getAltitudeRelativa("m"))
+            self.altitudePressao.setValor(self.barometro.getAltitudePressao("ft"))
             time.sleep(delay)
 
     def atualizarGps(self, delay):
@@ -407,35 +411,35 @@ class Ajudante(object):
         while self.threadsRodando:
             print('Puxando dados do GPS!')
 
-            # self.gps.atualiza()
-            # self.latitude.setValor(self.gps.getLatitude())
-            # self.longitude.setValor(self.gps.getLongitude())
-            # self.altitude.setValor(self.gps.getAltitude())
-            # self.direcaoCurso.setValor(self.gps.getDirecaoCurso())
-            # self.velocidade.setValor(self.gps.getVelocidade())
-            # self.velocidadeSubida.setValor(self.gps.getVelSubida())
-            # self.erroX.setValor(self.gps.getErroX())
-            # self.erroY.setValor(self.gps.getErroY())
-            # self.erroAltitude.setValor(self.gps.getErroAltitude())
-            # self.erroVelocidade.setValor(self.gps.getErroVelocidade())
-            # self.erroVelocidadeSubida.setValor(self.gps.getErroVelSubida())
-            # self.nivelFixacao.setValor(self.gps.getNivelFixacao())
-            # self.latitudeRef.setValor(self.gps.getLatitudeRef())
-            # self.longitudeRef.setValor(self.gps.getLongitudeRef())
-            # self.posicaoX.setValor(self.gps.getPosicaoX())
-            # self.posicaoY.setValor(self.gps.getPosicaoY())
-            # self.distanciaAbsoluta.setValor(self.gps.getDistanciaAbsoluta())
-            # self.tempoGps = self.gps.getTempo()
-            # self.dadoTempoGPS.setValor(self.tempoGps)
+            self.gps.atualiza()
+            self.latitude.setValor(self.gps.getLatitude())
+            self.longitude.setValor(self.gps.getLongitude())
+            self.altitude.setValor(self.gps.getAltitude())
+            self.direcaoCurso.setValor(self.gps.getDirecaoCurso())
+            self.velocidade.setValor(self.gps.getVelocidade())
+            self.velocidadeSubida.setValor(self.gps.getVelSubida())
+            self.erroX.setValor(self.gps.getErroX())
+            self.erroY.setValor(self.gps.getErroY())
+            self.erroAltitude.setValor(self.gps.getErroAltitude())
+            self.erroVelocidade.setValor(self.gps.getErroVelocidade())
+            self.erroVelocidadeSubida.setValor(self.gps.getErroVelSubida())
+            self.nivelFixacao.setValor(self.gps.getNivelFixacao())
+            self.latitudeRef.setValor(self.gps.getLatitudeRef())
+            self.longitudeRef.setValor(self.gps.getLongitudeRef())
+            self.posicaoX.setValor(self.gps.getPosicaoX())
+            self.posicaoY.setValor(self.gps.getPosicaoY())
+            self.distanciaAbsoluta.setValor(self.gps.getDistanciaAbsoluta())
+            self.tempoGps = self.gps.getTempo()
+            self.dadoTempoGPS.setValor(self.tempoGps)
 
-            # agora = datetime.now()
-            # inicioDia = datetime(agora.year, agora.month, agora.day)
+            agora = datetime.now()
+            inicioDia = datetime(agora.year, agora.month, agora.day)
 
-            # if (self.gps.verificaAtualizacaoHorario()) and (self.modo.getValor() == 0):
-            #     self.trocarModoDeTransmissao(1)
+            if (self.gps.verificaAtualizacaoHorario()) and (self.modo.getValor() == 0):
+                self.trocarModoDeTransmissao(1)
 
             time.sleep(delay)
-            # self.gps.finaliza()
+            self.gps.finaliza()
 
 
     def atualizarPitot(self, delay):
@@ -446,11 +450,16 @@ class Ajudante(object):
         """
         while self.threadsRodando:
             print('Puxando dados do PITOT!')
-            # self.pitot.atualiza(20, 1.218)
-            # self.pressADC.setValor(self.pitot.getValADC())
-            # self.pressTensao.setValor(self.pitot.getValTensao())
-            # self.pressaoDin.setValor(self.pitot.getPressaoDinamica("PA"))
-            # self.velCas.setValor(self.pitot.getVelocidade("m/s"))
+
+            todosOsDados = self.receber_todos_os_dados()
+
+            for cadaDado in todosOsDados:
+                for i in range(self.configurador.NUMERO_DE_PITOTS):
+                    if cadaDado.apelido == self.pitots[i].apelido:
+                        self.pitots[i].atualiza(cadaDado.getValor(), 1.218)
+                        self.pitotTensao[i].setValor(self.pitot.getValTensao())
+                        self.pressaoDin[i].setValor(self.pitot.getPressaoDinamica("Pa"))
+                        self.velCas[i].setValor(self.pitot.getVelocidade("m/s"))
             time.sleep(delay)
 
 
@@ -485,16 +494,9 @@ class Ajudante(object):
             todosOsDados = self.receber_todos_os_dados()
 
             for cadaDado in todosOsDados:
-                if cadaDado.apelido == self.celula_horizontal.apelido:
-                    self.celula_horizontal.updateForce(cadaDado.getValor())
-                if cadaDado.apelido == self.celula_frontal_direita.apelido:
-                    self.celula_frontal_direita.updateForce(cadaDado.getValor())
-                if cadaDado.apelido == self.celula_frontal_esquerda.apelido:
-                    self.celula_frontal_esquerda.updateForce(cadaDado.getValor())
-                if cadaDado.apelido == self.celula_traseira_direita.apelido:
-                    self.celula_traseira_direita.updateForce(cadaDado.getValor())
-                if cadaDado.apelido == self.celula_traseira_esquerda.apelido:
-                    self.celula_traseira_esquerda.updateForce(cadaDado.getValor())
+                for i in range(self.configurador.NUMERO_DE_CELULAS):
+                    if cadaDado.apelido == self.celulas[i].apelido:
+                        self.celulas[i].updateForce(cadaDado.getValor())
 
             time.sleep(delay)
 
@@ -507,11 +509,11 @@ class Ajudante(object):
         while self.threadsRodando:
             print('Puxando dados da Balança!')
 
-            self.balanca.updateForces(  self.celula_horizontal.getForce(),
-                                        self.celula_frontal_direita.getForce(),
-                                        self.celula_frontal_esquerda.getForce(),
-                                        self.celula_traseira_direita.getForce(),
-                                        self.celula_traseira_esquerda.getForce())
+            self.balanca.updateForces(self.celulas[0].getForce(),
+                                        self.celulas[1].getForce(),
+                                        self.celulas[2].getForce(),
+                                        self.celulas[3].getForce(),
+                                        self.celulas[4].getForce())
 
             self.Lift.setValor(self.balanca.getLift())
             self.Drag.setValor(self.balanca.getDrag())

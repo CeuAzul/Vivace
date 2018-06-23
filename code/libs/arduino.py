@@ -3,8 +3,7 @@
 
 import os
 import sys
-if os.uname()[1] == 'raspberrypi':
-    import serial
+import serial
 
 import serial
 
@@ -83,4 +82,7 @@ class Arduino:
 
     def sendCommand(self, comando):
 
-        self.ser.write(bytes("!" + comando + "@\n", self.codificacao))
+        try:
+            self.ser.write(bytes("!" + comando + "@\n", self.codificacao))
+        except:
+            pass

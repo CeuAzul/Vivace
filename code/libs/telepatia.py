@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
-if os.uname()[1] == 'raspberrypi':
-    import serial
+import serial
 import time
 from .dado import Dado
 
@@ -43,7 +42,10 @@ class Transmissor:
         self.separador = separador
         self.usarProtocolo = usarProtocolo
         self.codificacao = codificacao
-        self.serial = serial.Serial('/dev/ttyUSB0', baudRate, timeout=0.001)
+        try:
+            self.serial = serial.Serial('/dev/ttyUSB0', baudRate, timeout=0.001)
+        except:
+            pass
 
     def setDados(self, dados):
         """Função que atualiza o vetor de dados do Transmissor com os dados que vem como parâmetro dessa função.
@@ -63,18 +65,30 @@ class Transmissor:
         for dado in self.dados:
             if dado.transmiteDado:
                 if self.usarProtocolo:
-                    self.serial.write(
-                        bytes("!" + dado.apelido + "=" + str(dado.valor) + "@\n", self.codificacao))
+                    try:
+                        self.serial.write(
+                            bytes("!" + dado.apelido + "=" + str(dado.valor) + "@\n", self.codificacao))
+                    except:
+                        pass
                 else:
-                    self.serial.write(
-                        bytes(str(dado.valor) + self.separador, self.codificacao))
+                    try:
+                        self.serial.write(
+                            bytes(str(dado.valor) + self.separador, self.codificacao))
+                    except:
+                        pass
         if not self.usarProtocolo:
-            self.serial.write(bytes("\n", self.codificacao))
+            try:
+                self.serial.write(bytes("\n", self.codificacao))
+            except:
+                pass
 
     def leLinha(self):
         """Essa função é responsável por ler telecomandos recebidos pela serial.
 
         :returns: String do telecomando
         """
-        linhaLida = self.serial.readline().decode("utf-8")
-        return linhaLida
+        try:
+            linhaLida = self.serial.readline().decode("utf-8")
+            return linhaLida
+        except:
+            pass
