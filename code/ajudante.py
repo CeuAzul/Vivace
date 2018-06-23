@@ -156,6 +156,13 @@ class Ajudante(object):
     def receber_todos_os_dados(self):
         todosOsDados = []
 
+        todosOsDados.extend([
+            self.tempo,
+            self.mensagemRecebida,
+            self.modo,
+            self.tamanho
+        ])
+
         if self.configurador.USAR_IMU:
             todosOsDados.extend([
                 self.taxaGiroX,
@@ -229,6 +236,13 @@ class Ajudante(object):
 
         pacoteDeDados = []
         todosOsDados = self.receber_todos_os_dados()
+
+        pacoteDeDados.extend([
+            self.tempo,
+            self.mensagemRecebida,
+            self.modo,
+            self.tamanho
+        ])
 
         for dado in todosOsDados:
             if dado.sensor == "IMU":
