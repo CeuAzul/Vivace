@@ -62,12 +62,10 @@ class Ajudante(object):
             if self.configurador.USAR_CELULAS == True:
                 print('CELULAS ativadas!')
                 self.balanca = Balanca()
-                self.celula_traseira_esquerda = Celula(nome="celula_traseira_esquerda", apelido="fte")
-                self.celula_traseira_direita = Celula(nome="celula_traseira_direita", apelido="ftd")
-                self.celula_frontal_esquerda = Celula(nome="celula_frontal_esquerda", apelido="ffe")
-                self.celula_frontal_direita = Celula(nome="celula_frontal_direita", apelido="ffd")
-                self.celula_horizontal = Celula(nome="celula_horizontal", apelido="fh")
-
+                self.celulas = []
+                for i in range(self.configurador.NUMERO_DE_CELULAS):
+                    self.celulas.append(Celula(self.configurador.NOME_DAS_CELULAS[i],
+                                                self.configurador.APELIDO_DAS_CELULAS[i]))
 
     def criar_dados(self):
 
@@ -496,16 +494,9 @@ class Ajudante(object):
             todosOsDados = self.receber_todos_os_dados()
 
             for cadaDado in todosOsDados:
-                if cadaDado.apelido == self.celula_horizontal.apelido:
-                    self.celula_horizontal.updateForce(cadaDado.getValor())
-                if cadaDado.apelido == self.celula_frontal_direita.apelido:
-                    self.celula_frontal_direita.updateForce(cadaDado.getValor())
-                if cadaDado.apelido == self.celula_frontal_esquerda.apelido:
-                    self.celula_frontal_esquerda.updateForce(cadaDado.getValor())
-                if cadaDado.apelido == self.celula_traseira_direita.apelido:
-                    self.celula_traseira_direita.updateForce(cadaDado.getValor())
-                if cadaDado.apelido == self.celula_traseira_esquerda.apelido:
-                    self.celula_traseira_esquerda.updateForce(cadaDado.getValor())
+                for i in range(self.configurador.NUMERO_DE_CELULAS):
+                    if cadaDado.apelido == self.celulas[i].apelido:
+                        self.celulas[i].updateForce(cadaDado.getValor())
 
             time.sleep(delay)
 
@@ -518,11 +509,11 @@ class Ajudante(object):
         while self.threadsRodando:
             print('Puxando dados da Balança!')
 
-            self.balanca.updateForces(  self.celula_horizontal.getForce(),
-                                        self.celula_frontal_direita.getForce(),
-                                        self.celula_frontal_esquerda.getForce(),
-                                        self.celula_traseira_direita.getForce(),
-                                        self.celula_traseira_esquerda.getForce())
+            self.balanca.updateForces(self.celulas[0].getForce(),
+                                        self.celulas[1].getForce(),
+                                        self.celulas[2].getForce(),
+                                        self.celulas[3].getForce(),
+                                        self.celulas[4].getForce())
 
             self.Lift.setValor(self.balanca.getLift())
             self.Drag.setValor(self.balanca.getDrag())
