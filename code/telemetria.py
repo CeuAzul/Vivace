@@ -12,7 +12,7 @@ from datetime import datetime
 import threading
 
 from ajudante import Ajudante
-from ajudante import Thredeiro
+from thredeiro import Thredeiro
 from configurador import Configurador
 
 def main():
