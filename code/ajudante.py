@@ -135,5 +135,13 @@ class Ajudante(object):
                     self.trocarModoDeTransmissao(4)
                 else:
                     self.telecomandoExecutado = False
+            if comandoRecebido == "tc":
+                self.criador.arduino.sendCommand('tc')
+            if comandoRecebido == "pp":
+                self.criador.arduino.sendCommand('pp')
+            if comandoRecebido == "pc":
+                self.criador.arduino.sendCommand('pc')
+            if comandoRecebido == "so":
+                self.criador.arduino.sendCommand('so')
             time.sleep(delay)
 
