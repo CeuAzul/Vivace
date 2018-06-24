@@ -10,6 +10,7 @@ import time
 import os
 from datetime import datetime
 import threading
+import sys
 
 from ajudante import Ajudante
 from thredeiro import Thredeiro
@@ -55,4 +56,8 @@ def main():
 
 if __name__ == '__main__':
 
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print('Program interrupted')
+        sys.exit()
