@@ -37,34 +37,6 @@ class Ajudante(object):
         self.utc = self.NaN
         self.sensores = ["IMU", "BARO", "GPS", "PITOT", "CELULA"]
 
-    def ativar_sensores(self):
-        if self.configurador.USAR_IMU == True:
-            print('IMU ativada!')
-            self.mpu = MPU(True, True, True, True, True, True, True, True)
-        if self.configurador.USAR_BARO == True:
-            print('BARO ativada!')
-            self.barometro = Barometro(True, True)
-        if self.configurador.USAR_GPS == True:
-            print('GPS ativada!')
-            self.gps = GPS()
-        if self.configurador.USAR_PITOTS == True:
-            print('PITOTS ativados!')
-            self.pitots = []
-            for i in range(self.configurador.NUMERO_DE_PITOTS):
-                self.pitots.append(Pitot(self.configurador.NOME_DOS_PITOTS[i],
-                                            self.configurador.APELIDO_DOS_PITOTS[i]))
-        if self.configurador.USAR_ARDUINO == True:
-            print('ARDUINO ativado!')
-            self.arduino = Arduino()
-
-            if self.configurador.USAR_CELULAS == True:
-                print('CELULAS ativadas!')
-                self.balanca = Balanca()
-                self.celulas = []
-                for i in range(self.configurador.NUMERO_DE_CELULAS):
-                    self.celulas.append(Celula(self.configurador.NOME_DAS_CELULAS[i],
-                                                self.configurador.APELIDO_DAS_CELULAS[i]))
-
     def receber_dados_usados(self):
 
         pacoteDeDados = []

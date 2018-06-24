@@ -23,15 +23,15 @@ class Atualizador(object):
         while self.ajudante.threadsRodando:
             print('Puxando dados da IMU!')
 
-            self.ajudante.mpu.atualiza()
-            self.criador.taxaGiroX.setValor(self.ajudante.mpu.getGyx())
-            self.criador.taxaGiroY.setValor(self.ajudante.mpu.getGyy())
-            self.criador.taxaGiroZ.setValor(self.ajudante.mpu.getGyz())
-            self.criador.aceleracaoX.setValor(self.ajudante.mpu.getAcx())
-            self.criador.aceleracaoY.setValor(self.ajudante.mpu.getAcy())
-            self.criador.aceleracaoZ.setValor(self.ajudante.mpu.getAcz())
-            self.criador.pitch.setValor(self.ajudante.mpu.getPitch())
-            self.criador.roll.setValor(self.ajudante.mpu.getRoll())
+            self.criador.mpu.atualiza()
+            self.criador.taxaGiroX.setValor(self.criador.mpu.getGyx())
+            self.criador.taxaGiroY.setValor(self.criador.mpu.getGyy())
+            self.criador.taxaGiroZ.setValor(self.criador.mpu.getGyz())
+            self.criador.aceleracaoX.setValor(self.criador.mpu.getAcx())
+            self.criador.aceleracaoY.setValor(self.criador.mpu.getAcy())
+            self.criador.aceleracaoZ.setValor(self.criador.mpu.getAcz())
+            self.criador.pitch.setValor(self.criador.mpu.getPitch())
+            self.criador.roll.setValor(self.criador.mpu.getRoll())
             time.sleep(delay)
 
 
@@ -45,17 +45,17 @@ class Atualizador(object):
             print('Puxando dados do BARO!')
 
             if self.atualizandoReferenciaDoBarometro == True:
-                self.ajudante.barometro.atualizaReferencia()
+                self.criador.barometro.atualizaReferencia()
                 atualizaRefBar = False
-            self.ajudante.barometro.atualiza()
-            self.criador.pressaoEstatica.setValor(self.ajudante.barometro.getPressao("PA"))
-            self.criador.pressaoEstaticar.setValor(self.ajudante.barometro.getPressao("PA"))
-            self.criador.pressaoTotal.setValor(self.ajudante.barometro.getPressao("PA") + self.ajudante.pitot.getPressaoDinamica("PA"))
-            self.criador.pressaoTotalr.setValor(self.ajudante.barometro.getPressao("PA") + self.ajudante.pitot.getPressaoDinamica("PA"))
-            self.criador.temperaturaBar.setValor(self.ajudante.barometro.getTemperatura())
-            self.criador.densidadeAr.setValor(self.ajudante.barometro.getDensidadeAr())
-            self.criador.altitudeRelativa.setValor(self.ajudante.barometro.getAltitudeRelativa("m"))
-            self.criador.altitudePressao.setValor(self.ajudante.barometro.getAltitudePressao("ft"))
+            self.criador.barometro.atualiza()
+            self.criador.pressaoEstatica.setValor(self.criador.barometro.getPressao("PA"))
+            self.criador.pressaoEstaticar.setValor(self.criador.barometro.getPressao("PA"))
+            self.criador.pressaoTotal.setValor(self.criador.barometro.getPressao("PA") + self.criador.pitot.getPressaoDinamica("PA"))
+            self.criador.pressaoTotalr.setValor(self.criador.barometro.getPressao("PA") + self.criador.pitot.getPressaoDinamica("PA"))
+            self.criador.temperaturaBar.setValor(self.criador.barometro.getTemperatura())
+            self.criador.densidadeAr.setValor(self.criador.barometro.getDensidadeAr())
+            self.criador.altitudeRelativa.setValor(self.criador.barometro.getAltitudeRelativa("m"))
+            self.criador.altitudePressao.setValor(self.criador.barometro.getAltitudePressao("ft"))
             time.sleep(delay)
 
     def atualizarGps(self, delay):
@@ -67,31 +67,31 @@ class Atualizador(object):
         while self.ajudante.threadsRodando:
             print('Puxando dados do GPS!')
 
-            self.ajudante.gps.atualiza()
-            self.criador.latitude.setValor(self.ajudante.gps.getLatitude())
-            self.criador.longitude.setValor(self.ajudante.gps.getLongitude())
-            self.criador.altitude.setValor(self.ajudante.gps.getAltitude())
-            self.criador.direcaoCurso.setValor(self.ajudante.gps.getDirecaoCurso())
-            self.criador.velocidade.setValor(self.ajudante.gps.getVelocidade())
-            self.criador.velocidadeSubida.setValor(self.ajudante.gps.getVelSubida())
-            self.criador.erroX.setValor(self.ajudante.gps.getErroX())
-            self.criador.erroY.setValor(self.ajudante.gps.getErroY())
-            self.criador.erroAltitude.setValor(self.ajudante.gps.getErroAltitude())
-            self.criador.erroVelocidade.setValor(self.ajudante.gps.getErroVelocidade())
-            self.criador.erroVelocidadeSubida.setValor(self.ajudante.gps.getErroVelSubida())
-            self.criador.nivelFixacao.setValor(self.ajudante.gps.getNivelFixacao())
-            self.criador.latitudeRef.setValor(self.ajudante.gps.getLatitudeRef())
-            self.criador.longitudeRef.setValor(self.ajudante.gps.getLongitudeRef())
-            self.criador.posicaoX.setValor(self.ajudante.gps.getPosicaoX())
-            self.criador.posicaoY.setValor(self.ajudante.gps.getPosicaoY())
-            self.criador.distanciaAbsoluta.setValor(self.ajudante.gps.getDistanciaAbsoluta())
+            self.criador.gps.atualiza()
+            self.criador.latitude.setValor(self.criador.gps.getLatitude())
+            self.criador.longitude.setValor(self.criador.gps.getLongitude())
+            self.criador.altitude.setValor(self.criador.gps.getAltitude())
+            self.criador.direcaoCurso.setValor(self.criador.gps.getDirecaoCurso())
+            self.criador.velocidade.setValor(self.criador.gps.getVelocidade())
+            self.criador.velocidadeSubida.setValor(self.criador.gps.getVelSubida())
+            self.criador.erroX.setValor(self.criador.gps.getErroX())
+            self.criador.erroY.setValor(self.criador.gps.getErroY())
+            self.criador.erroAltitude.setValor(self.criador.gps.getErroAltitude())
+            self.criador.erroVelocidade.setValor(self.criador.gps.getErroVelocidade())
+            self.criador.erroVelocidadeSubida.setValor(self.criador.gps.getErroVelSubida())
+            self.criador.nivelFixacao.setValor(self.criador.gps.getNivelFixacao())
+            self.criador.latitudeRef.setValor(self.criador.gps.getLatitudeRef())
+            self.criador.longitudeRef.setValor(self.criador.gps.getLongitudeRef())
+            self.criador.posicaoX.setValor(self.criador.gps.getPosicaoX())
+            self.criador.posicaoY.setValor(self.criador.gps.getPosicaoY())
+            self.criador.distanciaAbsoluta.setValor(self.criador.gps.getDistanciaAbsoluta())
             self.criador.tempoGps = self.gps.ajudante.getTempo()
-            self.criador.dadoTempoGPS.setValor(self.ajudante.tempoGps)
+            self.criador.dadoTempoGPS.setValor(self.criador.tempoGps)
 
             agora = datetime.now()
             inicioDia = datetime(agora.year, agora.month, agora.day)
 
-            if (self.ajudante.gps.verificaAtualizacaoHorario()) and (self.ajudante.modo.getValor() == 0):
+            if (self.criador.gps.verificaAtualizacaoHorario()) and (self.ajudante.modo.getValor() == 0):
                 self.ajudante.trocarModoDeTransmissao(1)
 
             time.sleep(delay)
@@ -111,11 +111,11 @@ class Atualizador(object):
 
             for cadaDado in todosOsDados:
                 for i in range(self.configurador.NUMERO_DE_PITOTS):
-                    if cadaDado.apelido == self.ajudante.pitots[i].apelido:
-                        self.ajudante.pitots[i].atualiza(cadaDado.getValor(), 1.218)
-                        self.criador.pitotTensao[i].setValor(self.ajudante.pitots[i].getValTensao())
-                        self.criador.pressaoDin[i].setValor(self.ajudante.pitots[i].getPressaoDinamica("Pa"))
-                        self.criador.velCas[i].setValor(self.ajudante.pitots[i].getVelocidade("m/s"))
+                    if cadaDado.apelido == self.criador.pitots[i].apelido:
+                        self.criador.pitots[i].atualiza(cadaDado.getValor(), 1.218)
+                        self.criador.pitotTensao[i].setValor(self.criador.pitots[i].getValTensao())
+                        self.criador.pressaoDin[i].setValor(self.criador.pitots[i].getPressaoDinamica("Pa"))
+                        self.criador.velCas[i].setValor(self.criador.pitots[i].getVelocidade("m/s"))
             time.sleep(delay)
 
 
@@ -129,7 +129,7 @@ class Atualizador(object):
             print('Puxando dados do ARDUINO!')
 
             todosOsDados = self.ajudante.receber_dados_usados()
-            dicioDeDados = self.ajudante.arduino.getData()
+            dicioDeDados = self.criador.arduino.getData()
 
             for cadaDado in todosOsDados:
                 if cadaDado.apelido in dicioDeDados:
@@ -151,8 +151,8 @@ class Atualizador(object):
 
             for cadaDado in todosOsDados:
                 for i in range(self.configurador.NUMERO_DE_CELULAS):
-                    if cadaDado.apelido == self.ajudante.celulas[i].apelido:
-                        self.ajudante.celulas[i].updateForce(cadaDado.getValor())
+                    if cadaDado.apelido == self.criador.celulas[i].apelido:
+                        self.criador.celulas[i].updateForce(cadaDado.getValor())
 
             time.sleep(delay)
 
@@ -165,15 +165,15 @@ class Atualizador(object):
         while self.ajudante.threadsRodando:
             print('Puxando dados da Balança!')
 
-            self.ajudante.balanca.updateForces(self.ajudante.celulas[0].getForce(),
-                                                self.ajudante.celulas[1].getForce(),
-                                                self.ajudante.celulas[2].getForce(),
-                                                self.ajudante.celulas[3].getForce(),
-                                                self.ajudante.celulas[4].getForce())
+            self.criador.balanca.updateForces(self.criador.celulas[0].getForce(),
+                                                self.criador.celulas[1].getForce(),
+                                                self.criador.celulas[2].getForce(),
+                                                self.criador.celulas[3].getForce(),
+                                                self.criador.celulas[4].getForce())
 
-            self.criador.Lift.setValor(self.ajudante.balanca.getLift())
-            self.criador.Drag.setValor(self.ajudante.balanca.getDrag())
-            self.criador.Moment.setValor(self.ajudante.balanca.getMoment())
-            self.criador.DistCp.setValor(self.ajudante.balanca.getDistCp())
+            self.criador.Lift.setValor(self.criador.balanca.getLift())
+            self.criador.Drag.setValor(self.criador.balanca.getDrag())
+            self.criador.Moment.setValor(self.criador.balanca.getMoment())
+            self.criador.DistCp.setValor(self.criador.balanca.getDistCp())
 
             time.sleep(delay)
