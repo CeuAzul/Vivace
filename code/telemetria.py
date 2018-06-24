@@ -32,7 +32,8 @@ def main():
     ajudante = Ajudante(configurador, criador)
     atualizador = Atualizador(configurador, criador, ajudante)
 
-    ajudante.ativar_sensores()
+    criador.criar_sensores()
+    criador.criar_dados()
     ajudante.criar_escritor_transmissor()
     ajudante.trocarModoDeTransmissao(4)
     ajudante.escritor.setDados(ajudante.receber_dados_usados())
