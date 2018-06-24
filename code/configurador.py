@@ -92,3 +92,10 @@ class Configurador(object):
 
         # BALANCA
         self.USAR_BALANCA = True
+
+        if os.uname()[1] != 'raspberrypi':
+            configurador.USAR_BARO = False
+            configurador.USAR_IMU = False
+            configurador.USAR_GPS = False
+            configurador.ATIVAR_TRANSMISSAO = False
+            print("Rodando programa fora do RaspberryPi. Desativando Barometro, IMU, GPS, Pitots e Transmissao.")
