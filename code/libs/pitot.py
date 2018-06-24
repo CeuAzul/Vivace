@@ -28,23 +28,8 @@ class Pitot:
         self.valTensao = 0
         self.pressaoDinamica = 0
         self.velocidade = 0
-        self.valorInicial = 0
-
-    def setReferenciaAqui(self, samples=100):
-        """Seta um valor de referencia para as futuras aquisiçoes.
-        Sera coletado um numero de samples analogicos especificado,
-        uma media desses valores sera realizada e este valor medio
-        sera utilizado futuramente como "zero" de referencia.
-
-        :param: samples: Número de amostras para oversampling
-        """
-        valorInicial = 0
-        for x in range(samples):
-            valorInicial += self.valTensao
-            print(valorInicial)
-            time.sleep(0.01)
-        self.valorInicial = valorInicial/samples
-        print("Zero do " + self.nome + ": " + str(self.valorInicial))
+        self.refTensao = 0
+        self.ultimosCem = [0] * 100
 
     def atualiza(self, voltage, densAr=1.218):
         """Le valor analogico do ADC e transforma isso em pressão e
@@ -55,6 +40,9 @@ class Pitot:
         """
 
         self.valTensao = voltage
+
+        self.ultimosCem.pop(0)
+        self.ultimosCem.append(self.valTensao)
 
         # Utilizamos a equação do datasheet para encontrar a pressão em Pa
         self.pressaoDinamica = ((self.valTensao) / 0.66) * 1000
@@ -69,6 +57,17 @@ class Pitot:
 
         # E outra formulinha de mec flu
         self.velocidade = (abs(self.pressaoDinamica * 2 / densAr))**(1 / 2)
+
+    def setRefTensao(self, samples=100):
+        """Seta um valor de referencia para as futuras aquisiçoes.
+        Sera coletado um numero de samples analogicos especificado,
+        uma media desses valores sera realizada e este valor medio
+        sera utilizado futuramente como "zero" de referencia.
+
+        :param: samples: Número de amostras para oversampling
+        """
+        self.refTensao = sum(self.ultimosCem[-samples:]) / samples
+        print("Zero do " + self.nome + ": " + str(self.refTensao))
 
     def getValTensao(self):
         """Retorna o valor da tensão do pitot.
