@@ -113,8 +113,7 @@ class Atualizador(object):
                 for i in range(self.configurador.NUMERO_DE_PITOTS):
                     if cadaDado.apelido == self.criador.pitots[i].apelido:
                         self.criador.pitots[i].atualiza(cadaDado.getValor(), 1.218)
-                        self.criador.pitotTensao[i].setValor(self.criador.pitots[i].getValTensao())
-                        self.criador.pressaoDin[i].setValor(self.criador.pitots[i].getPressaoDinamica("Pa"))
+                        self.criador.pressaoDin[i].setValor(self.criador.pitots[i].getPressaoDin())
                         self.criador.velCas[i].setValor(self.criador.pitots[i].getVelocidade("m/s"))
             time.sleep(delay)
 
