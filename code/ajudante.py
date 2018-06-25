@@ -143,5 +143,8 @@ class Ajudante(object):
                 self.criador.arduino.sendCommand('pc')
             if comandoRecebido == "so":
                 self.criador.arduino.sendCommand('so')
+            if comandoRecebido == "zp":
+                for i in range(self.configurador.NUMERO_DE_PITOTS):
+                    self.criador.pitots[i].setRefPressaoDin()
             time.sleep(delay)
 
