@@ -1,11 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import time
-from .adc import ADC
-from random import randint
-
-
 class Pitot:
     """Classe responsavel pela criaçao e comunicaçao de objetos do tipo Pitot.
     Esta classe ira converter os dados analogicos vindos do ADC em dados de
