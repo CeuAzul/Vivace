@@ -40,7 +40,7 @@ class Pitot:
             self.pressaoDinamica = dicioDeDados[self.apelido]
 
         self.ultimosCemPressaoDin.pop(0)
-        self.ultimosCemPressaoDin.append(pressaoDin)
+        self.ultimosCemPressaoDin.append(self.pressaoDinamica)
 
         # Só ruído
         if self.pressaoDinamica < 0:
