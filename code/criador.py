@@ -130,10 +130,10 @@ class Criador(object):
         self.Moment = Dado("Moment", "N", "mmt", True, False, False, 2, "CELULA")
         self.DistCp = Dado("Distance Cp", "m", "dcp", True, False, False, 2, "CELULA")
 
-        self.forca = []
+        self.forcas = []
         for celula in range(self.configurador.NUMERO_DE_CELULAS):
             print(nomeDasCelulas[celula] + ' criada!')
-            self.forca.extend([Dado("Forca - " + nomeDasCelulas[celula], "N", apelidoDasCelulas[celula], True, False, True, 3, "CELULA")])
+            self.forcas.extend([Dado("Forca - " + nomeDasCelulas[celula], "N", apelidoDasCelulas[celula], True, False, True, 3, "CELULA")])
 
     def receber_todos_os_dados(self):
         todosOsDados = []
@@ -202,7 +202,7 @@ class Criador(object):
         #CELULA Data
         for celula in range(self.configurador.NUMERO_DE_CELULAS):
             todosOsDados.extend([
-                self.forca[celula],
+                self.forcas[celula],
             ])
 
         todosOsDados.extend([
