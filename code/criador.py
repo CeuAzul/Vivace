@@ -110,14 +110,12 @@ class Criador(object):
         nomeDosPitots = self.configurador.NOME_DOS_PITOTS
         apelidoDosPitots = self.configurador.APELIDO_DOS_PITOTS
 
-        self.pitotTensao = []
         self.pressaoDin = []
         self.velCas = []
 
         for pitot in range(self.configurador.NUMERO_DE_PITOTS):
             print(nomeDosPitots[pitot] + ' criado!')
-            self.pitotTensao.extend([Dado("Tensao - " + nomeDosPitots[pitot], "V", apelidoDosPitots[pitot], True, True, False, 6, "PITOT")])
-            self.pressaoDin.extend([Dado("Pressao Dinamica - " + nomeDosPitots[pitot], "PA", "ppp_" + apelidoDosPitots[pitot], True, True, False, 3, "PITOT")])
+            self.pressaoDin.extend([Dado("Pressao Dinamica - " + nomeDosPitots[pitot], "PA", apelidoDosPitots[pitot], True, True, False, 3, "PITOT")])
             self.velCas.extend([Dado("VCAS - " + nomeDosPitots[pitot], "m/s", "vcs_" + apelidoDosPitots[pitot], True, True, True, 4, "PITOT")])
 
         print('Dados das CELULAS criados!')
@@ -194,7 +192,6 @@ class Criador(object):
         #PITOT Data
         for pitot in range(self.configurador.NUMERO_DE_PITOTS):
             todosOsDados.extend([
-                self.pitotTensao[pitot],
                 self.pressaoDin[pitot],
                 self.velCas[pitot]
             ])
