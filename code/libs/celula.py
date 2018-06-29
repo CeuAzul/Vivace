@@ -4,14 +4,17 @@ class Celula(object):
     Esta classe ira receber e tratar os dados de força vindos
     de cada uma das células (através do Arduino)."""
 
-    def __init__(self, nome, apelido, UM = "N"):
+    def __init__(self, nome, apelido, arduino, UM = "N"):
         self.nome =  nome
         self.apelido = apelido
+        self.arduino = arduino
         self.UM = UM
         self.force = 0
 
-    def updateForce(self, force):
-        self.force = force
+    def atualiza(self):
+        dicioDeDados = self.arduino.getData()
+        if self.apelido in dicioDeDados:
+            self.force = dicioDeDados[self.apelido]
 
     def getForce(self):
         return self.force

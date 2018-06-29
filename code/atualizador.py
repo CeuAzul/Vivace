@@ -107,14 +107,10 @@ class Atualizador(object):
         while self.ajudante.threadsRodando:
             print('Puxando dados do PITOT!')
 
-            todosOsDados = self.ajudante.receber_dados_usados()
-
-            for cadaDado in todosOsDados:
-                for i in range(self.configurador.NUMERO_DE_PITOTS):
-                    if cadaDado.apelido == self.criador.pitots[i].apelido:
-                        self.criador.pitots[i].atualiza(cadaDado.getValor(), 1.218)
-                        self.criador.pressaoDin[i].setValor(self.criador.pitots[i].getPressaoDin())
-                        self.criador.velCas[i].setValor(self.criador.pitots[i].getVelocidade("m/s"))
+            for i in range(self.configurador.NUMERO_DE_PITOTS):
+                self.criador.pitots[i].atualiza()
+                self.criador.pressaoDin[i].setValor(self.criador.pitots[i].getPressaoDin())
+                self.criador.velCas[i].setValor(self.criador.pitots[i].getVelocidade("m/s"))
             time.sleep(delay)
 
 
@@ -127,13 +123,7 @@ class Atualizador(object):
         while self.ajudante.threadsRodando:
             print('Puxando dados do ARDUINO!')
 
-            todosOsDados = self.ajudante.receber_dados_usados()
-            dicioDeDados = self.criador.arduino.getData()
-
-            for cadaDado in todosOsDados:
-                if cadaDado.apelido in dicioDeDados:
-                    cadaDado.setValor(dicioDeDados[cadaDado.apelido])
-
+            self.criador.arduino.updateData()
 
             time.sleep(delay)
 

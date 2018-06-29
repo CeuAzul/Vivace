@@ -42,14 +42,16 @@ class Criador(object):
             self.pitots = []
             for i in range(self.configurador.NUMERO_DE_PITOTS):
                 self.pitots.append(Pitot(self.configurador.NOME_DOS_PITOTS[i],
-                                            self.configurador.APELIDO_DOS_PITOTS[i]))
+                                            self.configurador.APELIDO_DOS_PITOTS[i],
+                                            self.arduino))
         if self.configurador.USAR_CELULAS == True and self.configurador.USAR_ARDUINO == True:
             print('CELULAS ativadas!')
             self.balanca = Balanca()
             self.celulas = []
             for i in range(self.configurador.NUMERO_DE_CELULAS):
                 self.celulas.append(Celula(self.configurador.NOME_DAS_CELULAS[i],
-                                            self.configurador.APELIDO_DAS_CELULAS[i]))
+                                            self.configurador.APELIDO_DAS_CELULAS[i],
+                                            self.arduino))
 
     def criar_dados(self):
 

@@ -11,13 +11,14 @@ class Pitot:
     3. E por fim, é convertida em velocidade.
     """
 
-    def __init__(self, nome, apelido, UM = "V"):
+    def __init__(self, nome, apelido, arduino, UM = "V"):
         """Inicializa o objeto Pitot na porta analogica especificada.
 
         :param numADC: Numero da porta ADC a ser utilizada
         """
         self.nome =  nome
         self.apelido = apelido
+        self.arduino = arduino
         self.UM = UM
 
         self.pressaoDinamica = 0
@@ -26,7 +27,7 @@ class Pitot:
         self.refPressaoDin = 0
         self.ultimosCemPressaoDin = [0] * 100
 
-    def atualiza(self, pressaoDin, densAr=1.218):
+    def atualiza(self, densAr=1.218):
         """Le valor analogico do ADC e transforma isso em pressão e
         velocidade. Todas as variaveis sao entao atualizadas.
 
@@ -34,7 +35,9 @@ class Pitot:
         :param densAr: Densidade local do ar
         """
 
-        self.pressaoDinamica = pressaoDin
+        dicioDeDados = self.arduino.getData()
+        if self.apelido in dicioDeDados:
+            self.pressaoDinamica = dicioDeDados[self.apelido]
 
         self.ultimosCemPressaoDin.pop(0)
         self.ultimosCemPressaoDin.append(pressaoDin)
