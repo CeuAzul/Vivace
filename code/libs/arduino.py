@@ -26,7 +26,7 @@ class Arduino:
 
         self.codificacao = "utf-8"
         self.baudrate = baudrate
-        self.linha_de_dados = ""
+        self.dicioDeDados = dict()
 
         print("########## Trying Arduino on port ttyUSB0! ##########")
         try:
@@ -50,35 +50,31 @@ class Arduino:
                     except:
                         sys.exit("########## Arduino not detected! ##########")
 
-    def getData(self):
+    def updateData(self):
         """Puxa linha de dados pela porta serial (Arduino).
         Puxa uma linha de dados começando com "!" e terminando em "@",
         separa os dados por ";" e separa cada dado entre "apelido" e "valor".
         Por fim, retorna um dicionario com apelidos e valores.
         """
 
-        dict = {}
-
         try:
-            self.linha_de_dados = self.ser.readline().decode(self.codificacao)
+            linha_de_dados = self.ser.readline().decode(self.codificacao)
         except:
             pass
 
-        if(self.linha_de_dados != ""):
-            self.linha_de_dados = self.linha_de_dados.replace("\r\n", "")
-            if self.linha_de_dados.startswith("!") and self.linha_de_dados.endswith("@"):
-                self.linha_de_dados = self.linha_de_dados.replace(" ", "")
-                self.linha_de_dados = self.linha_de_dados.replace("!", "")
-                self.linha_de_dados = self.linha_de_dados.replace("@", "")
-                dados = self.linha_de_dados.split(";")
+        if(linha_de_dados != ""):
+            linha_de_dados = linha_de_dados.replace("\r\n", "")
+            if linha_de_dados.startswith("!") and linha_de_dados.endswith("@"):
+                linha_de_dados = linha_de_dados.replace(" ", "")
+                linha_de_dados = linha_de_dados.replace("!", "")
+                linha_de_dados = linha_de_dados.replace("@", "")
+                dados = linha_de_dados.split(";")
                 for dado in dados:
                     try:
                         apelido, valor = dado.split("=")
-                        dict[apelido] = float(valor)
+                        self.dicioDeDados[apelido] = float(valor)
                     except:
                         pass
-
-        return dict
 
     def sendCommand(self, comando):
 
@@ -86,3 +82,6 @@ class Arduino:
             self.ser.write(bytes("!" + comando + "@\n", self.codificacao))
         except:
             pass
+
+    def getData(self):
+        return self.dicioDeDados
