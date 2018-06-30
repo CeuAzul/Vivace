@@ -18,11 +18,14 @@ from configurador import Configurador
 from atualizador import Atualizador
 from criador import Criador
 
+from modos_de_transmissao import SeletorDeModos
+
 def main():
 
     configurador = Configurador()
     criador = Criador(configurador)
-    ajudante = Ajudante(configurador, criador)
+    seletor = SeletorDeModos(criador)
+    ajudante = Ajudante(configurador, criador, seletor)
     atualizador = Atualizador(configurador, criador, ajudante)
 
     criador.criar_sensores()
@@ -32,7 +35,7 @@ def main():
     if configurador.ATIVAR_GRAVACAO:
         criador.escritor.setDados(ajudante.receber_dados_usados())
         criador.escritor.fazCabecalho()
-    ajudante.trocarModoDeTransmissao(4)
+    seletor.setModo(4)
 
     if(configurador.ATIVAR_TRANSMISSAO):
         threadTransmissao = Thredeiro('Transmissao', ajudante.transmitirDados, 0.5)
