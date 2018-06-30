@@ -66,4 +66,4 @@ class Dado:
 
         :param mode: Boolean indicando se deve ser exibido ou não
         """
-        self.printDado = mode
+        self.printaDado = mode
