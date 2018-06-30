@@ -68,6 +68,14 @@ class Ajudante(object):
 
         return pacoteDeDados
 
+    def criar_novo_arquivo(self):
+        print('Novo arquivo sendo criado!')
+        self.criador.escritor
+        modoAtual = self.modo.getValor()
+        del self.criador.escritor
+        self.criador.escritor = Escritor("\t", True, True, self.configurador.NOME_DO_ARQUIVO + "- ", ".txt", pasta=self.configurador.PASTA_DESTINO)
+        self.criador.escritor.setDados(self.receber_dados_usados())
+
     def ativar_transmissao(self, sensor):
 
         dados = self.receber_pacote_de_dados()
@@ -76,21 +84,6 @@ class Ajudante(object):
             if dado.sensor == sensor:
                 print(dado.nome + ' sendo transmitido')
                 dado.setTransmissao(True)
-
-    def criar_escritor_transmissor(self):
-        print('Escritor e Transmissor criados!')
-        self.escritor = Escritor("\t", True, True, self.configurador.NOME_DO_ARQUIVO + "- ", ".txt", pasta=self.configurador.PASTA_DESTINO)
-        self.transmissor = Transmissor(",", True, 57600, 'UTF-8')
-
-    def criar_novo_arquivo(self):
-        print('Novo arquivo sendo criado!')
-        self.escritor
-        modoAtual = self.modo.getValor()
-        self.trocarModoDeTransmissao(0)
-        del self.escritor
-        self.escritor = Escritor("\t", True, True, self.configurador.NOME_DO_ARQUIVO + "- ", ".txt", pasta=self.configurador.PASTA_DESTINO)
-        self.escritor.setDados(self.receber_dados_usados())
-        self.trocarModoDeTransmissao(modoAtual)
 
     def trocarModoDeTransmissao(self, modo):
         self.criador.modo.setValor(modo)
@@ -108,8 +101,8 @@ class Ajudante(object):
     def transmitirDados(self, delay):
         while self.threadsRodando:
             print('Transmitindo dados!')
-            self.transmissor.setDados(self.receber_dados_usados())
-            self.transmissor.transmiteLinha()
+            self.criador.transmissor.setDados(self.receber_dados_usados())
+            self.criador.transmissor.transmiteLinha()
             time.sleep(delay)
 
     def gravarDados(self, delay):
@@ -118,15 +111,15 @@ class Ajudante(object):
             self.tempoAtual = (datetime.now() - self.inicioDoDia).total_seconds()
             self.criador.tempo.setValor(self.tempoAtual)
             if self.criador.modo.getValor() == 4:
-                self.escritor.setDados(self.receber_dados_usados())
-                self.escritor.escreveLinhaDado()
+                self.criador.escritor.setDados(self.receber_dados_usados())
+                self.criador.escritor.escreveLinhaDado()
             time.sleep(delay)
 
     def lerTelecomando(self, delay):
         while self.threadsRodando:
             print('Lendo telecomando!')
 
-            self.criador.tamanho.setValor(self.escritor.verificaTamanhoArquivo())
+            self.criador.tamanho.setValor(self.criador.escritor.verificaTamanhoArquivo())
             comandoRecebido = self.transmissor.leLinha()
             self.criador.mensagemRecebida.setValor(comandoRecebido)
             if comandoRecebido == "@t#c%$0#1$":

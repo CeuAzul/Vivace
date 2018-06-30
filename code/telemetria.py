@@ -27,10 +27,11 @@ def main():
 
     criador.criar_sensores()
     criador.criar_dados()
-    ajudante.criar_escritor_transmissor()
-    ajudante.trocarModoDeTransmissao(4)
-    ajudante.escritor.setDados(ajudante.receber_dados_usados())
-    ajudante.escritor.fazCabecalho()
+    criador.criar_escritor()
+    criador.criar_transmissor()
+    if configurador.ATIVAR_GRAVACAO:
+        criador.escritor.setDados(ajudante.receber_dados_usados())
+        criador.escritor.fazCabecalho()
 
     if(configurador.ATIVAR_TRANSMISSAO):
         threadTransmissao = Thredeiro('Transmissao', ajudante.transmitirDados, 0.5)

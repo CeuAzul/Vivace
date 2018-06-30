@@ -16,6 +16,8 @@ from libs.arduino import Arduino
 from libs.celula import Celula
 from libs.balanca import Balanca
 
+from libs.datilografo import Escritor
+from libs.telepatia import Transmissor
 from configurador import Configurador
 
 class Criador(object):
@@ -82,6 +84,22 @@ class Criador(object):
                 self.configurador.USAR_CELULAS = False
                 self.configurador.USAR_BALANCA = False
                 print('CELULAS nao ativadas!')
+
+    def criar_escritor(self):
+        try:
+            self.escritor = Escritor("\t", True, True, self.configurador.NOME_DO_ARQUIVO + "- ", ".txt", pasta=self.configurador.PASTA_DESTINO)
+            print('Escritor criado!')
+        except:
+            self.configurador.ATIVAR_GRAVACAO = False
+            print('Escritor nao criado!')
+
+    def criar_transmissor(self):
+        try:
+            self.transmissor = Transmissor(",", True, 57600, 'UTF-8')
+            print('Transmissor criado!')
+        except:
+            self.configurador.ATIVAR_TRANSMISSAO = False
+            print('Transmissor nao criado!')
 
     def criar_dados(self):
 
