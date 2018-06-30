@@ -107,15 +107,10 @@ class Atualizador(object):
         while self.ajudante.threadsRodando:
             print('Puxando dados do PITOT!')
 
-            todosOsDados = self.ajudante.receber_dados_usados()
-
-            for cadaDado in todosOsDados:
-                for i in range(self.configurador.NUMERO_DE_PITOTS):
-                    if cadaDado.apelido == self.criador.pitots[i].apelido:
-                        self.criador.pitots[i].atualiza(cadaDado.getValor(), 1.218)
-                        self.criador.pitotTensao[i].setValor(self.criador.pitots[i].getValTensao())
-                        self.criador.pressaoDin[i].setValor(self.criador.pitots[i].getPressaoDinamica("Pa"))
-                        self.criador.velCas[i].setValor(self.criador.pitots[i].getVelocidade("m/s"))
+            for i in range(self.configurador.NUMERO_DE_PITOTS):
+                self.criador.pitots[i].atualiza()
+                self.criador.pressaoDin[i].setValor(self.criador.pitots[i].getPressaoDin())
+                self.criador.velCas[i].setValor(self.criador.pitots[i].getVelocidade("m/s"))
             time.sleep(delay)
 
 
@@ -128,13 +123,7 @@ class Atualizador(object):
         while self.ajudante.threadsRodando:
             print('Puxando dados do ARDUINO!')
 
-            todosOsDados = self.ajudante.receber_dados_usados()
-            dicioDeDados = self.criador.arduino.getData()
-
-            for cadaDado in todosOsDados:
-                if cadaDado.apelido in dicioDeDados:
-                    cadaDado.setValor(dicioDeDados[cadaDado.apelido])
-
+            self.criador.arduino.updateData()
 
             time.sleep(delay)
 
@@ -147,12 +136,9 @@ class Atualizador(object):
         while self.ajudante.threadsRodando:
             print('Puxando dados da Balança!')
 
-            todosOsDados = self.ajudante.receber_dados_usados()
-
-            for cadaDado in todosOsDados:
-                for i in range(self.configurador.NUMERO_DE_CELULAS):
-                    if cadaDado.apelido == self.criador.celulas[i].apelido:
-                        self.criador.celulas[i].updateForce(cadaDado.getValor())
+            for i in range(self.configurador.NUMERO_DE_CELULAS):
+                self.criador.celulas[i].atualiza()
+                self.criador.forcas[i].setValor(self.criador.celulas[i].getForce())
 
             time.sleep(delay)
 
@@ -165,11 +151,11 @@ class Atualizador(object):
         while self.ajudante.threadsRodando:
             print('Puxando dados da Balança!')
 
-            self.criador.balanca.updateForces(self.criador.celulas[0].getForce(),
-                                                self.criador.celulas[1].getForce(),
-                                                self.criador.celulas[2].getForce(),
-                                                self.criador.celulas[3].getForce(),
-                                                self.criador.celulas[4].getForce())
+            self.criador.balanca.updateForces(self.criador.forcas[0].getValor(),
+                                                self.criador.forcas[1].getValor(),
+                                                self.criador.forcas[2].getValor(),
+                                                self.criador.forcas[3].getValor(),
+                                                self.criador.forcas[4].getValor())
 
             self.criador.Lift.setValor(self.criador.balanca.getLift())
             self.criador.Drag.setValor(self.criador.balanca.getDrag())

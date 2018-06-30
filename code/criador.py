@@ -16,6 +16,8 @@ from libs.arduino import Arduino
 from libs.celula import Celula
 from libs.balanca import Balanca
 
+from libs.datilografo import Escritor
+from libs.telepatia import Transmissor
 from configurador import Configurador
 
 class Criador(object):
@@ -25,32 +27,79 @@ class Criador(object):
 
     def criar_sensores(self):
 
-        if self.configurador.USAR_IMU == True:
-            print('IMU ativada!')
-            self.mpu = MPU(True, True, True, True, True, True, True, True)
-        if self.configurador.USAR_BARO == True:
-            print('BARO ativada!')
-            self.barometro = Barometro(True, True)
-        if self.configurador.USAR_GPS == True:
-            print('GPS ativada!')
-            self.gps = GPS()
-        if self.configurador.USAR_PITOTS == True:
-            print('PITOTS ativados!')
-            self.pitots = []
-            for i in range(self.configurador.NUMERO_DE_PITOTS):
-                self.pitots.append(Pitot(self.configurador.NOME_DOS_PITOTS[i],
-                                            self.configurador.APELIDO_DOS_PITOTS[i]))
-        if self.configurador.USAR_ARDUINO == True:
-            print('ARDUINO ativado!')
-            self.arduino = Arduino()
+        if self.configurador.USAR_ARDUINO:
+            try:
+                self.arduino = Arduino()
+                print('ARDUINO ativado!')
+            except:
+                self.configurador.USAR_ARDUINO = False
+                print('Arduino nao ativado!')
 
-            if self.configurador.USAR_CELULAS == True:
-                print('CELULAS ativadas!')
+        if self.configurador.USAR_IMU:
+            try:
+                self.mpu = MPU(True, True, True, True, True, True, True, True)
+                print('IMU ativada!')
+            except:
+                self.configurador.USAR_IMU = False
+                print('IMU nao ativada')
+
+        if self.configurador.USAR_BARO:
+            try:
+                self.barometro = Barometro(True, True)
+                print('BARO ativado!')
+            except:
+                self.configurador.USAR_BARO = False
+                print('BARO nao ativado!')
+
+        if self.configurador.USAR_GPS:
+            try:
+                self.gps = GPS()
+                print('GPS ativado!')
+            except:
+                self.configurador.USAR_GPS = False
+                print('GPS nao ativado!')
+
+        if self.configurador.USAR_PITOTS:
+            try:
+                self.pitots = []
+                for i in range(self.configurador.NUMERO_DE_PITOTS):
+                    self.pitots.append(Pitot(self.configurador.NOME_DOS_PITOTS[i],
+                                                self.configurador.APELIDO_DOS_PITOTS[i],
+                                                self.arduino))
+                print('PITOTS ativados!')
+            except:
+                self.configurador.USAR_PITOTS = False
+                print('PITOTS nao ativados!')
+
+        if self.configurador.USAR_CELULAS:
+            try:
                 self.balanca = Balanca()
                 self.celulas = []
                 for i in range(self.configurador.NUMERO_DE_CELULAS):
                     self.celulas.append(Celula(self.configurador.NOME_DAS_CELULAS[i],
-                                                self.configurador.APELIDO_DAS_CELULAS[i]))
+                                                self.configurador.APELIDO_DAS_CELULAS[i],
+                                                self.arduino))
+                print('CELULAS ativadas!')
+            except:
+                self.configurador.USAR_CELULAS = False
+                self.configurador.USAR_BALANCA = False
+                print('CELULAS nao ativadas!')
+
+    def criar_escritor(self):
+        try:
+            self.escritor = Escritor("\t", True, True, self.configurador.NOME_DO_ARQUIVO + "- ", ".txt", pasta=self.configurador.PASTA_DESTINO)
+            print('Escritor criado!')
+        except:
+            self.configurador.ATIVAR_GRAVACAO = False
+            print('Escritor nao criado!')
+
+    def criar_transmissor(self):
+        try:
+            self.transmissor = Transmissor(",", True, 57600, 'UTF-8')
+            print('Transmissor criado!')
+        except:
+            self.configurador.ATIVAR_TRANSMISSAO = False
+            print('Transmissor nao criado!')
 
     def criar_dados(self):
 
@@ -109,14 +158,12 @@ class Criador(object):
         nomeDosPitots = self.configurador.NOME_DOS_PITOTS
         apelidoDosPitots = self.configurador.APELIDO_DOS_PITOTS
 
-        self.pitotTensao = []
         self.pressaoDin = []
         self.velCas = []
 
         for pitot in range(self.configurador.NUMERO_DE_PITOTS):
             print(nomeDosPitots[pitot] + ' criado!')
-            self.pitotTensao.extend([Dado("Tensao - " + nomeDosPitots[pitot], "V", apelidoDosPitots[pitot], True, True, False, 6, "PITOT")])
-            self.pressaoDin.extend([Dado("Pressao Dinamica - " + nomeDosPitots[pitot], "PA", "ppp_" + apelidoDosPitots[pitot], True, True, False, 3, "PITOT")])
+            self.pressaoDin.extend([Dado("Pressao Dinamica - " + nomeDosPitots[pitot], "PA", apelidoDosPitots[pitot], True, True, False, 3, "PITOT")])
             self.velCas.extend([Dado("VCAS - " + nomeDosPitots[pitot], "m/s", "vcs_" + apelidoDosPitots[pitot], True, True, True, 4, "PITOT")])
 
         print('Dados das CELULAS criados!')
@@ -129,10 +176,10 @@ class Criador(object):
         self.Moment = Dado("Moment", "N", "mmt", True, False, False, 2, "CELULA")
         self.DistCp = Dado("Distance Cp", "m", "dcp", True, False, False, 2, "CELULA")
 
-        self.forca = []
+        self.forcas = []
         for celula in range(self.configurador.NUMERO_DE_CELULAS):
             print(nomeDasCelulas[celula] + ' criada!')
-            self.forca.extend([Dado("Forca - " + nomeDasCelulas[celula], "N", apelidoDasCelulas[celula], True, False, True, 3, "CELULA")])
+            self.forcas.extend([Dado("Forca - " + nomeDasCelulas[celula], "N", apelidoDasCelulas[celula], True, False, True, 3, "CELULA")])
 
     def receber_todos_os_dados(self):
         todosOsDados = []
@@ -193,7 +240,6 @@ class Criador(object):
         #PITOT Data
         for pitot in range(self.configurador.NUMERO_DE_PITOTS):
             todosOsDados.extend([
-                self.pitotTensao[pitot],
                 self.pressaoDin[pitot],
                 self.velCas[pitot]
             ])
@@ -201,7 +247,7 @@ class Criador(object):
         #CELULA Data
         for celula in range(self.configurador.NUMERO_DE_CELULAS):
             todosOsDados.extend([
-                self.forca[celula],
+                self.forcas[celula],
             ])
 
         todosOsDados.extend([

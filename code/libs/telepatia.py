@@ -20,7 +20,7 @@ class Transmissor:
 
     """
 
-    def __init__(self, separador=",", usarProtocolo=True,  baudRate=57600, codificacao='UTF-8'):
+    def __init__(self, separador=",", usarProtocolo=True,  baudRate=57600, codificacao='UTF-8', porta='/dev/ttyUSB0'):
         """Construtor: Inicializa parâmetros de configuração do Transmissor.
         Exitem dois métodos de transmissão, utilizando o protolo ou não.
 
@@ -42,10 +42,9 @@ class Transmissor:
         self.separador = separador
         self.usarProtocolo = usarProtocolo
         self.codificacao = codificacao
-        try:
-            self.serial = serial.Serial('/dev/ttyUSB0', baudRate, timeout=0.001)
-        except:
-            pass
+        self.porta = porta
+
+        self.serial = serial.Serial(self.porta, self.baudRate, timeout=0.001)
 
     def setDados(self, dados):
         """Função que atualiza o vetor de dados do Transmissor com os dados que vem como parâmetro dessa função.

@@ -10,6 +10,7 @@ import time
 import os
 from datetime import datetime
 import threading
+import sys
 
 from ajudante import Ajudante
 from thredeiro import Thredeiro
@@ -20,24 +21,18 @@ from criador import Criador
 def main():
 
     configurador = Configurador()
-
-    if os.uname()[1] != 'raspberrypi':
-        configurador.USAR_BARO = False
-        configurador.USAR_IMU = False
-        configurador.USAR_GPS = False
-        configurador.ATIVAR_TRANSMISSAO = False
-        print("Rodando programa fora do RaspberryPi. Desativando Barometro, IMU, GPS, Pitots e Transmissao.")
-
     criador = Criador(configurador)
     ajudante = Ajudante(configurador, criador)
     atualizador = Atualizador(configurador, criador, ajudante)
 
     criador.criar_sensores()
     criador.criar_dados()
-    ajudante.criar_escritor_transmissor()
+    criador.criar_escritor()
+    criador.criar_transmissor()
+    if configurador.ATIVAR_GRAVACAO:
+        criador.escritor.setDados(ajudante.receber_dados_usados())
+        criador.escritor.fazCabecalho()
     ajudante.trocarModoDeTransmissao(4)
-    ajudante.escritor.setDados(ajudante.receber_dados_usados())
-    ajudante.escritor.fazCabecalho()
 
     if(configurador.ATIVAR_TRANSMISSAO):
         threadTransmissao = Thredeiro('Transmissao', ajudante.transmitirDados, 0.5)
@@ -63,4 +58,8 @@ def main():
 
 if __name__ == '__main__':
 
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print('Program interrupted')
+        sys.exit()
