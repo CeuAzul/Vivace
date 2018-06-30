@@ -30,7 +30,7 @@ class Criador(object):
                 self.arduino = Arduino()
                 print('ARDUINO ativado!')
             except:
-                self.configurador.USAR_ARDUINO
+                self.configurador.USAR_ARDUINO = False
                 print('Arduino nao ativado!')
 
         if self.configurador.USAR_IMU:
@@ -57,7 +57,7 @@ class Criador(object):
                 self.configurador.USAR_GPS = False
                 print('GPS nao ativado!')
 
-        if self.configurador.USAR_PITOTS and self.configurador.USAR_ARDUINO:
+        if self.configurador.USAR_PITOTS:
             try:
                 self.pitots = []
                 for i in range(self.configurador.NUMERO_DE_PITOTS):
@@ -69,7 +69,7 @@ class Criador(object):
                 self.configurador.USAR_PITOTS = False
                 print('PITOTS nao ativados!')
 
-        if self.configurador.USAR_CELULAS and self.configurador.USAR_ARDUINO:
+        if self.configurador.USAR_CELULAS:
             try:
                 self.balanca = Balanca()
                 self.celulas = []
