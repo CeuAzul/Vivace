@@ -32,6 +32,7 @@ def main():
     if configurador.ATIVAR_GRAVACAO:
         criador.escritor.setDados(ajudante.receber_dados_usados())
         criador.escritor.fazCabecalho()
+    ajudante.trocarModoDeTransmissao(4)
 
     if(configurador.ATIVAR_TRANSMISSAO):
         threadTransmissao = Thredeiro('Transmissao', ajudante.transmitirDados, 0.5)

@@ -88,7 +88,6 @@ class Ajudante(object):
     def trocarModoDeTransmissao(self, modo):
         self.criador.modo.setValor(modo)
         print('Trocando para modo ' + str(modo) + ' de transmissao!')
-        # seletorDeModos.set
 
     def liga_threads(self):
         print('Ligando as threads!')
