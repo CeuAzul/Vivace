@@ -37,13 +37,6 @@ class Ajudante(object):
         self.utc = self.NaN
         self.sensores = ["IMU", "BARO", "GPS", "PITOT", "CELULA"]
 
-        if os.uname()[1] != 'raspberrypi':
-            configurador.USAR_BARO = False
-            configurador.USAR_IMU = False
-            configurador.USAR_GPS = False
-            configurador.ATIVAR_TRANSMISSAO = False
-            print("Rodando programa fora do RaspberryPi. Desativando Barometro, IMU, GPS e Transmissao.")
-
     def receber_dados_usados(self):
 
         pacoteDeDados = []
@@ -115,7 +108,7 @@ class Ajudante(object):
     def transmitirDados(self, delay):
         while self.threadsRodando:
             print('Transmitindo dados!')
-            self.transmissor.setDados(self.receber_dados_usados)
+            self.transmissor.setDados(self.receber_dados_usados())
             self.transmissor.transmiteLinha()
             time.sleep(delay)
 
