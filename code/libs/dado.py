@@ -10,7 +10,7 @@ class Dado:
     atual do dado.
     """
 
-    def __init__(self, nome, unidadeMedida, apelido, gravaDado=True, transmiteDado=False, printaDado=False, casasDecimais=3, sensor=""):
+    def __init__(self, nome, unidadeMedida, apelido, sensor="", casasDecimais=3, isCru=False, isUtil=False, gravaDado=True, transmiteDado=False, printaDado=False):
         """Construtor: Inicializa as variáveis necessárias.
 
         :param name: Nome completo do dado
@@ -31,6 +31,8 @@ class Dado:
         self.valor = 0
         self.casasDecimais = casasDecimais
         self.sensor = sensor
+        self.isCru = isCru
+        self.isUtil = isUtil
 
     def setValor(self, valor):
         """Função seta o valor atual da variável para a especificada no parâmetro.
@@ -66,4 +68,4 @@ class Dado:
 
         :param mode: Boolean indicando se deve ser exibido ou não
         """
-        self.printDado = mode
+        self.printaDado = mode
