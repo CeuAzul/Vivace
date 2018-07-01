@@ -18,11 +18,9 @@ from libs.arduino import Arduino
 from libs.celula import Celula
 from libs.balanca import Balanca
 
-# from modos_de_transmissao import SeletorDeModos
-
 class Ajudante(object):
 
-    def __init__(self, configurador, criador):
+    def __init__(self, configurador, criador, seletor):
         self.configurador = configurador
         self.criador = criador
         # self.seletorDeModos = SeletorDeModos()
@@ -36,6 +34,7 @@ class Ajudante(object):
         self.tempoGPS = self.NaN
         self.utc = self.NaN
         self.sensores = ["IMU", "BARO", "GPS", "PITOT", "CELULA"]
+        self.seletor = seletor
 
     def receber_dados_usados(self):
 
@@ -85,10 +84,6 @@ class Ajudante(object):
                 print(dado.nome + ' sendo transmitido')
                 dado.setTransmissao(True)
 
-    def trocarModoDeTransmissao(self, modo):
-        self.criador.modo.setValor(modo)
-        print('Trocando para modo ' + str(modo) + ' de transmissao!')
-
     def liga_threads(self):
         print('Ligando as threads!')
         self.threadsRodando = True
@@ -124,7 +119,7 @@ class Ajudante(object):
             if comandoRecebido == "@t#c%$0#1$":
                 if self.telecomandoExecutado == False:
                     self.telecomandoExecutado = True
-                    self.trocarModoDeTransmissao(4)
+                    self.seletor.setModo(4)
                 else:
                     self.telecomandoExecutado = False
             if comandoRecebido == "tc":
