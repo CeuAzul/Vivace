@@ -10,7 +10,7 @@ class Dado:
     atual do dado.
     """
 
-    def __init__(self, nome, unidadeMedida, apelido, gravaDado=True, transmiteDado=False, printaDado=False, casasDecimais=3, sensor="", isCru=False, isUtil=False):
+    def __init__(self, nome, unidadeMedida, apelido, sensor="", casasDecimais=3, isCru=False, isUtil=False, gravaDado=True, transmiteDado=False, printaDado=False):
         """Construtor: Inicializa as variáveis necessárias.
 
         :param name: Nome completo do dado
