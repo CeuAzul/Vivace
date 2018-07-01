@@ -105,53 +105,53 @@ class Criador(object):
 
         print('Dados gerais criados')
 
-        self.tempo = Dado("Tempo", "seg", "tmp", True, True, False, 4)
-        self.mensagemRecebida = Dado("Mensagem", "str", "str", True, False, False)
-        self.modo = Dado("Modo", "int", "sin", False, True, True)
-        self.tamanho = Dado("Tamanho do arquivo", "int", "agr", False, True, True, 3)
+        self.tempo = Dado("Tempo", "seg", "tmp", "GERAL", 4)
+        self.mensagemRecebida = Dado("Mensagem", "str", "msg" "GERAL")
+        self.modo = Dado("Modo", "int", "mod", "GERAL")
+        self.tamanho = Dado("Tamanho do arquivo", "int", "tmn", "GERAL", 3)
 
         print('Dados da IMU criados!')
 
-        self.taxaGiroX = Dado("Taxa de giro em X", "º/s", "gyx", True, False, False, 2, "IMU")
-        self.taxaGiroY = Dado("Taxa de giro em Y", "º/s", "gyy", True, False, False, 2, "IMU")
-        self.taxaGiroZ = Dado("Taxa de giro em Z", "º/s", "gyz", True, False, False, 2, "IMU")
-        self.aceleracaoX = Dado("Aceleração em X", "g", "acx", True, False, False, 2, "IMU")
-        self.aceleracaoY = Dado("Aceleração em Y", "g", "acy", True, False, False, 2, "IMU")
-        self.aceleracaoZ = Dado("Aceleração em Z", "g", "acz", True, False, False, 2, "IMU")
-        self.pitch = Dado("Pitch", "º", "pit", True, False, False, 2, "IMU")
-        self.roll = Dado("Roll", "º", "rol", True, False, False, 2, "IMU")
+        self.taxaGiroX = Dado("Taxa de giro em X", "º/s", "gyx", "IMU", 2)
+        self.taxaGiroY = Dado("Taxa de giro em Y", "º/s", "gyy", "IMU", 2)
+        self.taxaGiroZ = Dado("Taxa de giro em Z", "º/s", "gyz", "IMU", 2)
+        self.aceleracaoX = Dado("Aceleração em X", "g", "acx", "IMU", 2)
+        self.aceleracaoY = Dado("Aceleração em Y", "g", "acy", "IMU", 2)
+        self.aceleracaoZ = Dado("Aceleração em Z", "g", "acz", "IMU", 2)
+        self.pitch = Dado("Pitch", "º", "pit", "IMU", 2)
+        self.roll = Dado("Roll", "º", "rol", "IMU", 2)
 
         print('Dados do BARO criados!')
 
-        self.pressaoTotal = Dado("Pressao total", "PA", "ptt", True, True, False, 3, "BARO")
-        self.pressaoEstatica = Dado("Pressao estática", "PA", "pts", True, True, False, 3, "BARO")
-        self.pressaoTotalr = Dado("PTtotal", "PA", "ptt", True, False, False, 3, "BARO")
-        self.pressaoEstaticar = Dado("PTstatic", "PA", "psr", True, False, False, 3, "BARO")
-        self.temperaturaBar = Dado("Temperatura", "ºC", "tem", True, False, False, 3, "BARO")
-        self.densidadeAr = Dado("Densidade do ar", "Kg/m³", "den", True, False, False, 3, "BARO")
-        self.altitudeRelativa = Dado("Altitude relativa", "m", "alt", True, False, False, 3, "BARO")
-        self.altitudePressao = Dado("HP", "ft", "hps", True, True, False, 3, "BARO")
+        self.pressaoTotal = Dado("Pressao total", "PA", "ptt", "BARO", 3)
+        self.pressaoEstatica = Dado("Pressao estática", "PA", "pts", "BARO", 3)
+        self.pressaoTotalr = Dado("PTtotal", "PA", "ptt", "BARO", 3)
+        self.pressaoEstaticar = Dado("PTstatic", "PA", "psr", "BARO", 3)
+        self.temperaturaBar = Dado("Temperatura", "ºC", "tem", "BARO", 3)
+        self.densidadeAr = Dado("Densidade do ar", "Kg/m³", "den", "BARO", 3)
+        self.altitudeRelativa = Dado("Altitude relativa", "m", "alt", "BARO", 3)
+        self.altitudePressao = Dado("HP", "ft", "hps", "BARO", 3)
 
         print('Dados do GPS criados!')
 
-        self.dadoTempoGPS = Dado("Tempo GPS", "-", "tmg", True, False, False, "GPS")
-        self.latitude = Dado("Latitude", "º", "lat", True, False, False, 6, "GPS")
-        self.longitude = Dado("Longitude", "º", "lng", True, False, False, 6, "GPS")
-        self.altitude = Dado("ZGPS", "m", "atg", True, False, False, 2, "GPS")
-        self.direcaoCurso = Dado("Direção de curso", "º", "cog", True, False, False, 1, "GPS")
-        self.velocidade = Dado("Velocidade GPS", "m/s", "vel", True, True, False, 2, "GPS")
-        self.velocidadeSubida = Dado("Velocidade de subida", "m/s","ves", False, False, False, 2, "GPS")
-        self.erroX = Dado("Erro em X", "m", "erx", False, False, False, 1, "GPS")
-        self.erroY = Dado("Erro em Y", "m", "ery", False, False, False, 1, "GPS")
-        self.erroAltitude = Dado("Erro da altitude", "m", "era", False, False, False, 1, "GPS")
-        self.erroVelocidade = Dado("Erro de velocidade", "nós", "ers", False, False, False, 1, "GPS")
-        self.erroVelocidadeSubida = Dado("Erro da velocidade de subida", "m/s", "ves", False, False, False, 1, "GPS")
-        self.nivelFixacao = Dado("Nivel de fixação GPS", "-", "nfx", True, False, False, 1, "GPS")
-        self.latitudeRef = Dado("Latitude de referência", "-", "ltr", False, True, False, 6, "GPS")
-        self.longitudeRef = Dado("Longitude de referência", "-", "lgr", False, True, False, 6, "GPS")
-        self.posicaoX = Dado("XGPS", "m", "gpx", True, True, False, 2, "GPS")
-        self.posicaoY = Dado("YGPS", "m", "gpy", True, True, False, 2, "GPS")
-        self.distanciaAbsoluta = Dado("Distancia absoluta", "m", "dtr", False, False, False, 2, "GPS")
+        self.dadoTempoGPS = Dado("Tempo GPS", "-", "tmg", "GPS", 3)
+        self.latitude = Dado("Latitude", "º", "lat", "GPS", 6)
+        self.longitude = Dado("Longitude", "º", "lng", "GPS", 6)
+        self.altitude = Dado("ZGPS", "m", "atg", "GPS", 2)
+        self.direcaoCurso = Dado("Direção de curso", "º", "cog", "GPS", 1)
+        self.velocidade = Dado("Velocidade GPS", "m/s", "vel", "GPS", 2)
+        self.velocidadeSubida = Dado("Velocidade de subida", "m/s","ves", "GPS", 2)
+        self.erroX = Dado("Erro em X", "m", "erx", "GPS", 1)
+        self.erroY = Dado("Erro em Y", "m", "ery", "GPS", 1)
+        self.erroAltitude = Dado("Erro da altitude", "m", "era", "GPS", 1)
+        self.erroVelocidade = Dado("Erro de velocidade", "nós", "ers", "GPS", 1)
+        self.erroVelocidadeSubida = Dado("Erro da velocidade de subida", "m/s", "ves", "GPS", 1)
+        self.nivelFixacao = Dado("Nivel de fixação GPS", "-", "nfx", "GPS", 1)
+        self.latitudeRef = Dado("Latitude de referência", "-", "ltr", "GPS", 6)
+        self.longitudeRef = Dado("Longitude de referência", "-", "lgr", "GPS", 6)
+        self.posicaoX = Dado("XGPS", "m", "gpx", "GPS", 2)
+        self.posicaoY = Dado("YGPS", "m", "gpy", "GPS", 2)
+        self.distanciaAbsoluta = Dado("Distancia absoluta", "m", "dtr", "GPS", 2)
 
         print('Dados dos PITOTS criados!')
 
@@ -163,23 +163,23 @@ class Criador(object):
 
         for pitot in range(self.configurador.NUMERO_DE_PITOTS):
             print(nomeDosPitots[pitot] + ' criado!')
-            self.pressaoDin.extend([Dado("Pressao Dinamica - " + nomeDosPitots[pitot], "PA", apelidoDosPitots[pitot], True, True, False, 3, "PITOT")])
-            self.velCas.extend([Dado("VCAS - " + nomeDosPitots[pitot], "m/s", "vcs_" + apelidoDosPitots[pitot], True, True, True, 4, "PITOT")])
+            self.pressaoDin.extend([Dado("Pressao Dinamica - " + nomeDosPitots[pitot], "PA", apelidoDosPitots[pitot], "PITOT", 3)])
+            self.velCas.extend([Dado("VCAS - " + nomeDosPitots[pitot], "m/s", "vcs_" + apelidoDosPitots[pitot], "PITOT", 4)])
 
         print('Dados das CELULAS criados!')
 
         nomeDasCelulas = self.configurador.NOME_DAS_CELULAS
         apelidoDasCelulas = self.configurador.APELIDO_DAS_CELULAS
 
-        self.Lift = Dado("Lift", "N", "lft", True, False, False, 2, "CELULA")
-        self.Drag = Dado("Drag", "N", "drg", True, False, False, 2, "CELULA")
-        self.Moment = Dado("Moment", "N", "mmt", True, False, False, 2, "CELULA")
-        self.DistCp = Dado("Distance Cp", "m", "dcp", True, False, False, 2, "CELULA")
+        self.Lift = Dado("Lift", "N", "lft", "CELULA", 3)
+        self.Drag = Dado("Drag", "N", "drg", "CELULA", 3)
+        self.Moment = Dado("Moment", "N", "mmt", "CELULA", 3)
+        self.DistCp = Dado("Distance Cp", "m", "dcp", "CELULA", 3)
 
         self.forcas = []
         for celula in range(self.configurador.NUMERO_DE_CELULAS):
             print(nomeDasCelulas[celula] + ' criada!')
-            self.forcas.extend([Dado("Forca - " + nomeDasCelulas[celula], "N", apelidoDasCelulas[celula], True, False, True, 3, "CELULA")])
+            self.forcas.extend([Dado("Forca - " + nomeDasCelulas[celula], "N", apelidoDasCelulas[celula], "CELULA", 3)])
 
     def receber_todos_os_dados(self):
         todosOsDados = []
