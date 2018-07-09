@@ -87,7 +87,7 @@ class Criador(object):
 
     def criar_escritor(self):
         try:
-            self.escritor = Escritor("\t", True, True, self.configurador.NOME_DO_ARQUIVO + "- ", ".txt", pasta=self.configurador.PASTA_DESTINO)
+            self.escritor = Escritor("\t", True, True, self.configurador.NOME_DO_ARQUIVO, ".txt", pasta=self.configurador.PASTA_DESTINO)
             print('Escritor criado!')
         except:
             self.configurador.ATIVAR_GRAVACAO = False

@@ -72,7 +72,7 @@ class Ajudante(object):
         self.criador.escritor
         modoAtual = self.modo.getValor()
         del self.criador.escritor
-        self.criador.escritor = Escritor("\t", True, True, self.configurador.NOME_DO_ARQUIVO + "- ", ".txt", pasta=self.configurador.PASTA_DESTINO)
+        self.criador.escritor = Escritor("\t", True, True, self.configurador.NOME_DO_ARQUIVO, ".txt", pasta=self.configurador.PASTA_DESTINO)
         self.criador.escritor.setDados(self.receber_dados_usados())
 
     def ativar_transmissao(self, sensor):
