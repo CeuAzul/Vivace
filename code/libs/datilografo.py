@@ -57,10 +57,15 @@ class Escritor:
         self.pasta = pasta
         self.extensao = extensao
         self.numeroArquivo = 1
-        while os.path.exists(self.pasta + "/" + self.nomeArquivo + str(self.numeroArquivo) + self.extensao):
-            self.numeroArquivo += 1
-        self.nomeCompleto = self.pasta + "/" + self.nomeArquivo + \
-            str(self.numeroArquivo) + self.extensao
+        self.dataHora = datetime.datetime.now().strftime("%d-%m-%y %H:%M")
+        for file in os.listdir(self.pasta):
+            if file.startswith(self.nomeArquivo):
+                self.numeroArquivo +=1
+        self.nomeCompleto = self.pasta + "/" + \
+                            self.nomeArquivo + " " + \
+                            str(self.numeroArquivo) + " - " + \
+                            "(" + self.dataHora + ")" + \
+                            self.extensao
 
     def addDado(self, dados):
         """Adiciona um dado no vetor de dados.
