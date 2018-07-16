@@ -42,10 +42,6 @@ class Pitot:
         self.ultimosCemPressaoDin.pop(0)
         self.ultimosCemPressaoDin.append(self.pressaoDinamica)
 
-        # Só ruído
-        if self.pressaoDinamica < 0:
-            self.pressaoDinamica = 0
-
         # Esquadrão anti-burrice
         if densAr <= 0:
             densAr = 1.218
