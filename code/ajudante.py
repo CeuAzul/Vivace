@@ -114,7 +114,7 @@ class Ajudante(object):
             print('Lendo telecomando!')
 
             self.criador.tamanho.setValor(self.criador.escritor.verificaTamanhoArquivo())
-            comandoRecebido = self.transmissor.leLinha()
+            comandoRecebido = self.criador.transmissor.leLinha()
             self.criador.mensagemRecebida.setValor(comandoRecebido)
             if comandoRecebido == "@t#c%$0#1$":
                 if self.telecomandoExecutado == False:
