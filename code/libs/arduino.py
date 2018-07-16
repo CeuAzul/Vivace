@@ -32,7 +32,11 @@ class Arduino:
 
     def connect(self):
         print("########## Trying Arduino on port " + self.porta + "! ##########")
-        self.ser = serial.Serial(port=self.porta, baudrate=self.baudrate, timeout=1)
+        try:
+            self.ser = serial.Serial(port=self.porta, baudrate=self.baudrate, timeout=1)
+            print('Arduino connected')
+        except:
+            print('Arduino not detected')
 
     def updateData(self):
         """Puxa linha de dados pela porta serial (Arduino).
