@@ -22,8 +22,9 @@ class Pitot:
         self.UM = UM
 
         self.pressaoDinamica = 0
+        self.pressaoDinamicaRef = 0
         self.velocidade = 0
-        self.refPressaoDin = 0
+        self.velocidadeRef = 0
         self.refPressaoDin = 0
         self.ultimosCemPressaoDin = [0] * 100
 
@@ -48,6 +49,7 @@ class Pitot:
 
         # E outra formulinha de mec flu
         self.velocidade = (abs(self.pressaoDinamica * 2 / densAr))**(1 / 2)
+        self.velocidadeRef = (abs((self.pressaoDinamica - self.refPressaoDin) * 2 / densAr))**(1 / 2)
 
     def setRefPressaoDin(self, samples=100):
         """Seta um valor de referencia para as futuras aquisiçoes.
@@ -90,3 +92,34 @@ class Pitot:
         else:
             # velocidade em m/s
             return self.velocidade
+
+    def getPressaoDinRef(self, um="Pa"):
+        """Retorna valor da pressão dinâmica.
+
+            :param um: Unidade de medida
+            :returns: pressão dinâmica
+        """
+        if um == "Pa":
+            return (self.pressaoDinamica - self.refPressaoDin)
+        elif um == "hPa":
+            return (self.pressaoDinamica - self.refPressaoDin) / 100
+        elif um == "mBar":
+            return (self.pressaoDinamica - self.refPressaoDin) / 100
+        else:  # retorna Pa
+            return (self.pressaoDinamica - self.refPressaoDin)
+
+    def getVelocidadeRef(self, um="m/s"):
+        """Retorna valor da velocidade calibrada.
+
+            :param um: Unidade de medida
+            :returns: Velocidade calibrada
+        """
+        if um == "m/s":
+            return self.velocidadeRef
+        elif um == "km/h":
+            return self.velocidadeRef * 3.6
+        elif um == "nós":
+            return self.velocidadeRef * 1.94384
+        else:
+            # velocidadeRef em m/s
+            return self.velocidadeRef
