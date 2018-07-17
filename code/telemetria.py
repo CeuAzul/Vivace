@@ -40,21 +40,21 @@ def main():
     if(configurador.ATIVAR_TRANSMISSAO):
         threadTransmissao = Thredeiro('Transmissao', ajudante.transmitirDados, 0.5)
     if(configurador.USAR_IMU):
-        threadIMU = Thredeiro('IMU', atualizador.atualizarIMU, 0.03)
+        threadIMU = Thredeiro('IMU', atualizador.atualizarIMU, 0.02)
     if(configurador.USAR_BARO):
         threadBARO = Thredeiro('BARO', atualizador.atualizarBarometro, 0.1)
     if(configurador.USAR_GPS):
         threadGPS = Thredeiro('GPS', atualizador.atualizarGps, 0.5)
     if(configurador.USAR_PITOTS):
-        threadPITOT = Thredeiro('PITOT', atualizador.atualizarPitot, 0.2)
+        threadPITOT = Thredeiro('PITOT', atualizador.atualizarPitot, 0.002)
     if(configurador.USAR_BALANCA):
-        threadBALANCA = Thredeiro('BALANCA', atualizador.atualizarBalanca, 0.05)
+        threadBALANCA = Thredeiro('BALANCA', atualizador.atualizarBalanca, 0.002)
     if(configurador.USAR_CELULAS):
-        threadCELULAS = Thredeiro('CELULAS', atualizador.atualizarCelulas, 0.05)
+        threadCELULAS = Thredeiro('CELULAS', atualizador.atualizarCelulas, 0.002)
     if(configurador.USAR_ARDUINO):
-        threadARDUINO = Thredeiro('ARDUINO', atualizador.atualizarArduino, 0.05)
+        threadARDUINO = Thredeiro('ARDUINO', atualizador.atualizarArduino, 0.005)
     if(configurador.ATIVAR_GRAVACAO):
-        threadGravacao = Thredeiro('Gravaçao', ajudante.gravarDados, 0.02)
+        threadGravacao = Thredeiro('Gravaçao', ajudante.gravarDados, 0.005)
     if(configurador.ATIVAR_TRANSMISSAO):
         threadTelecomando = Thredeiro('Telecomando', ajudante.lerTelecomando, 1)
 
