@@ -88,6 +88,10 @@ class Transmissor:
         """
         try:
             linhaLida = self.serial.readline().decode("utf-8")
-            return linhaLida
+            if(linhaLida != ""):
+                linhaLida = linhaLida.replace('\n', '')
+                return linhaLida
+            else:
+                return 'No command'
         except:
             pass
