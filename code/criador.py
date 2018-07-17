@@ -123,10 +123,10 @@ class Criador(object):
 
         print('Dados do BARO criados!')
 
-        self.pressaoTotal = Dado("Pressao total", "PA", "ptt", "BARO", 3)
-        self.pressaoEstatica = Dado("Pressao estática", "PA", "pts", "BARO", 3)
-        self.pressaoTotalr = Dado("PTtotal", "PA", "ptt", "BARO", 3)
-        self.pressaoEstaticar = Dado("PTstatic", "PA", "psr", "BARO", 3)
+        self.pressaoTotal = Dado("Pressao total", "Pa", "ptt", "BARO", 3)
+        self.pressaoEstatica = Dado("Pressao estática", "Pa", "pts", "BARO", 3)
+        self.pressaoTotalr = Dado("PTtotal", "Pa", "ptt", "BARO", 3)
+        self.pressaoEstaticar = Dado("PTstatic", "Pa", "psr", "BARO", 3)
         self.temperaturaBar = Dado("Temperatura", "ºC", "tem", "BARO", 3)
         self.densidadeAr = Dado("Densidade do ar", "Kg/m³", "den", "BARO", 3)
         self.altitudeRelativa = Dado("Altitude relativa", "m", "alt", "BARO", 3)
@@ -163,7 +163,7 @@ class Criador(object):
 
         for pitot in range(self.configurador.NUMERO_DE_PITOTS):
             print(nomeDosPitots[pitot] + ' criado!')
-            self.pressaoDin.extend([Dado("Pressao Dinamica - " + nomeDosPitots[pitot], "PA", apelidoDosPitots[pitot], "PITOT", 3)])
+            self.pressaoDin.extend([Dado("Pressao Dinamica - " + nomeDosPitots[pitot], "Pa", apelidoDosPitots[pitot], "PITOT", 3)])
             self.velCas.extend([Dado("VCAS - " + nomeDosPitots[pitot], "m/s", "vcs_" + apelidoDosPitots[pitot], "PITOT", 4)])
 
         print('Dados das CELULAS criados!')
