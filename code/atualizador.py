@@ -21,8 +21,6 @@ class Atualizador(object):
         :param delay: Valor com o tempo entre cada atualização.
         """
         while self.ajudante.threadsRodando:
-            print('Puxando dados da IMU!')
-
             self.criador.mpu.atualiza()
             self.criador.taxaGiroX.setValor(self.criador.mpu.getGyx())
             self.criador.taxaGiroY.setValor(self.criador.mpu.getGyy())
@@ -42,8 +40,6 @@ class Atualizador(object):
         :param delay: Valor com o tempo entre cada atualização.
         """
         while self.ajudante.threadsRodando:
-            print('Puxando dados do BARO!')
-
             if self.atualizandoReferenciaDoBarometro == True:
                 self.criador.barometro.atualizaReferencia()
                 atualizaRefBar = False
@@ -65,8 +61,6 @@ class Atualizador(object):
         :param delay: Valor com o tempo entre cada atualização.
         """
         while self.ajudante.threadsRodando:
-            print('Puxando dados do GPS!')
-
             self.criador.gps.atualiza()
             self.criador.latitude.setValor(self.criador.gps.getLatitude())
             self.criador.longitude.setValor(self.criador.gps.getLongitude())
@@ -105,8 +99,6 @@ class Atualizador(object):
         :param delay: Valor com o tempo entre cada atualização.
         """
         while self.ajudante.threadsRodando:
-            print('Puxando dados do PITOT!')
-
             for i in range(self.configurador.NUMERO_DE_PITOTS):
                 self.criador.pitots[i].atualiza()
                 self.criador.pressaoDin[i].setValor(self.criador.pitots[i].getPressaoDin())
@@ -121,8 +113,6 @@ class Atualizador(object):
         :param delay: Valor com o tempo entre cada atualização.
         """
         while self.ajudante.threadsRodando:
-            print('Puxando dados do ARDUINO!')
-
             self.criador.arduino.updateData()
 
             time.sleep(delay)
@@ -134,8 +124,6 @@ class Atualizador(object):
         :param delay: Valor com o tempo entre cada atualização.
         """
         while self.ajudante.threadsRodando:
-            print('Puxando dados da Balança!')
-
             for i in range(self.configurador.NUMERO_DE_CELULAS):
                 self.criador.celulas[i].atualiza()
                 self.criador.forcas[i].setValor(self.criador.celulas[i].getForce())
@@ -149,8 +137,6 @@ class Atualizador(object):
         :param delay: Valor com o tempo entre cada atualização.
         """
         while self.ajudante.threadsRodando:
-            print('Puxando dados da Balança!')
-
             self.criador.balanca.updateForces(self.criador.forcas[0].getValor(),
                                                 self.criador.forcas[1].getValor(),
                                                 self.criador.forcas[2].getValor(),

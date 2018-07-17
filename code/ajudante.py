@@ -81,7 +81,7 @@ class Ajudante(object):
 
         for dado in todosOsDados:
             if dado.sensor == sensor:
-                print(dado.nome + ' sendo transmitido')
+                print('Transmissao de ' + dado.nome + ' ativada!')
                 dado.setTransmissao(True)
 
     def liga_threads(self):
@@ -94,14 +94,12 @@ class Ajudante(object):
 
     def transmitirDados(self, delay):
         while self.threadsRodando:
-            print('Transmitindo dados!')
             self.criador.transmissor.setDados(self.receber_dados_usados())
             self.criador.transmissor.transmiteLinha()
             time.sleep(delay)
 
     def gravarDados(self, delay):
         while self.threadsRodando == True:
-            print('Gravando dados!')
             self.tempoAtual = (datetime.now() - self.inicioDoDia).total_seconds()
             self.criador.tempo.setValor(self.tempoAtual)
             if self.criador.modo.getValor() == 4:
@@ -111,7 +109,6 @@ class Ajudante(object):
 
     def lerTelecomando(self, delay):
         while self.threadsRodando:
-            print('Lendo telecomando!')
 
             self.criador.tamanho.setValor(self.criador.escritor.verificaTamanhoArquivo())
             comandoRecebido = self.criador.transmissor.leLinha()
