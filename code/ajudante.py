@@ -113,22 +113,29 @@ class Ajudante(object):
             self.criador.tamanho.setValor(self.criador.escritor.verificaTamanhoArquivo())
             comandoRecebido = self.criador.transmissor.leLinha()
             self.criador.mensagemRecebida.setValor(comandoRecebido)
-            if comandoRecebido == "@t#c%$0#1$":
-                if self.telecomandoExecutado == False:
+            
+
+            if comandoRecebido.startswith('!') and comandoRecebido.endswith('@'):
+                if not self.telecomandoExecutado:
                     self.telecomandoExecutado = True
-                    self.seletor.setModo(4)
+
+                    if comandoRecebido == "@t#c%$0#1$":
+                        print('mudando modo para 4')
+                        self.seletor.setModo(4)
+                    if comandoRecebido == "!tc@":
+                        print('tarando celulas')
+                        self.criador.arduino.sendCommand('tc')
+                    if comandoRecebido == "!pp@":
+                        self.criador.arduino.sendCommand('pp')
+                    if comandoRecebido == "!pc@":
+                        self.criador.arduino.sendCommand('pc')
+                    if comandoRecebido == "!so@":
+                        self.criador.arduino.sendCommand('so')
+                    if comandoRecebido == "!zp@":
+                        for i in range(self.configurador.NUMERO_DE_PITOTS):
+                            self.criador.pitots[i].setRefPressaoDin()
+
                 else:
                     self.telecomandoExecutado = False
-            if comandoRecebido == "tc":
-                self.criador.arduino.sendCommand('tc')
-            if comandoRecebido == "pp":
-                self.criador.arduino.sendCommand('pp')
-            if comandoRecebido == "pc":
-                self.criador.arduino.sendCommand('pc')
-            if comandoRecebido == "so":
-                self.criador.arduino.sendCommand('so')
-            if comandoRecebido == "zp":
-                for i in range(self.configurador.NUMERO_DE_PITOTS):
-                    self.criador.pitots[i].setRefPressaoDin()
             time.sleep(delay)
 
