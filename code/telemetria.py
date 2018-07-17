@@ -35,6 +35,17 @@ def main():
     if configurador.ATIVAR_GRAVACAO:
         criador.escritor.setDados(ajudante.receber_dados_usados())
         criador.escritor.fazCabecalho()
+    if configurador.ATIVAR_TRANSMISSAO:
+        if(configurador.TRANSMITIR_IMU):
+            ajudante.ativar_transmissao('IMU')
+        if(configurador.TRANSMITIR_BARO):
+            ajudante.ativar_transmissao('BARO')
+        if(configurador.TRANSMITIR_GPS):
+            ajudante.ativar_transmissao('GPS')
+        if(configurador.TRANSMITIR_PITOTS):
+            ajudante.ativar_transmissao('PITOT')
+        if(configurador.TRANSMITIR_CELULAS):
+            ajudante.ativar_transmissao('CELULA')
     seletor.setModo(4)
 
     if(configurador.ATIVAR_TRANSMISSAO):

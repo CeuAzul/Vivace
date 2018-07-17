@@ -106,7 +106,7 @@ class Criador(object):
         print('Dados gerais criados')
 
         self.tempo = Dado("Tempo", "seg", "tmp", "GERAL", 4)
-        self.mensagemRecebida = Dado("Mensagem", "str", "msg" "GERAL")
+        self.mensagemRecebida = Dado("Mensagem", "str", "msg", "GERAL")
         self.modo = Dado("Modo", "int", "mod", "GERAL")
         self.tamanho = Dado("Tamanho do arquivo", "int", "tmn", "GERAL", 3)
 

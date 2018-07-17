@@ -77,9 +77,9 @@ class Ajudante(object):
 
     def ativar_transmissao(self, sensor):
 
-        dados = self.receber_pacote_de_dados()
+        dadosUsados = self.receber_dados_usados()
 
-        for dado in todosOsDados:
+        for dado in dadosUsados:
             if dado.sensor == sensor:
                 print('Transmissao de ' + dado.nome + ' ativada!')
                 dado.setTransmissao(True)
