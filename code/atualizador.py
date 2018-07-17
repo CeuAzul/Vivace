@@ -103,6 +103,8 @@ class Atualizador(object):
                 self.criador.pitots[i].atualiza()
                 self.criador.pressaoDin[i].setValor(self.criador.pitots[i].getPressaoDin())
                 self.criador.velCas[i].setValor(self.criador.pitots[i].getVelocidade("m/s"))
+                self.criador.pressaoDinRef[i].setValor(self.criador.pitots[i].getPressaoDinRef())
+                self.criador.velCasRef[i].setValor(self.criador.pitots[i].getVelocidadeRef("m/s"))
             time.sleep(delay)
 
 
