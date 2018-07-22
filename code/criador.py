@@ -130,6 +130,7 @@ class Criador(object):
         self.tamanho = Dado("Tamanho do arquivo", "int", "tmn", "GERAL", 3)
         self.angulo_incidencia = Dado("Angulo de incidencia", "deg", "aoi", "GERAL", 3)
         self.angulo_incidencia.setValor(self.configurador.ANGULO_INCIDENCIA)
+        self.velocidadeCarro = Dado("Velocidade do carro", "m/s", "vcs", "GERAL", 3, transmiteDado=True)
 
         print('Dados da IMU criados!')
 
@@ -228,8 +229,7 @@ class Criador(object):
             self.tempo,
             self.mensagemRecebida,
             self.modo,
-            self.tamanho,
-            self.angulo_incidencia
+            self.tamanho
         ])
 
         #IMU Data

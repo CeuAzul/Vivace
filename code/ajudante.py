@@ -47,6 +47,7 @@ class Ajudante(object):
             self.criador.modo,
             self.criador.tamanho,
             self.criador.angulo_incidencia
+            self.criador.velocidadeCarro
         ])
 
         for dado in todosOsDados:
