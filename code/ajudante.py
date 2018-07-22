@@ -33,7 +33,7 @@ class Ajudante(object):
         self.NaN = float('nan')
         self.tempoGPS = self.NaN
         self.utc = self.NaN
-        self.sensores = ["IMU", "BARO", "GPS", "PITOT", "CELULA"]
+        self.sensores = ["IMU", "BARO", "GPS", "PITOT", "SONDA_AOA", "CELULA"]
         self.seletor = seletor
 
     def receber_dados_usados(self):
@@ -60,6 +60,9 @@ class Ajudante(object):
                     pacoteDeDados.extend([dado])
             if dado.sensor == 'PITOT':
                 if self.configurador.USAR_PITOTS:
+                    pacoteDeDados.extend([dado])
+            if dado.sensor == 'SONDA_AOA':
+                if self.configurador.USAR_SONDAS_AOA:
                     pacoteDeDados.extend([dado])
             if dado.sensor == 'CELULA':
                 if self.configurador.USAR_CELULAS:

@@ -11,6 +11,7 @@ from libs.mpu import MPU
 from libs.barometro import Barometro
 from libs.gps import GPS
 from libs.pitot import Pitot
+from libs.sonda_aoa import SondaAoA
 from libs.arduino import Arduino
 
 from libs.celula import Celula
@@ -71,6 +72,22 @@ class Criador(object):
             except:
                 self.configurador.USAR_PITOTS = False
                 print('PITOTS nao ativados!')
+
+        if self.configurador.USAR_SONDAS_AOA:
+            try:
+                self.sondas_aoa = []
+                for i in range(self.configurador.NUMERO_DE_SONDAS_AOA):
+                    self.sondas_aoa.append(SondaAoA(self.configurador.NOME_DAS_SONDAS_AOA[i],
+                                                    self.configurador.APELIDO_DAS_SONDAS_AOA[i],
+                                                    self.configurador.CALFACTS_DAS_SONDAS_AOA[i][0],
+                                                    self.configurador.CALFACTS_DAS_SONDAS_AOA[i][1],
+                                                    self.configurador.APELIDO_PITOTS_AOA[i][0],
+                                                    self.configurador.APELIDO_PITOTS_AOA[i][1],
+                                                    self.pitots))
+                print('SondasAoA ativadas!')
+            except:
+                self.configurador.USAR_SONDAS_AOA = False
+                print('SondasAoA nao ativadas!')
 
         if self.configurador.USAR_CELULAS:
             try:
@@ -170,6 +187,21 @@ class Criador(object):
             self.pressaoDinRef.extend([Dado("Pressao Dinamica Ref.- " + nomeDosPitots[pitot], "Pa", 'pd_' + apelidoDosPitots[pitot] + '_ref', "PITOT", 3)])
             self.velCasRef.extend([Dado("VCAS Ref. - " + nomeDosPitots[pitot], "m/s", "vcs_" + apelidoDosPitots[pitot] + '_ref', "PITOT", 4)])
 
+        print('Dados das SONDAS_AOA criados!')
+
+        nomeDasSondasAoA = self.configurador.NOME_DAS_SONDAS_AOA
+        apelidoDasSondasAoA = self.configurador.APELIDO_DAS_SONDAS_AOA
+
+        self.aoa_dif_press = []
+        self.aoa_dyn_press = []
+        self.aoa = []
+
+        for sonda_aoa in range(self.configurador.NUMERO_DE_SONDAS_AOA):
+            print(nomeDasSondasAoA[sonda_aoa] + ' criada!')
+            self.aoa_dif_press.extend([Dado("AoA Differential Pressure - " + nomeDasSondasAoA[sonda_aoa], "Pa", apelidoDasSondasAoA[sonda_aoa] + '_dfp', "SONDA_AOA", 3)])
+            self.aoa_dyn_press.extend([Dado("AoA Dynamic Pressure - " + nomeDasSondasAoA[sonda_aoa], "Pa", apelidoDasSondasAoA[sonda_aoa] + '_dnp', "SONDA_AOA", 3)])
+            self.aoa.extend([Dado("AoA - " + nomeDasSondasAoA[sonda_aoa], "deg", apelidoDasSondasAoA[sonda_aoa], "SONDA_AOA", 3)])
+
         print('Dados das CELULAS criados!')
 
         nomeDasCelulas = self.configurador.NOME_DAS_CELULAS
@@ -249,6 +281,14 @@ class Criador(object):
                 self.rawPitotData[pitot],
                 self.pressaoDinRef[pitot],
                 self.velCasRef[pitot]
+            ])
+
+        #SONDA_AOA Data
+        for sonda_aoa in range(self.configurador.NUMERO_DE_SONDAS_AOA):
+            todosOsDados.extend([
+                self.aoa_dif_press[sonda_aoa],
+                self.aoa_dyn_press[sonda_aoa],
+                self.aoa[sonda_aoa]
             ])
 
         #CELULA Data
