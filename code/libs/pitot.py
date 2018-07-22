@@ -11,22 +11,25 @@ class Pitot:
     3. E por fim, é convertida em velocidade.
     """
 
-    def __init__(self, nome, apelido, arduino, UM = "V"):
+    def __init__(self, nome, apelido, cal_factor, arduino, UM = "V"):
         """Inicializa o objeto Pitot na porta analogica especificada.
 
         :param numADC: Numero da porta ADC a ser utilizada
         """
         self.nome =  nome
         self.apelido = apelido
+        self.calibration_factor = cal_factor
         self.arduino = arduino
         self.UM = UM
 
+        self.rawPitotData = 0
         self.pressaoDinamica = 0
         self.pressaoDinamicaRef = 0
         self.velocidade = 0
         self.velocidadeRef = 0
+        self.refPitotData = 0
         self.refPressaoDin = 0
-        self.ultimosCemPressaoDin = [0] * 100
+        self.ultimosCemRawPitotData = [0] * 100
 
     def atualiza(self, densAr=1.218):
         """Le valor analogico do ADC e transforma isso em pressão e
@@ -38,10 +41,13 @@ class Pitot:
 
         dicioDeDados = self.arduino.getData()
         if self.apelido in dicioDeDados:
-            self.pressaoDinamica = dicioDeDados[self.apelido]
+            self.rawPitotData = dicioDeDados[self.apelido]
 
-        self.ultimosCemPressaoDin.pop(0)
-        self.ultimosCemPressaoDin.append(self.pressaoDinamica)
+        self.ultimosCemRawPitotData.pop(0)
+        self.ultimosCemRawPitotData.append(self.rawPitotData)
+
+        self.pressaoDinamica = self.rawPitotData * self.calibration_factor
+        self.pressaoDinamicaRef = self.pressaoDinamica - self.refPressaoDin
 
         # Esquadrão anti-burrice
         if densAr <= 0:
@@ -49,9 +55,9 @@ class Pitot:
 
         # E outra formulinha de mec flu
         self.velocidade = (abs(self.pressaoDinamica * 2 / densAr))**(1 / 2)
-        self.velocidadeRef = (abs((self.pressaoDinamica - self.refPressaoDin) * 2 / densAr))**(1 / 2)
+        self.velocidadeRef = (abs((self.pressaoDinamicaRef) * 2 / densAr))**(1 / 2)
 
-    def setRefPressaoDin(self, samples=100):
+    def setRefPitot(self, samples=100):
         """Seta um valor de referencia para as futuras aquisiçoes.
         Sera coletado um numero de samples analogicos especificado,
         uma media desses valores sera realizada e este valor medio
@@ -59,8 +65,12 @@ class Pitot:
 
         :param: samples: Número de amostras para oversampling
         """
-        self.refPressaoDin = sum(self.ultimosCemPressaoDin[-samples:]) / samples
-        print("Zero do " + self.nome + ": " + str(self.refPressaoDin))
+        self.refPitotData = sum(self.ultimosCemRawPitotData[-samples:]) / samples
+        self.refPressaoDin = self.refPitotData * self.calibration_factor
+        print("Zero do " + self.nome + ": " + str(self.refPitotData))
+
+    def getRawPitotData(self):
+        return self.rawPitotData
 
     def getPressaoDin(self, um="Pa"):
         """Retorna valor da pressão dinâmica.
@@ -100,13 +110,13 @@ class Pitot:
             :returns: pressão dinâmica
         """
         if um == "Pa":
-            return (self.pressaoDinamica - self.refPressaoDin)
+            return self.pressaoDinamicaRef
         elif um == "hPa":
-            return (self.pressaoDinamica - self.refPressaoDin) / 100
+            return self.pressaoDinamicaRef / 100
         elif um == "mBar":
-            return (self.pressaoDinamica - self.refPressaoDin) / 100
+            return self.pressaoDinamicaRef / 100
         else:  # retorna Pa
-            return (self.pressaoDinamica - self.refPressaoDin)
+            return self.pressaoDinamicaRef
 
     def getVelocidadeRef(self, um="m/s"):
         """Retorna valor da velocidade calibrada.

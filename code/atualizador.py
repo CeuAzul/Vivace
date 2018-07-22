@@ -101,8 +101,7 @@ class Atualizador(object):
         while self.ajudante.threadsRodando:
             for i in range(self.configurador.NUMERO_DE_PITOTS):
                 self.criador.pitots[i].atualiza()
-                self.criador.pressaoDin[i].setValor(self.criador.pitots[i].getPressaoDin())
-                self.criador.velCas[i].setValor(self.criador.pitots[i].getVelocidade("m/s"))
+                self.criador.rawPitotData[i].setValor(self.criador.pitots[i].getRawPitotData())
                 self.criador.pressaoDinRef[i].setValor(self.criador.pitots[i].getPressaoDinRef())
                 self.criador.velCasRef[i].setValor(self.criador.pitots[i].getVelocidadeRef("m/s"))
             time.sleep(delay)
@@ -128,6 +127,7 @@ class Atualizador(object):
         while self.ajudante.threadsRodando:
             for i in range(self.configurador.NUMERO_DE_CELULAS):
                 self.criador.celulas[i].atualiza()
+                self.criador.rawCellData[i].setValor(self.criador.celulas[i].getRawCellData())
                 self.criador.forcas[i].setValor(self.criador.celulas[i].getForce())
 
             time.sleep(delay)

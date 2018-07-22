@@ -65,6 +65,7 @@ class Criador(object):
                 for i in range(self.configurador.NUMERO_DE_PITOTS):
                     self.pitots.append(Pitot(self.configurador.NOME_DOS_PITOTS[i],
                                                 self.configurador.APELIDO_DOS_PITOTS[i],
+                                                self.configurador.CALFACTS_DOS_PITOTS[i],
                                                 self.arduino))
                 print('PITOTS ativados!')
             except:
@@ -159,16 +160,14 @@ class Criador(object):
         nomeDosPitots = self.configurador.NOME_DOS_PITOTS
         apelidoDosPitots = self.configurador.APELIDO_DOS_PITOTS
 
-        self.pressaoDin = []
+        self.rawPitotData = []
         self.pressaoDinRef = []
-        self.velCas = []
         self.velCasRef = []
 
         for pitot in range(self.configurador.NUMERO_DE_PITOTS):
             print(nomeDosPitots[pitot] + ' criado!')
-            self.pressaoDin.extend([Dado("Pressao Dinamica - " + nomeDosPitots[pitot], "Pa", apelidoDosPitots[pitot], "PITOT", 3)])
-            self.velCas.extend([Dado("VCAS - " + nomeDosPitots[pitot], "m/s", "vcs_" + apelidoDosPitots[pitot], "PITOT", 4)])
-            self.pressaoDinRef.extend([Dado("Pressao Dinamica Ref.- " + nomeDosPitots[pitot], "Pa", apelidoDosPitots[pitot] + '_ref', "PITOT", 3)])
+            self.rawPitotData.extend([Dado("Raw Pitot Data - " + nomeDosPitots[pitot], "V", apelidoDosPitots[pitot] + '_raw', "PITOT", 3)])
+            self.pressaoDinRef.extend([Dado("Pressao Dinamica Ref.- " + nomeDosPitots[pitot], "Pa", 'pd_' + apelidoDosPitots[pitot] + '_ref', "PITOT", 3)])
             self.velCasRef.extend([Dado("VCAS Ref. - " + nomeDosPitots[pitot], "m/s", "vcs_" + apelidoDosPitots[pitot] + '_ref', "PITOT", 4)])
 
         print('Dados das CELULAS criados!')
@@ -181,9 +180,11 @@ class Criador(object):
         self.Moment = Dado("Moment", "N", "mmt", "CELULA", 3)
         self.DistCp = Dado("Distance Cp", "m", "dcp", "CELULA", 3)
 
+        self.rawCellData = []
         self.forcas = []
         for celula in range(self.configurador.NUMERO_DE_CELULAS):
             print(nomeDasCelulas[celula] + ' criada!')
+            self.rawCellData.extend([Dado("Raw Cell Data - " + nomeDasCelulas[celula], "adm", apelidoDasCelulas[celula] + '_raw', "CELULA", 3)])
             self.forcas.extend([Dado("Forca - " + nomeDasCelulas[celula], "N", apelidoDasCelulas[celula], "CELULA", 3)])
 
     def receber_todos_os_dados(self):
@@ -245,8 +246,7 @@ class Criador(object):
         #PITOT Data
         for pitot in range(self.configurador.NUMERO_DE_PITOTS):
             todosOsDados.extend([
-                self.pressaoDin[pitot],
-                self.velCas[pitot],
+                self.rawPitotData[pitot],
                 self.pressaoDinRef[pitot],
                 self.velCasRef[pitot]
             ])
@@ -254,7 +254,8 @@ class Criador(object):
         #CELULA Data
         for celula in range(self.configurador.NUMERO_DE_CELULAS):
             todosOsDados.extend([
-                self.forcas[celula],
+                self.rawCellData[celula],
+                self.forcas[celula]
             ])
 
         todosOsDados.extend([

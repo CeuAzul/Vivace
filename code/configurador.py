@@ -70,6 +70,25 @@ class Configurador(object):
             'pt15'
         ]
 
+        self.CALFACTS_DOS_PITOTS = [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ]
+
         # CELULAS
         self.USAR_CELULAS = True
         self.GRAVAR_CELULAS= True
@@ -93,11 +112,11 @@ class Configurador(object):
         ]
 
         self.CALFACTS_DAS_CELULAS = [
-            629.0,
-            217.0,
-            192.0,
-            211.0,
-            210.0
+            64100.0,
+            22100.0,
+            19600.0,
+            21500.0,
+            21400.0
         ]
 
         # ARDUINO
