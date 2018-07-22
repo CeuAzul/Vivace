@@ -106,6 +106,20 @@ class Atualizador(object):
                 self.criador.velCasRef[i].setValor(self.criador.pitots[i].getVelocidadeRef("m/s"))
             time.sleep(delay)
 
+    def atualizarSondasAoA(self, delay):
+        """Esta função é utilizada como o processo periódico que
+        irá adquirir dados das Sondas AoA.
+
+        :param delay: Valor com o tempo entre cada atualização.
+        """
+        while self.ajudante.threadsRodando:
+            for i in range(self.configurador.NUMERO_DE_SONDAS_AOA):
+                self.criador.sondas_aoa[i].atualiza(samples=10)
+                self.criador.aoa_dif_press[i].setValor(self.criador.sondas_aoa[i].getDifPressure())
+                self.criador.aoa_dyn_press[i].setValor(self.criador.sondas_aoa[i].getDynPressure())
+                self.criador.aoa[i].setValor(self.criador.sondas_aoa[i].getAoA())
+            time.sleep(delay)
+
 
     def atualizarArduino(self, delay):
         """Esta função é utilizada como o processo periódico que

@@ -89,6 +89,28 @@ class Configurador(object):
             1.0
         ]
 
+        # SONDAS_AOA
+        self.USAR_SONDAS_AOA = True
+        self.GRAVAR_SONDAS_AOA = True
+        self.TRANSMITIR_SONDAS_AOA = True
+        self.NUMERO_DE_SONDAS_AOA = 1
+
+        self.NOME_DAS_SONDAS_AOA = [
+            'Sonda AoA 0'
+        ]
+
+        self.APELIDO_DAS_SONDAS_AOA = [
+            "aoa0"
+        ]
+
+        self.CALFACTS_DAS_SONDAS_AOA = [
+            [5.0, 0.834]
+        ]
+
+        self.APELIDO_PITOTS_AOA = [
+            ['pt3', 'pt2']
+        ]
+
         # CELULAS
         self.USAR_CELULAS = True
         self.GRAVAR_CELULAS= True

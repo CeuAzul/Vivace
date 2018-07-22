@@ -44,6 +44,8 @@ def main():
             ajudante.ativar_transmissao('GPS')
         if(configurador.TRANSMITIR_PITOTS):
             ajudante.ativar_transmissao('PITOT')
+        if(configurador.TRANSMITIR_SONDAS_AOA):
+            ajudante.ativar_transmissao('SONDA_AOA')
         if(configurador.TRANSMITIR_CELULAS):
             ajudante.ativar_transmissao('CELULA')
     seletor.setModo(4)
@@ -58,6 +60,8 @@ def main():
         threadGPS = Thredeiro('GPS', atualizador.atualizarGps, 0.5)
     if(configurador.USAR_PITOTS):
         threadPITOT = Thredeiro('PITOT', atualizador.atualizarPitot, 0.002)
+    if(configurador.USAR_SONDAS_AOA):
+        threadPITOT = Thredeiro('SONDA_AOA', atualizador.atualizarSondasAoA, 0.002)
     if(configurador.USAR_BALANCA):
         threadBALANCA = Thredeiro('BALANCA', atualizador.atualizarBalanca, 0.002)
     if(configurador.USAR_CELULAS):
