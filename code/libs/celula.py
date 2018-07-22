@@ -10,13 +10,17 @@ class Celula(object):
         self.calibration_factor = cal_factor
         self.arduino = arduino
         self.UM = UM
+        self.rawCellData = 0
         self.force = 0
 
     def atualiza(self):
         dicioDeDados = self.arduino.getData()
         if self.apelido in dicioDeDados:
-            raw_force = dicioDeDados[self.apelido]
-            self.force = raw_force/self.calibration_factor
+            self.rawCellData = dicioDeDados[self.apelido]
+            self.force = self.rawCellData / self.calibration_factor
+
+    def getRawCellData(self):
+        return self.rawCellData
 
     def getForce(self):
         return self.force

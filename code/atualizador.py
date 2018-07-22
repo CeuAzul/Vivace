@@ -128,6 +128,7 @@ class Atualizador(object):
         while self.ajudante.threadsRodando:
             for i in range(self.configurador.NUMERO_DE_CELULAS):
                 self.criador.celulas[i].atualiza()
+                self.criador.rawCellData[i].setValor(self.criador.celulas[i].getRawCellData())
                 self.criador.forcas[i].setValor(self.criador.celulas[i].getForce())
 
             time.sleep(delay)
