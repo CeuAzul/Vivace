@@ -46,7 +46,7 @@ class Ajudante(object):
             self.criador.mensagemRecebida,
             self.criador.modo,
             self.criador.tamanho,
-            self.criador.angulo_incidencia
+            self.criador.angulo_incidencia,
             self.criador.velocidadeCarro
         ])
 

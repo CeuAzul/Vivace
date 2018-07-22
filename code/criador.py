@@ -229,7 +229,9 @@ class Criador(object):
             self.tempo,
             self.mensagemRecebida,
             self.modo,
-            self.tamanho
+            self.tamanho,
+            self.angulo_incidencia,
+            self.velocidadeCarro
         ])
 
         #IMU Data
