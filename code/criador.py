@@ -78,6 +78,7 @@ class Criador(object):
                 for i in range(self.configurador.NUMERO_DE_CELULAS):
                     self.celulas.append(Celula(self.configurador.NOME_DAS_CELULAS[i],
                                                 self.configurador.APELIDO_DAS_CELULAS[i],
+                                                self.configurador.CALFACTS_DAS_CELULAS[i],
                                                 self.arduino))
                 print('CELULAS ativadas!')
             except:

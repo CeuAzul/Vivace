@@ -92,6 +92,14 @@ class Configurador(object):
             "fte"
         ]
 
+        self.CALFACTS_DAS_CELULAS = [
+            629.0,
+            217.0,
+            192.0,
+            211.0,
+            210.0
+        ]
+
         # ARDUINO
         self.USAR_ARDUINO = True
 
