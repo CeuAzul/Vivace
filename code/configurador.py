@@ -9,6 +9,7 @@ class Configurador(object):
         self.PASTA_DESTINO = os.path.expanduser('~/Documents/DadosBancada')
         self.ARDUINO_PORT = '/dev/ttyACM0'
         self.TRANSMISSOR_PORT = '/dev/ttyUSB0'
+        self.ANGULO_INCIDENCIA = 18
 
         self.ATIVAR_TRANSMISSAO = True
         self.ATIVAR_GRAVACAO = True
