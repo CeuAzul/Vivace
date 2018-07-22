@@ -113,7 +113,7 @@ class Ajudante(object):
             self.criador.tamanho.setValor(self.criador.escritor.verificaTamanhoArquivo())
             comandoRecebido = self.criador.transmissor.leLinha()
             self.criador.mensagemRecebida.setValor(comandoRecebido)
-            
+
 
             if comandoRecebido.startswith('!') and comandoRecebido.endswith('@'):
                 if not self.telecomandoExecutado:
@@ -133,7 +133,7 @@ class Ajudante(object):
                         self.criador.arduino.sendCommand('so')
                     if comandoRecebido == "!zp@":
                         for i in range(self.configurador.NUMERO_DE_PITOTS):
-                            self.criador.pitots[i].setRefPressaoDin()
+                            self.criador.pitots[i].setRefPitot()
 
                 else:
                     self.telecomandoExecutado = False

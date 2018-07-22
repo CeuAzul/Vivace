@@ -70,6 +70,25 @@ class Configurador(object):
             'pt15'
         ]
 
+        self.CALFACTS_DOS_PITOTS = [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ]
+
         # CELULAS
         self.USAR_CELULAS = True
         self.GRAVAR_CELULAS= True
