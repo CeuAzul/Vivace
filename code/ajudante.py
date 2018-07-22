@@ -45,7 +45,8 @@ class Ajudante(object):
             self.criador.tempo,
             self.criador.mensagemRecebida,
             self.criador.modo,
-            self.criador.tamanho
+            self.criador.tamanho,
+            self.criador.angulo_incidencia
         ])
 
         for dado in todosOsDados:
