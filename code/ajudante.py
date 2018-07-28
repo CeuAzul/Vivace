@@ -23,7 +23,6 @@ class Ajudante(object):
     def __init__(self, configurador, criador, seletor):
         self.configurador = configurador
         self.criador = criador
-        # self.seletorDeModos = SeletorDeModos()
         self.telecomandoExecutado = False
         self.threadsRodando = True
         self.inicioDoDia = datetime(datetime.now().year,
@@ -120,25 +119,42 @@ class Ajudante(object):
 
 
             if comandoRecebido.startswith('!') and comandoRecebido.endswith('@'):
+                comandoRecebido = comandoRecebido.replace("!", "")
+                comandoRecebido = comandoRecebido.replace("@", "")
                 if not self.telecomandoExecutado:
                     self.telecomandoExecutado = True
 
-                    if comandoRecebido == "@t#c%$0#1$":
-                        print('mudando modo para 4')
-                        self.seletor.setModo(4)
-                    if comandoRecebido == "!tc@":
-                        print('tarando celulas')
+                    if comandoRecebido == "tc":
+                        print('Tarando Celulas!')
                         self.criador.arduino.sendCommand('tc')
-                    if comandoRecebido == "!pp@":
-                        self.criador.arduino.sendCommand('pp')
-                    if comandoRecebido == "!pc@":
-                        self.criador.arduino.sendCommand('pc')
-                    if comandoRecebido == "!so@":
-                        self.criador.arduino.sendCommand('so')
-                    if comandoRecebido == "!zp@":
+                    if comandoRecebido == "zp":
+                        print('Tarando Pitots!')
                         for i in range(self.configurador.NUMERO_DE_PITOTS):
                             self.criador.pitots[i].setRefPitot()
-
+                    if (comandoRecebido == "@t#c%$0#1$"):
+                        print('Iniciando gravação + recepção normal')
+                        self.seletor.setModo(4)
+                    if (comandoRecebido == "@%&*v##&(@"):
+                        print('Transmitindo apenas Vcas, hp, RPM e altitude gps')
+                        self.seletor.setModo(2)
+                    if (comandoRecebido == "&*$$%#!@&_"):
+                        print('Ativando somente a transmissao')
+                        self.seletor.setModo(3)
+                    if (comandoRecebido == "*)(#$%@!&*"):
+                        print('Pausando gravaçao')
+                        self.seletor.setModo(0)
+                    if (comandoRecebido == "AqT%$BNy*("):
+                        print('Criando novo arquivo')
+                        # novoArquivo()
+                    if (comandoRecebido == "Tc*B+@F&5v"):
+                        print('Passando dados para o pendrive')
+                        escritor.passaProPendrive()
+                    if (comandoRecebido == "!$@f#_a*(%"):
+                        print('Reiniciando a plataforma')
+                        os.system('sudo reboot')
+                    if (comandoRecebido == "d&y?%(+#(("):
+                        print('Desligando plataforma')
+                        os.system('sudo shutdown now')
                 else:
                     self.telecomandoExecutado = False
             time.sleep(delay)
