@@ -11,6 +11,7 @@ class Atualizador(object):
         self.criador = criador
         self.ajudante = ajudante
 
+        self.inicioDoDia = datetime(datetime.now().year, datetime.now().month, datetime.now().day)
         self.atualizandoReferenciaDoBarometro = False
 
 
@@ -167,6 +168,20 @@ class Atualizador(object):
             time.sleep(delay)
 
     def enviarSinalDeVida(self, delay):
-        print('Enviando sinal de vida!')
-        self.criador.transmissor.transmiteCru('iloveceuazul\n')
-        time.sleep(delay)
+        while self.ajudante.threadsRodando:
+            self.criador.transmissor.transmiteDadoProtocolado("htb", 1)
+            self.criador.transmissor.transmiteDadoProtocolado("tmt", int(self.ajudante.transmitindo))
+            self.criador.transmissor.transmiteDadoProtocolado("gvd", int(self.ajudante.gravando))
+            self.criador.transmissor.transmiteDadoProtocolado("cfg", int(self.ajudante.configuracoes_recebidas))
+            self.criador.transmissor.transmiteDadoProtocolado(self.criador.tempo.apelido, self.criador.tempo.valor)
+            self.criador.transmissor.transmiteDadoProtocolado(self.criador.mensagemRecebida.apelido, self.criador.mensagemRecebida.valor)
+            self.criador.transmissor.transmiteDadoProtocolado(self.criador.modo.apelido, self.criador.modo.valor)
+            self.criador.transmissor.transmiteDadoProtocolado(self.criador.tamanho.apelido, self.criador.tamanho.valor)
+            print("Enviando heartbeat")
+            time.sleep(delay)
+
+    def atualizarGeral(self, delay):
+        while self.ajudante.threadsRodando:
+            self.criador.tempo.setValor((datetime.now() - self.inicioDoDia).total_seconds())
+            self.criador.tamanho.setValor(self.criador.escritor.verificaTamanhoArquivo())
+            time.sleep(delay)

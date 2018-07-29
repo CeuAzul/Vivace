@@ -38,7 +38,7 @@ class Escritor:
     - ...
     """
 
-    def __init__(self, separador=",", printaNome=True, printaUM=True, nomeArquivo="Telemetria", extensao=".csv", pasta= os.path.join(os.path.dirname(__file__), 'Dados')):
+    def __init__(self, configurador, separador=",", printaNome=True, printaUM=True, printaInfos=True, nomeArquivo="Telemetria", extensao=".csv", pasta= os.path.join(os.path.dirname(__file__), 'Dados')):
         """Construtor: Inicializa parâmetros de configuração do Escritor.
         No construtor ele já cria o arquivo, verifica se nome já existe, caso já exista, adiciona 1 no nome.
 
@@ -53,10 +53,12 @@ class Escritor:
         self.separador = separador
         self.printaNome = printaNome
         self.printaUM = printaUM
+        self.printaInfos = printaInfos
         self.nomeArquivo = nomeArquivo
         self.pasta = pasta
         self.extensao = extensao
         self.numeroArquivo = 1
+        self.configurador = configurador
         self.dataHora = datetime.datetime.now().strftime("%d-%m-%y %H:%M")
         for file in os.listdir(self.pasta):
             if file.startswith(self.nomeArquivo):
@@ -103,6 +105,13 @@ class Escritor:
         """
         os.makedirs(os.path.dirname(self.nomeCompleto), exist_ok=True)
         with open(self.nomeCompleto, "a") as file:
+            if self.printaInfos:
+                file.write('Nome da aeronave: ' + self.configurador.NOME_DA_AERONAVE + '\r\n')
+                file.write('Local de voo: ' + self.configurador.LOCAL_DE_VOO + '\r\n')
+                file.write('Temperatura: ' + self.configurador.TEMPERATURA + '\r\n')
+                file.write('Angulo de incidencia da asa: ' + self.configurador.ANGULO_INCIDENCIA_ASA + '\r\n')
+                file.write('Angulo de incidencia do profundor: ' + self.configurador.ANGULO_INCIDENCIA_PROFUNDOR + '\r\n')
+                file.write('Informaçoes extras: ' + self.configurador.INFOS_EXTRAS + '\r\n')
             if self.printaNome:
                 for x in self.dados:
                     if x.gravaDado:

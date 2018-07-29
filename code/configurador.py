@@ -9,7 +9,6 @@ class Configurador(object):
         self.PASTA_DESTINO = os.path.expanduser('~/Documents/DadosBancada')
         self.ARDUINO_PORT = '/dev/ttyACM0'
         self.TRANSMISSOR_PORT = '/dev/ttyUSB0'
-        self.ANGULO_INCIDENCIA = 18
 
         self.ENVIAR_SINAL_DE_VIDA = True
         self.ATIVAR_TRANSMISSAO = True
@@ -148,3 +147,11 @@ class Configurador(object):
 
         # BALANCA
         self.USAR_BALANCA = True
+
+        # CONFIGURACOES DE TESTE
+        self.NOME_DA_AERONAVE = 'Aeronave de teste'
+        self.LOCAL_DE_VOO = 'Local de teste'
+        self.TEMPERATURA = 'NaN'
+        self.ANGULO_INCIDENCIA_ASA = 'NaN'
+        self.ANGULO_INCIDENCIA_PROFUNDOR = 'NaN'
+        self.INFOS_EXTRAS = 'N/A'

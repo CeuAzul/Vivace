@@ -101,3 +101,15 @@ class Transmissor:
             self.serial.write(bytes(str(data), self.codificacao))
         except:
             pass
+
+    def transmiteProtocolado(self, data):
+        try:
+            self.serial.write(bytes("!" + str(data) + "@\n", self.codificacao))
+        except:
+            pass
+
+    def transmiteDadoProtocolado(self, apelido, valor):
+        try:
+            self.serial.write(bytes("!" + str(apelido) + "=" + str(valor) + "@\n", self.codificacao))
+        except:
+            pass

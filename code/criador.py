@@ -75,6 +75,7 @@ class Criador(object):
 
         if self.configurador.USAR_SONDAS_AOA:
             try:
+                arduino = self.arduino
                 self.sondas_aoa = []
                 for i in range(self.configurador.NUMERO_DE_SONDAS_AOA):
                     self.sondas_aoa.append(SondaAoA(self.configurador.NOME_DAS_SONDAS_AOA[i],
@@ -106,7 +107,7 @@ class Criador(object):
 
     def criar_escritor(self):
         try:
-            self.escritor = Escritor("\t", True, True, self.configurador.NOME_DO_ARQUIVO, ".txt", pasta=self.configurador.PASTA_DESTINO)
+            self.escritor = Escritor(self.configurador, "\t", True, True, True, self.configurador.NOME_DO_ARQUIVO, ".txt", pasta=self.configurador.PASTA_DESTINO)
             print('Escritor criado!')
         except:
             self.configurador.ATIVAR_GRAVACAO = False
@@ -122,7 +123,7 @@ class Criador(object):
             self.configurador.ENVIAR_SINAL_DE_VIDA = False
             print('Transmissor nao criado!')
 
-    def criar_dados(self):
+    def criar_dados_gerais(self):
 
         print('Dados gerais criados')
 
@@ -130,8 +131,8 @@ class Criador(object):
         self.mensagemRecebida = Dado("Mensagem", "str", "msg", "GERAL")
         self.modo = Dado("Modo", "int", "mod", "GERAL")
         self.tamanho = Dado("Tamanho do arquivo", "int", "tmn", "GERAL", 3)
-        self.angulo_incidencia = Dado("Angulo de incidencia", "deg", "aoi", "GERAL", 3)
-        self.angulo_incidencia.setValor(self.configurador.ANGULO_INCIDENCIA)
+
+    def criar_dados_sensores(self):
 
         print('Dados da IMU criados!')
 
@@ -211,17 +212,19 @@ class Criador(object):
         nomeDasCelulas = self.configurador.NOME_DAS_CELULAS
         apelidoDasCelulas = self.configurador.APELIDO_DAS_CELULAS
 
-        self.Lift = Dado("Lift", "N", "lft", "CELULA", 3)
-        self.Drag = Dado("Drag", "N", "drg", "CELULA", 3)
-        self.Moment = Dado("Moment", "N", "mmt", "CELULA", 3)
-        self.DistCp = Dado("Distance Cp", "m", "dcp", "CELULA", 3)
-
         self.rawCellData = []
         self.forcas = []
         for celula in range(self.configurador.NUMERO_DE_CELULAS):
             print(nomeDasCelulas[celula] + ' criada!')
             self.rawCellData.extend([Dado("Raw Cell Data - " + nomeDasCelulas[celula], "adm", apelidoDasCelulas[celula] + '_raw', "CELULA", 3)])
             self.forcas.extend([Dado("Forca - " + nomeDasCelulas[celula], "N", apelidoDasCelulas[celula], "CELULA", 3)])
+
+        print('Dados da Bancada criados!')
+
+        self.Lift = Dado("Lift", "N", "lft", "CELULA", 3)
+        self.Drag = Dado("Drag", "N", "drg", "CELULA", 3)
+        self.Moment = Dado("Moment", "N", "mmt", "CELULA", 3)
+        self.DistCp = Dado("Distance Cp", "m", "dcp", "CELULA", 3)
 
     def receber_todos_os_dados(self):
         todosOsDados = []
@@ -231,7 +234,6 @@ class Criador(object):
             self.mensagemRecebida,
             self.modo,
             self.tamanho,
-            self.angulo_incidencia
         ])
 
         #IMU Data

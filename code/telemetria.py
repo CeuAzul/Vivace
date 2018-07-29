@@ -28,10 +28,22 @@ def main():
     ajudante = Ajudante(configurador, criador, seletor)
     atualizador = Atualizador(configurador, criador, ajudante)
 
-    criador.criar_sensores()
-    criador.criar_dados()
-    criador.criar_escritor()
     criador.criar_transmissor()
+    criador.criar_dados_gerais()
+    if(configurador.ENVIAR_SINAL_DE_VIDA):
+        threadDaVida = Thredeiro('SinaldeVida', atualizador.enviarSinalDeVida, 0.1)
+    if(configurador.ATIVAR_TRANSMISSAO):
+        threadTelecomando = Thredeiro('Telecomando', ajudante.lerTelecomando, 0.5)
+    else:
+        ajudante.configuracoes_recebidas = True
+
+    while ajudante.configuracoes_recebidas == False:
+        pass
+
+    criador.criar_escritor()
+    criador.criar_sensores()
+    criador.criar_dados_sensores()
+
     if configurador.ATIVAR_GRAVACAO:
         criador.escritor.setDados(ajudante.receber_dados_usados())
         criador.escritor.fazCabecalho()
@@ -50,10 +62,8 @@ def main():
             ajudante.ativar_transmissao('CELULA')
     seletor.setModo(4)
 
-    if(configurador.ENVIAR_SINAL_DE_VIDA):
-        threadDaVida = Thredeiro('SinaldeVida', atualizador.enviarSinalDeVida, 0.5)
-    if(configurador.ATIVAR_TRANSMISSAO):
-        threadTransmissao = Thredeiro('Transmissao', ajudante.transmitirDados, 0.5)
+    threadGeral = Thredeiro('Dados gerais', atualizador.atualizarGeral, 0.0005)
+
     if(configurador.USAR_IMU):
         threadIMU = Thredeiro('IMU', atualizador.atualizarIMU, 0.02)
     if(configurador.USAR_BARO):
@@ -70,10 +80,10 @@ def main():
         threadCELULAS = Thredeiro('CELULAS', atualizador.atualizarCelulas, 0.002)
     if(configurador.USAR_ARDUINO):
         threadARDUINO = Thredeiro('ARDUINO', atualizador.atualizarArduino, 0.005)
+    if(configurador.ATIVAR_TRANSMISSAO):
+        threadTransmissao = Thredeiro('Transmissao', ajudante.transmitirDados, 0.5)
     if(configurador.ATIVAR_GRAVACAO):
         threadGravacao = Thredeiro('Gravaçao', ajudante.gravarDados, 0.005)
-    if(configurador.ATIVAR_TRANSMISSAO):
-        threadTelecomando = Thredeiro('Telecomando', ajudante.lerTelecomando, 1)
 
 
 if __name__ == '__main__':
