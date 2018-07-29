@@ -11,6 +11,7 @@ class Configurador(object):
         self.TRANSMISSOR_PORT = '/dev/ttyUSB0'
         self.ANGULO_INCIDENCIA = 18
 
+        self.ENVIAR_SINAL_DE_VIDA = True
         self.ATIVAR_TRANSMISSAO = True
         self.ATIVAR_GRAVACAO = True
 

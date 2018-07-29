@@ -50,6 +50,8 @@ def main():
             ajudante.ativar_transmissao('CELULA')
     seletor.setModo(4)
 
+    if(configurador.ENVIAR_SINAL_DE_VIDA):
+        threadDaVida = Thredeiro('SinaldeVida', atualizador.enviarSinalDeVida, 0.5)
     if(configurador.ATIVAR_TRANSMISSAO):
         threadTransmissao = Thredeiro('Transmissao', ajudante.transmitirDados, 0.5)
     if(configurador.USAR_IMU):

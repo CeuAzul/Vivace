@@ -165,3 +165,8 @@ class Atualizador(object):
             self.criador.DistCp.setValor(self.criador.balanca.getDistCp())
 
             time.sleep(delay)
+
+    def enviarSinalDeVida(self, delay):
+        print('Enviando sinal de vida!')
+        self.criador.transmissor.transmiteCru('iloveceuazul\n')
+        time.sleep(delay)

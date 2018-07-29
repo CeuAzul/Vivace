@@ -115,9 +115,11 @@ class Criador(object):
     def criar_transmissor(self):
         try:
             self.transmissor = Transmissor(",", True, 57600, 'UTF-8', porta=self.configurador.TRANSMISSOR_PORT)
+            self.configurador.ENVIAR_SINAL_DE_VIDA = True
             print('Transmissor criado!')
         except:
             self.configurador.ATIVAR_TRANSMISSAO = False
+            self.configurador.ENVIAR_SINAL_DE_VIDA = False
             print('Transmissor nao criado!')
 
     def criar_dados(self):
