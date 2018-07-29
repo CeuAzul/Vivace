@@ -95,3 +95,9 @@ class Transmissor:
                 return 'No command'
         except:
             pass
+
+    def transmiteCru(self, data):
+        try:
+            self.serial.write(bytes(str(data), self.codificacao))
+        except:
+            pass
