@@ -7,8 +7,6 @@ class Configurador(object):
         # GERAIS
         self.NOME_DO_ARQUIVO = 'Bancada'
         self.PASTA_DESTINO = os.path.expanduser('~/Documents/DadosBancada')
-        self.ARDUINO_PORT = '/dev/ttyACM0'
-        self.TRANSMISSOR_PORT = '/dev/ttyUSB0'
 
         self.ENVIAR_SINAL_DE_VIDA = True
         self.ATIVAR_TRANSMISSAO = True

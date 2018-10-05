@@ -3,6 +3,7 @@
 
 import os
 import serial
+import serial.tools.list_ports as prtlst
 import time
 from .dado import Dado
 
@@ -20,7 +21,7 @@ class Transmissor:
 
     """
 
-    def __init__(self, separador=",", usarProtocolo=True,  baudRate=57600, codificacao='UTF-8', porta='/dev/ttyUSB0'):
+    def __init__(self, separador=",", usarProtocolo=True,  baudrate=57600, codificacao='UTF-8'):
         """Construtor: Inicializa parâmetros de configuração do Transmissor.
         Exitem dois métodos de transmissão, utilizando o protolo ou não.
 
@@ -38,13 +39,21 @@ class Transmissor:
         """
         self.dados = []
         self.separador = separador
-        self.baudRate = baudRate
-        self.separador = separador
+        self.baudrate = baudrate
         self.usarProtocolo = usarProtocolo
         self.codificacao = codificacao
-        self.porta = porta
+        self.connect()
 
-        self.serial = serial.Serial(self.porta, self.baudRate, timeout=0.001)
+    def connect(self):
+        print("########## Trying Transmissor! ##########")
+        pts = prtlst.comports()
+        for pt in pts:
+            if 'USB' or 'ACM' in pt[0]:
+                if 'FT' in pt[1]:
+                    self.porta = pt[0]
+                    self.devName = pt[1]
+                    print('Connecting on Transmissor ' + self.devName + ' on port ' + self.porta)
+                    self.serial = serial.Serial(port=self.porta, baudrate=self.baudrate, timeout=1)
 
     def setDados(self, dados):
         """Função que atualiza o vetor de dados do Transmissor com os dados que vem como parâmetro dessa função.

@@ -188,7 +188,7 @@ class Ajudante(object):
                 if (comandoRecebido.startswith('config')):
                     self.configurar_configurador(comandoRecebido)
 
-                time.sleep(delay)
+            time.sleep(delay)
 
     def configurar_configurador(self, comandoRecebido):
 

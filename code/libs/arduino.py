@@ -4,8 +4,7 @@
 import os
 import sys
 import serial
-
-import serial
+import serial.tools.list_ports as prtlst
 
 
 class Arduino:
@@ -19,20 +18,26 @@ class Arduino:
     ao sensor de ultrassom e o tacometro.
     """
 
-    def __init__(self, porta='/dev/ttyUSB0', baudrate=115200):
+    def __init__(self, baudrate=115200):
         """Construtor: Inicializa o objeto da classe e inicializa a
         comunicaçao serial via porta USB1, com baudrate igual a 9600bps.
         """
 
         self.codificacao = "utf-8"
         self.baudrate = baudrate
-        self.porta = porta
         self.dicioDeDados = dict()
         self.connect()
 
     def connect(self):
-        print("########## Trying Arduino on port " + self.porta + "! ##########")
-        self.ser = serial.Serial(port=self.porta, baudrate=self.baudrate, timeout=1)
+        print("########## Trying Arduino! ##########")
+        pts = prtlst.comports()
+        for pt in pts:
+            if 'USB' or 'ACM' in pt[0]:
+                if 'USB2.0' in pt[1]:
+                    self.porta = pt[0]
+                    self.devName = pt[1]
+                    print('Connecting on Arduino ' + self.devName + ' on port ' + self.porta)
+                    self.serial = serial.Serial(port=self.porta, baudrate=self.baudrate, timeout=1)
 
     def updateData(self):
         """Puxa linha de dados pela porta serial (Arduino).
@@ -42,7 +47,7 @@ class Arduino:
         """
 
         try:
-            linha_de_dados = self.ser.readline().decode(self.codificacao)
+            linha_de_dados = self.serial.readline().decode(self.codificacao)
 
             if(linha_de_dados != ""):
                 linha_de_dados = linha_de_dados.replace("\r\n", "")
@@ -63,7 +68,7 @@ class Arduino:
     def sendCommand(self, comando):
 
         try:
-            self.ser.write(bytes("!" + comando + "@\n", self.codificacao))
+            self.serial.write(bytes("!" + comando + "@\n", self.codificacao))
         except:
             pass
 

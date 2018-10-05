@@ -30,7 +30,7 @@ class Criador(object):
 
         if self.configurador.USAR_ARDUINO:
             try:
-                self.arduino = Arduino(porta=self.configurador.ARDUINO_PORT)
+                self.arduino = Arduino()
                 print('ARDUINO ativado!')
             except:
                 self.configurador.USAR_ARDUINO = False
@@ -115,7 +115,7 @@ class Criador(object):
 
     def criar_transmissor(self):
         try:
-            self.transmissor = Transmissor(",", True, 57600, 'UTF-8', porta=self.configurador.TRANSMISSOR_PORT)
+            self.transmissor = Transmissor(",", True, 57600, 'UTF-8')
             self.configurador.ENVIAR_SINAL_DE_VIDA = True
             print('Transmissor criado!')
         except:
