@@ -85,11 +85,5 @@ def main():
     if(configurador.ATIVAR_GRAVACAO):
         threadGravacao = Thredeiro('Gravaçao', ajudante.gravarDados, 0.005)
 
-
 if __name__ == '__main__':
-
-    try:
-        main()
-    except KeyboardInterrupt:
-        print('Program interrupted')
-        sys.exit()
+    main()

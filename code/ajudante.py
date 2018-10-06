@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 import time
 from datetime import datetime
 
@@ -185,6 +186,9 @@ class Ajudante(object):
                 if (comandoRecebido == 'lt'):
                     print('Transmissao ligada')
                     self.liga_transmissao()
+                if (comandoRecebido == 'ft'):
+                    print('Finalizando teste')
+                    os.execv(sys.executable, ['python3'] + sys.argv)
                 if (comandoRecebido.startswith('config')):
                     self.configurar_configurador(comandoRecebido)
 
