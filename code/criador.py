@@ -62,6 +62,7 @@ class Criador(object):
 
         if self.configurador.USAR_PITOTS:
             try:
+                arduino = self.arduino
                 self.pitots = []
                 for i in range(self.configurador.NUMERO_DE_PITOTS):
                     self.pitots.append(Pitot(self.configurador.NOME_DOS_PITOTS[i],
@@ -92,6 +93,7 @@ class Criador(object):
 
         if self.configurador.USAR_CELULAS:
             try:
+                arduino = self.arduino
                 self.balanca = Balanca()
                 self.celulas = []
                 for i in range(self.configurador.NUMERO_DE_CELULAS):
@@ -188,9 +190,9 @@ class Criador(object):
 
         for pitot in range(self.configurador.NUMERO_DE_PITOTS):
             print(nomeDosPitots[pitot] + ' criado!')
-            self.rawPitotData.extend([Dado("Raw Pitot Data - " + nomeDosPitots[pitot], "V", apelidoDosPitots[pitot] + '_raw', "PITOT", 3)])
+            self.rawPitotData.extend([Dado("Raw Pitot - " + nomeDosPitots[pitot], "V", apelidoDosPitots[pitot], "PITOT", 3)])
             self.pressaoDinRef.extend([Dado("Pressao Dinamica Ref.- " + nomeDosPitots[pitot], "Pa", 'pd_' + apelidoDosPitots[pitot] + '_ref', "PITOT", 3)])
-            self.velCasRef.extend([Dado("VCAS Ref. - " + nomeDosPitots[pitot], "m/s", "vcs_" + apelidoDosPitots[pitot] + '_ref', "PITOT", 4)])
+            self.velRef.extend([Dado("Velocidade Ref. - " + nomeDosPitots[pitot], "m/s", "v_" + apelidoDosPitots[pitot] + '_ref', "PITOT", 4)])
 
         print('Dados das SONDAS_AOA criados!')
 
