@@ -104,7 +104,7 @@ class Atualizador(object):
                 self.criador.pitots[i].atualiza()
                 self.criador.rawPitotData[i].setValor(self.criador.pitots[i].getRawPitotData())
                 self.criador.pressaoDinRef[i].setValor(self.criador.pitots[i].getPressaoDinRef())
-                self.criador.velCasRef[i].setValor(self.criador.pitots[i].getVelocidadeRef("m/s"))
+                self.criador.velRef[i].setValor(self.criador.pitots[i].getVelocidadeRef("m/s"))
             time.sleep(delay)
 
     def atualizarSondasAoA(self, delay):

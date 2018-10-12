@@ -184,7 +184,7 @@ class Criador(object):
 
         self.rawPitotData = []
         self.pressaoDinRef = []
-        self.velCasRef = []
+        self.velRef = []
 
         for pitot in range(self.configurador.NUMERO_DE_PITOTS):
             print(nomeDosPitots[pitot] + ' criado!')
@@ -287,7 +287,7 @@ class Criador(object):
             todosOsDados.extend([
                 self.rawPitotData[pitot],
                 self.pressaoDinRef[pitot],
-                self.velCasRef[pitot]
+                self.velRef[pitot]
             ])
 
         #SONDA_AOA Data
