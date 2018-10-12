@@ -31,8 +31,6 @@ class Arduino:
     def connect(self):
         print("########## Trying Arduino! ##########")
         pts = prtlst.comports()
-        if not pts:
-            raise ValueError('No transmissor detected!')
         for pt in pts:
             if 'USB' or 'ACM' in pt[0]:
                 if 'USB2.0' in pt[1]:
@@ -40,10 +38,6 @@ class Arduino:
                     self.devName = pt[1]
                     print('Connecting on Arduino ' + self.devName + ' on port ' + self.porta)
                     self.serial = serial.Serial(port=self.porta, baudrate=self.baudrate, timeout=1)
-                else:
-                    raise ValueError('No transmissor detected!')
-            else:
-                raise ValueError('No transmissor detected!')
 
     def updateData(self):
         """Puxa linha de dados pela porta serial (Arduino).

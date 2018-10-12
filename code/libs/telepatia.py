@@ -47,8 +47,6 @@ class Transmissor:
     def connect(self):
         print("########## Trying Transmissor! ##########")
         pts = prtlst.comports()
-        if not pts:
-            raise ValueError('No transmissor detected!')
         for pt in pts:
             if 'USB' or 'ACM' in pt[0]:
                 if 'FT' in pt[1]:
@@ -56,10 +54,6 @@ class Transmissor:
                     self.devName = pt[1]
                     print('Connecting on Transmissor ' + self.devName + ' on port ' + self.porta)
                     self.serial = serial.Serial(port=self.porta, baudrate=self.baudrate, timeout=1)
-                else:
-                    raise ValueError('No transmissor detected!')
-            else:
-                raise ValueError('No transmissor detected!')
 
     def setDados(self, dados):
         """Função que atualiza o vetor de dados do Transmissor com os dados que vem como parâmetro dessa função.
