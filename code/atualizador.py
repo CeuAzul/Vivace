@@ -177,7 +177,7 @@ class Atualizador(object):
             self.criador.transmissor.transmiteDadoProtocolado(self.criador.mensagemRecebida.apelido, self.criador.mensagemRecebida.valor)
             self.criador.transmissor.transmiteDadoProtocolado(self.criador.modo.apelido, self.criador.modo.valor)
             self.criador.transmissor.transmiteDadoProtocolado(self.criador.tamanho.apelido, self.criador.tamanho.valor)
-            print("Enviando heartbeat")
+            # print("Enviando heartbeat")
             time.sleep(delay)
 
     def atualizarGeral(self, delay):
