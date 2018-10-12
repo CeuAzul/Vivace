@@ -81,7 +81,7 @@ def main():
     if(configurador.USAR_ARDUINO):
         threadARDUINO = Thredeiro('ARDUINO', atualizador.atualizarArduino, 0.005)
     if(configurador.ATIVAR_TRANSMISSAO):
-        threadTransmissao = Thredeiro('Transmissao', ajudante.transmitirDados, 0.5)
+        threadTransmissao = Thredeiro('Transmissao', ajudante.transmitirDados, 0.1)
     if(configurador.ATIVAR_GRAVACAO):
         threadGravacao = Thredeiro('Gravaçao', ajudante.gravarDados, 0.005)
 
