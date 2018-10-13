@@ -62,7 +62,7 @@ def main():
             ajudante.ativar_transmissao('CELULA')
     seletor.setModo(4)
 
-    threadGeral = Thredeiro('Dados gerais', atualizador.atualizarGeral, 0.0005)
+    threadGeral = Thredeiro('Dados gerais', atualizador.atualizarGeral, 0.01)
 
     if(configurador.USAR_IMU):
         threadIMU = Thredeiro('IMU', atualizador.atualizarIMU, 0.02)
@@ -71,15 +71,15 @@ def main():
     if(configurador.USAR_GPS):
         threadGPS = Thredeiro('GPS', atualizador.atualizarGps, 0.5)
     if(configurador.USAR_PITOTS):
-        threadPITOT = Thredeiro('PITOT', atualizador.atualizarPitot, 0.002)
+        threadPITOT = Thredeiro('PITOT', atualizador.atualizarPitot, 0.01)
     if(configurador.USAR_SONDAS_AOA):
-        threadPITOT = Thredeiro('SONDA_AOA', atualizador.atualizarSondasAoA, 0.002)
+        threadPITOT = Thredeiro('SONDA_AOA', atualizador.atualizarSondasAoA, 0.01)
     if(configurador.USAR_BALANCA):
-        threadBALANCA = Thredeiro('BALANCA', atualizador.atualizarBalanca, 0.002)
+        threadBALANCA = Thredeiro('BALANCA', atualizador.atualizarBalanca, 0.01)
     if(configurador.USAR_CELULAS):
-        threadCELULAS = Thredeiro('CELULAS', atualizador.atualizarCelulas, 0.002)
+        threadCELULAS = Thredeiro('CELULAS', atualizador.atualizarCelulas, 0.01)
     if(configurador.USAR_ARDUINO):
-        threadARDUINO = Thredeiro('ARDUINO', atualizador.atualizarArduino, 0.005)
+        threadARDUINO = Thredeiro('ARDUINO', atualizador.atualizarArduino, 0.01)
     if(configurador.ATIVAR_TRANSMISSAO):
         threadTransmissao = Thredeiro('Transmissao', ajudante.transmitirDados, 0.1)
     if(configurador.ATIVAR_GRAVACAO):
