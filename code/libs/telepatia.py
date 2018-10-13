@@ -4,7 +4,6 @@
 import os
 import serial
 import serial.tools.list_ports as prtlst
-import time
 from .dado import Dado
 
 

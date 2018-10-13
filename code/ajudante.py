@@ -37,7 +37,6 @@ class Ajudante(object):
         self.tempoGPS = self.NaN
         self.utc = self.NaN
         self.sensores = ["IMU", "BARO", "GPS", "PITOT", "SONDA_AOA", "CELULA"]
-        self.lastTimeSent = time.time()
 
     def receber_dados_usados(self):
 
@@ -116,9 +115,7 @@ class Ajudante(object):
         while self.threadsRodando:
             if self.transmitindo:
                 self.criador.transmissor.setDados(self.receber_dados_usados())
-                print('Delay between transmissions: ' + str(time.time() - self.lastTimeSent))
                 self.criador.transmissor.transmiteLinha()
-                self.lastTimeSent = time.time()
             time.sleep(delay)
 
     def gravarDados(self, delay):
