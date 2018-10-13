@@ -191,8 +191,8 @@ class Criador(object):
         for pitot in range(self.configurador.NUMERO_DE_PITOTS):
             print(nomeDosPitots[pitot] + ' criado!')
             self.rawPitotData.extend([Dado("Raw Pitot - " + nomeDosPitots[pitot], "V", apelidoDosPitots[pitot], "PITOT", 3)])
-            self.pressaoDinRef.extend([Dado("Pressao Dinamica Ref.- " + nomeDosPitots[pitot], "Pa", 'pd_' + apelidoDosPitots[pitot] + '_ref', "PITOT", 3)])
-            self.velRef.extend([Dado("Velocidade Ref. - " + nomeDosPitots[pitot], "m/s", "v_" + apelidoDosPitots[pitot] + '_ref', "PITOT", 4)])
+            self.pressaoDinRef.extend([Dado("Pressao Dinamica Ref.- " + nomeDosPitots[pitot], "Pa", 'pd' + str(pitot), "PITOT", 3)])
+            self.velRef.extend([Dado("Velocidade Ref. - " + nomeDosPitots[pitot], "m/s", 'vr' + str(pitot), "PITOT", 4)])
 
         print('Dados das SONDAS_AOA criados!')
 
@@ -205,9 +205,9 @@ class Criador(object):
 
         for sonda_aoa in range(self.configurador.NUMERO_DE_SONDAS_AOA):
             print(nomeDasSondasAoA[sonda_aoa] + ' criada!')
-            self.aoa_dif_press.extend([Dado("AoA Differential Pressure - " + nomeDasSondasAoA[sonda_aoa], "Pa", apelidoDasSondasAoA[sonda_aoa] + '_dfp', "SONDA_AOA", 3)])
-            self.aoa_dyn_press.extend([Dado("AoA Dynamic Pressure - " + nomeDasSondasAoA[sonda_aoa], "Pa", apelidoDasSondasAoA[sonda_aoa] + '_dnp', "SONDA_AOA", 3)])
-            self.aoa.extend([Dado("AoA - " + nomeDasSondasAoA[sonda_aoa], "deg", apelidoDasSondasAoA[sonda_aoa], "SONDA_AOA", 3)])
+            self.aoa_dif_press.extend([Dado("AoA Differential Pressure - " + nomeDasSondasAoA[sonda_aoa], "Pa", 'df' + str(sonda_aoa), "SONDA_AOA", 3)])
+            self.aoa_dyn_press.extend([Dado("AoA Dynamic Pressure - " + nomeDasSondasAoA[sonda_aoa], "Pa", 'df' + str(sonda_aoa), "SONDA_AOA", 3)])
+            self.aoa.extend([Dado("AoA - " + nomeDasSondasAoA[sonda_aoa], "deg", 'aa' + str(sonda_aoa), "SONDA_AOA", 3)])
 
         print('Dados das CELULAS criados!')
 
