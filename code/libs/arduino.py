@@ -56,12 +56,21 @@ class Arduino:
                     linha_de_dados = linha_de_dados.replace("!", "")
                     linha_de_dados = linha_de_dados.replace("@", "")
                     dados = linha_de_dados.split(";")
+                    receivedChecksum = 0
+                    calculatedChecksum = 0
+                    tempDicioDeDados = {}
                     for dado in dados:
                         try:
                             apelido, valor = dado.split("=")
-                            self.dicioDeDados[apelido] = float(valor)
+                            if apelido != 'cks':
+                                calculatedChecksum += float(valor)
+                                tempDicioDeDados[apelido] = float(valor)
+                            else:
+                                receivedChecksum = valor
                         except:
                             pass
+                    if float(receivedChecksum) == float(calculatedChecksum):
+                        self.dicioDeDados.update(tempDicioDeDados)
         except:
             pass
 
