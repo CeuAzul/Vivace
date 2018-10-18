@@ -29,12 +29,13 @@ class Criador(object):
     def criar_sensores(self):
 
         if self.configurador.USAR_ARDUINO:
-            try:
-                self.arduino = Arduino()
-                print('ARDUINO ativado!')
-            except:
+            self.arduino = Arduino()
+
+            if self.arduino.arduinoEncontrado:
+                print('ARDUINO encontrado e conectado!')
+            else:
                 self.configurador.USAR_ARDUINO = False
-                print('Arduino nao ativado!')
+                print('Arduino nao encontrado!')
 
         if self.configurador.USAR_IMU:
             try:
@@ -61,8 +62,7 @@ class Criador(object):
                 print('GPS nao ativado!')
 
         if self.configurador.USAR_PITOTS:
-            try:
-                arduino = self.arduino
+            if self.arduino.arduinoEncontrado:
                 self.pitots = []
                 for i in range(self.configurador.NUMERO_DE_PITOTS):
                     self.pitots.append(Pitot(self.configurador.NOME_DOS_PITOTS[i],
@@ -70,13 +70,12 @@ class Criador(object):
                                                 self.configurador.CALFACTS_DOS_PITOTS[i],
                                                 self.arduino))
                 print('PITOTS ativados!')
-            except:
+            else:
                 self.configurador.USAR_PITOTS = False
                 print('PITOTS nao ativados!')
 
         if self.configurador.USAR_SONDAS_AOA:
-            try:
-                arduino = self.arduino
+            if self.arduino.arduinoEncontrado:
                 self.sondas_aoa = []
                 for i in range(self.configurador.NUMERO_DE_SONDAS_AOA):
                     self.sondas_aoa.append(SondaAoA(self.configurador.NOME_DAS_SONDAS_AOA[i],
@@ -87,13 +86,12 @@ class Criador(object):
                                                     self.configurador.APELIDO_PITOTS_AOA[i][1],
                                                     self.pitots))
                 print('SondasAoA ativadas!')
-            except:
+            else:
                 self.configurador.USAR_SONDAS_AOA = False
                 print('SondasAoA nao ativadas!')
 
         if self.configurador.USAR_CELULAS:
-            try:
-                arduino = self.arduino
+            if self.arduino.arduinoEncontrado:
                 self.balanca = Balanca()
                 self.celulas = []
                 for i in range(self.configurador.NUMERO_DE_CELULAS):
@@ -102,7 +100,7 @@ class Criador(object):
                                                 self.configurador.CALFACTS_DAS_CELULAS[i],
                                                 self.arduino))
                 print('CELULAS ativadas!')
-            except:
+            else:
                 self.configurador.USAR_CELULAS = False
                 self.configurador.USAR_BALANCA = False
                 print('CELULAS nao ativadas!')
@@ -116,11 +114,12 @@ class Criador(object):
             print('Escritor nao criado!')
 
     def criar_transmissor(self):
-        try:
-            self.transmissor = Transmissor(",", True, 57600, 'UTF-8')
+        self.transmissor = Transmissor(",", True, 57600, 'UTF-8')
+
+        if self.transmissor.transmissorEncontrado == True:
             self.configurador.ENVIAR_SINAL_DE_VIDA = True
             print('Transmissor criado!')
-        except:
+        else:
             self.configurador.ATIVAR_TRANSMISSAO = False
             self.configurador.ENVIAR_SINAL_DE_VIDA = False
             print('Transmissor nao criado!')

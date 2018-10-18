@@ -41,6 +41,7 @@ class Transmissor:
         self.baudrate = baudrate
         self.usarProtocolo = usarProtocolo
         self.codificacao = codificacao
+        self.transmissorEncontrado = False
         self.connect()
 
     def connect(self):
@@ -53,6 +54,7 @@ class Transmissor:
                     self.devName = pt[1]
                     print('Connecting on Transmissor ' + self.devName + ' on port ' + self.porta)
                     self.serial = serial.Serial(port=self.porta, baudrate=self.baudrate, timeout=1)
+                    self.transmissorEncontrado = True
 
     def setDados(self, dados):
         """Função que atualiza o vetor de dados do Transmissor com os dados que vem como parâmetro dessa função.

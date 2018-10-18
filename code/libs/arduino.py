@@ -26,6 +26,7 @@ class Arduino:
         self.codificacao = "utf-8"
         self.baudrate = baudrate
         self.dicioDeDados = dict()
+        self.arduinoEncontrado = False
         self.connect()
 
     def connect(self):
@@ -38,6 +39,7 @@ class Arduino:
                     self.devName = pt[1]
                     print('Connecting on Arduino ' + self.devName + ' on port ' + self.porta)
                     self.serial = serial.Serial(port=self.porta, baudrate=self.baudrate, timeout=1)
+                    self.arduinoEncontrado = True
 
     def updateData(self):
         """Puxa linha de dados pela porta serial (Arduino).
