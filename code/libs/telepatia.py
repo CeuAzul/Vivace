@@ -74,7 +74,7 @@ class Transmissor:
                 if self.usarProtocolo:
                     try:
                         self.serial.write(
-                            bytes("!" + dado.apelido + "=" + str(dado.valor) + "@\n", self.codificacao))
+                            bytes("!" + dado.apelido + "=" + str(dado.valor) + ';cks=' + str(dado.valor) + "@\n", self.codificacao))
                     except:
                         pass
                 else:
@@ -118,6 +118,6 @@ class Transmissor:
 
     def transmiteDadoProtocolado(self, apelido, valor):
         try:
-            self.serial.write(bytes("!" + str(apelido) + "=" + str(valor) + "@\n", self.codificacao))
+            self.serial.write(bytes("!" + str(apelido) + "=" + str(valor) + ';cks=' + str(valor) + "@\n", self.codificacao))
         except:
             pass
