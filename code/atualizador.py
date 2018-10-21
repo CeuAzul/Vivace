@@ -3,6 +3,7 @@
 
 import time
 from datetime import datetime
+import math
 
 class Atualizador(object):
 
@@ -168,11 +169,15 @@ class Atualizador(object):
             time.sleep(delay)
 
     def enviarSinalDeVida(self, delay):
+        index = 0
         while self.ajudante.threadsRodando:
+            index += 1
             self.criador.transmissor.transmiteDadoProtocolado("htb", 1)
             self.criador.transmissor.transmiteDadoProtocolado("tmt", int(self.ajudante.transmitindo))
             self.criador.transmissor.transmiteDadoProtocolado("gvd", int(self.ajudante.gravando))
             self.criador.transmissor.transmiteDadoProtocolado("cfg", int(self.ajudante.configuracoes_recebidas))
+            self.criador.transmissor.transmiteDadoProtocolado("idx", index)
+            self.criador.transmissor.transmiteDadoProtocolado("sin", math.sin(index))
             self.criador.transmissor.transmiteDadoProtocolado(self.criador.tempo.apelido, self.criador.tempo.valor)
             self.criador.transmissor.transmiteDadoProtocolado(self.criador.mensagemRecebida.apelido, self.criador.mensagemRecebida.valor)
             self.criador.transmissor.transmiteDadoProtocolado(self.criador.modo.apelido, self.criador.modo.valor)
