@@ -85,6 +85,30 @@ class Ajudante(object):
                 print('Transmissao de ' + dado.nome + ' ativada!')
                 dado.setTransmissao(True)
 
+    def setar_transmissao_seletiva(self, comandoRecebido):
+
+        config = comandoRecebido.replace('sts:', '')
+        try:
+            apelido, estado = config.split("=")
+        except:
+            pass
+
+        dadosUsados = self.receber_dados_usados()
+
+        for dado in dadosUsados:
+            if dado.apelido == apelido:
+                if estado == 'True':
+                    dado.setTransmissao(True)
+                    print('Transmissao de ' + dado.nome + ' ativada')
+                elif estado == 'False':
+                    dado.setTransmissao(False)
+                    print('Transmissao de ' + dado.nome + ' desativada')
+
+    def desativar_transmissao_generalizada(self):
+        dadosUsados = self.receber_dados_usados()
+        for dado in dadosUsados:
+            dado.setTransmissao(False)
+
     def liga_threads(self):
         print('Ligando as threads!')
         self.threadsRodando = True

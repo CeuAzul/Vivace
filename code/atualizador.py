@@ -257,6 +257,11 @@ class Atualizador(object):
                 if (comandoRecebido == 'lt'):
                     print('Transmissao ligada')
                     self.ajudante.liga_transmissao()
+                if (comandoRecebido == 'dtg'):
+                    print('Desativando transmissao generalizada')
+                    self.ajudante.desativar_transmissao_generalizada()
+                if (comandoRecebido.startswith('sts')):
+                    self.ajudante.setar_transmissao_seletiva(comandoRecebido)
                 if (comandoRecebido == 'ft'):
                     print('Finalizando teste')
                     os.execv(sys.executable, ['python3'] + sys.argv)
