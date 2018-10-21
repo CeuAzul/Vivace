@@ -1,8 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import os
-import sys
 import time
 from datetime import datetime
 
@@ -87,6 +85,30 @@ class Ajudante(object):
                 print('Transmissao de ' + dado.nome + ' ativada!')
                 dado.setTransmissao(True)
 
+    def setar_transmissao_seletiva(self, comandoRecebido):
+
+        config = comandoRecebido.replace('sts:', '')
+        try:
+            apelido, estado = config.split("=")
+        except:
+            pass
+
+        dadosUsados = self.receber_dados_usados()
+
+        for dado in dadosUsados:
+            if dado.apelido == apelido:
+                if estado == 'True':
+                    dado.setTransmissao(True)
+                    print('Transmissao de ' + dado.nome + ' ativada')
+                elif estado == 'False':
+                    dado.setTransmissao(False)
+                    print('Transmissao de ' + dado.nome + ' desativada')
+
+    def desativar_transmissao_generalizada(self):
+        dadosUsados = self.receber_dados_usados()
+        for dado in dadosUsados:
+            dado.setTransmissao(False)
+
     def liga_threads(self):
         print('Ligando as threads!')
         self.threadsRodando = True
@@ -110,89 +132,6 @@ class Ajudante(object):
     def desliga_gravacao(self):
         print('Desligando gravaçao!')
         self.gravando = False
-
-    def transmitirDados(self, delay):
-        while self.threadsRodando:
-            if self.transmitindo:
-                self.criador.transmissor.setDados(self.receber_dados_usados())
-                self.criador.transmissor.transmiteLinha()
-            time.sleep(delay)
-
-    def gravarDados(self, delay):
-        while self.threadsRodando:
-            if self.gravando:
-                self.criador.escritor.setDados(self.receber_dados_usados())
-                self.criador.escritor.escreveLinhaDado()
-            time.sleep(delay)
-
-    def lerTelecomando(self, delay):
-        while self.threadsRodando:
-            comandoRecebido = self.criador.transmissor.leLinha()
-            self.criador.mensagemRecebida.setValor(comandoRecebido)
-
-            if comandoRecebido.startswith('!') and comandoRecebido.endswith('@'):
-                comandoRecebido = comandoRecebido.replace("!", "")
-                comandoRecebido = comandoRecebido.replace("@", "")
-
-                if comandoRecebido == "tc":
-                    print('Tarando Celulas!')
-                    try:
-                        self.criador.arduino.sendCommand('tc')
-                    except:
-                        pass
-                if comandoRecebido == "zp":
-                    print('Tarando Pitots!')
-                    for i in range(self.configurador.NUMERO_DE_PITOTS):
-                        try:
-                            self.criador.pitots[i].setRefPitot()
-                        except:
-                            pass
-                if (comandoRecebido == "@t#c%$0#1$"):
-                    print('Iniciando gravação + recepção normal')
-                    self.seletor.setModo(4)
-                if (comandoRecebido == "@%&*v##&(@"):
-                    print('Transmitindo apenas Vcas, hp, RPM e altitude gps')
-                    self.seletor.setModo(2)
-                if (comandoRecebido == "&*$$%#!@&_"):
-                    print('Ativando somente a transmissao')
-                    self.seletor.setModo(3)
-                if (comandoRecebido == "*)(#$%@!&*"):
-                    print('Pausando gravaçao')
-                    self.seletor.setModo(0)
-                if (comandoRecebido == "AqT%$BNy*("):
-                    print('Criando novo arquivo')
-                    self.criar_novo_arquivo()
-                if (comandoRecebido == "spd"):
-                    print('Passando dados para o pendrive')
-                    escritor.passaProPendrive()
-                if (comandoRecebido == "rp"):
-                    print('Reiniciando a plataforma')
-                    os.system('sudo reboot')
-                if (comandoRecebido == "sp"):
-                    print('Desligando plataforma')
-                    os.system('sudo shutdown now')
-                if (comandoRecebido == 'sc'):
-                    print('Configuraçoes recebidas')
-                    self.configuracoes_recebidas = True
-                if (comandoRecebido == 'dg'):
-                    print('Gravaçao desligada')
-                    self.desliga_gravacao()
-                if (comandoRecebido == 'lg'):
-                    print('Gravaçao ligada')
-                    self.liga_gravacao()
-                if (comandoRecebido == 'dt'):
-                    print('Transmissao desligada')
-                    self.desliga_transmissao()
-                if (comandoRecebido == 'lt'):
-                    print('Transmissao ligada')
-                    self.liga_transmissao()
-                if (comandoRecebido == 'ft'):
-                    print('Finalizando teste')
-                    os.execv(sys.executable, ['python3'] + sys.argv)
-                if (comandoRecebido.startswith('config')):
-                    self.configurar_configurador(comandoRecebido)
-
-            time.sleep(delay)
 
     def configurar_configurador(self, comandoRecebido):
 
