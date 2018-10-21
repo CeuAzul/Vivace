@@ -194,11 +194,6 @@ class Atualizador(object):
             self.criador.transmissor.transmiteDadoProtocolado("cfg", int(self.ajudante.configuracoes_recebidas))
             self.criador.transmissor.transmiteDadoProtocolado("idx", index)
             self.criador.transmissor.transmiteDadoProtocolado("sin", math.sin(index))
-            self.criador.transmissor.transmiteDadoProtocolado(self.criador.tempo.apelido, self.criador.tempo.valor)
-            self.criador.transmissor.transmiteDadoProtocolado(self.criador.mensagemRecebida.apelido, self.criador.mensagemRecebida.valor)
-            self.criador.transmissor.transmiteDadoProtocolado(self.criador.modo.apelido, self.criador.modo.valor)
-            self.criador.transmissor.transmiteDadoProtocolado(self.criador.tamanho.apelido, self.criador.tamanho.valor)
-            # print("Enviando heartbeat")
             time.sleep(delay)
 
     def atualizarGeral(self, delay):
