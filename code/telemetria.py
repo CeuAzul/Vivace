@@ -71,17 +71,17 @@ def main():
     if(configurador.USAR_GPS):
         threadGPS = Thredeiro('GPS', atualizador.atualizarGps, 0.5)
     if(configurador.USAR_PITOTS):
-        threadPITOT = Thredeiro('PITOT', atualizador.atualizarPitot, 0.01)
+        threadPITOT = Thredeiro('PITOT', atualizador.atualizarPitot, 0.02)
     if(configurador.USAR_SONDAS_AOA):
-        threadPITOT = Thredeiro('SONDA_AOA', atualizador.atualizarSondasAoA, 0.01)
+        threadPITOT = Thredeiro('SONDA_AOA', atualizador.atualizarSondasAoA, 0.02)
     if(configurador.USAR_BALANCA):
-        threadBALANCA = Thredeiro('BALANCA', atualizador.atualizarBalanca, 0.01)
+        threadBALANCA = Thredeiro('BALANCA', atualizador.atualizarBalanca, 0.05)
     if(configurador.USAR_CELULAS):
-        threadCELULAS = Thredeiro('CELULAS', atualizador.atualizarCelulas, 0.01)
+        threadCELULAS = Thredeiro('CELULAS', atualizador.atualizarCelulas, 0.05)
     if(configurador.USAR_ARDUINO):
         threadARDUINO = Thredeiro('ARDUINO', atualizador.atualizarArduino, 0.01)
     if(configurador.ATIVAR_TRANSMISSAO):
-        threadTransmissao = Thredeiro('Transmissao', atualizador.transmitirDados, 0.1)
+        threadTransmissao = Thredeiro('Transmissao', atualizador.transmitirDados, 0.05)
     if(configurador.ATIVAR_GRAVACAO):
         threadGravacao = Thredeiro('Gravaçao', atualizador.gravarDados, 0.005)
 
