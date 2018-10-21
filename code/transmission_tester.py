@@ -17,6 +17,7 @@ def atualizar_valores(delay):
     global timeNow
 
     while True:
+        start_time = time.time()
         index += 1
         if index >= 360:
             index = 0
@@ -25,19 +26,23 @@ def atualizar_valores(delay):
 
         now = datetime.now()
         timeNow = (now - initialTime).total_seconds()
+        print('Time to calculate: ' + str(time.time() - start_time))
 
         time.sleep(delay)
 
 def enviar_pacotes(delay):
     print('Transmitindo')
     while True:
+        print('\033[H\033[J')
+        start_time = time.time()
         transmissor.transmiteDadoProtocolado("htb", 1)
         transmissor.transmiteDadoProtocolado("tmt", 1)
         transmissor.transmiteDadoProtocolado("gvd", 1)
         transmissor.transmiteDadoProtocolado("cfg", 1)
-        transmissor.transmiteDadoProtocolado("idx", index)
-        transmissor.transmiteDadoProtocolado("sin", sinIndex)
-        transmissor.transmiteDadoProtocolado("tmp", timeNow)
+        transmissor.transmiteDadoProtocolado("id1", index)
+        transmissor.transmiteDadoProtocolado("si1", sinIndex)
+        transmissor.transmiteDadoProtocolado("tm1", timeNow)
+        print('Time to transmit: ' + str(time.time() - start_time))
         time.sleep(delay)
 
 transmissor = Transmissor(",", True, 57600, 'UTF-8')
