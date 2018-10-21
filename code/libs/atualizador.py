@@ -14,7 +14,7 @@ class Atualizador(object):
         self.criador = criador
         self.ajudante = ajudante
 
-        self.inicioDoDia = datetime(datetime.now().year, datetime.now().month, datetime.now().day)
+        self.initialTime = datetime.now()
         self.atualizandoReferenciaDoBarometro = False
 
 
@@ -198,7 +198,7 @@ class Atualizador(object):
 
     def atualizarGeral(self, delay):
         while self.ajudante.threadsRodando:
-            self.criador.tempo.valor = (datetime.now() - self.inicioDoDia).total_seconds()
+            self.criador.tempo.valor = (datetime.now() - self.initialTime).total_seconds()
             self.criador.tamanho.valor = self.criador.escritor.verificaTamanhoArquivo()
             time.sleep(delay)
 
