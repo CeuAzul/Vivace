@@ -4,6 +4,8 @@
 import time
 from datetime import datetime
 import math
+import os
+import sys
 
 class Atualizador(object):
 
@@ -168,6 +170,20 @@ class Atualizador(object):
 
             time.sleep(delay)
 
+    def transmitirDados(self, delay):
+        while self.ajudante.threadsRodando:
+            if self.ajudante.transmitindo:
+                self.criador.transmissor.setDados(self.ajudante.receber_dados_usados())
+                self.criador.transmissor.transmiteLinha()
+            time.sleep(delay)
+
+    def gravarDados(self, delay):
+        while self.ajudante.threadsRodando:
+            if self.ajudante.gravando:
+                self.criador.escritor.setDados(self.ajudante.receber_dados_usados())
+                self.criador.escritor.escreveLinhaDado()
+            time.sleep(delay)
+
     def enviarSinalDeVida(self, delay):
         index = 0
         while self.ajudante.threadsRodando:
@@ -189,4 +205,62 @@ class Atualizador(object):
         while self.ajudante.threadsRodando:
             self.criador.tempo.setValor((datetime.now() - self.inicioDoDia).total_seconds())
             self.criador.tamanho.setValor(self.criador.escritor.verificaTamanhoArquivo())
+            time.sleep(delay)
+
+    def lerTelecomando(self, delay):
+        while self.ajudante.threadsRodando:
+            comandoRecebido = self.criador.transmissor.leLinha()
+            self.criador.mensagemRecebida.setValor(comandoRecebido)
+
+            if comandoRecebido.startswith('!') and comandoRecebido.endswith('@'):
+                comandoRecebido = comandoRecebido.replace("!", "")
+                comandoRecebido = comandoRecebido.replace("@", "")
+
+                if comandoRecebido == "tc":
+                    print('Tarando Celulas!')
+                    try:
+                        self.criador.arduino.sendCommand('tc')
+                    except:
+                        pass
+                if comandoRecebido == "zp":
+                    print('Tarando Pitots!')
+                    for i in range(self.configurador.NUMERO_DE_PITOTS):
+                        try:
+                            self.criador.pitots[i].setRefPitot()
+                        except:
+                            pass
+
+                if (comandoRecebido == "AqT%$BNy*("):
+                    print('Criando novo arquivo')
+                    self.ajudante.criar_novo_arquivo()
+                if (comandoRecebido == "spd"):
+                    print('Passando dados para o pendrive')
+                    self.criador.escritor.passaProPendrive()
+                if (comandoRecebido == "rp"):
+                    print('Reiniciando a plataforma')
+                    os.system('sudo reboot')
+                if (comandoRecebido == "sp"):
+                    print('Desligando plataforma')
+                    os.system('sudo shutdown now')
+                if (comandoRecebido == 'sc'):
+                    print('Configuraçoes recebidas')
+                    self.ajudante.configuracoes_recebidas = True
+                if (comandoRecebido == 'dg'):
+                    print('Gravaçao desligada')
+                    self.ajudante.desliga_gravacao()
+                if (comandoRecebido == 'lg'):
+                    print('Gravaçao ligada')
+                    self.ajudante.liga_gravacao()
+                if (comandoRecebido == 'dt'):
+                    print('Transmissao desligada')
+                    self.ajudante.desliga_transmissao()
+                if (comandoRecebido == 'lt'):
+                    print('Transmissao ligada')
+                    self.ajudante.liga_transmissao()
+                if (comandoRecebido == 'ft'):
+                    print('Finalizando teste')
+                    os.execv(sys.executable, ['python3'] + sys.argv)
+                if (comandoRecebido.startswith('config')):
+                    self.ajudante.configurar_configurador(comandoRecebido)
+
             time.sleep(delay)
