@@ -67,13 +67,14 @@ class Barometro:
         self.D1 = 0
         self.D2 = 0
 
-        self.temp = 0.0  # Calculated temperature
-        self.pres = 0.0  # Calculated Pressure
+        self.temperatura = 0.0  # Calculated temperature
+        self.pressao = 0.0  # Calculated Pressure
+        self.pressaoReferenciada = 0.0  # Calculated Pressure
         self.densidadeAr = 0
         self.altitudePressao = 0
         self.altitudeRelativa = 0
 
-        self.pressaoReferencia = 0
+        self.referenciaDePressao = 0
         self.pressaoAtmosfericaPadrao = 101325
 
         self.usePressao = usePressao
@@ -111,11 +112,11 @@ class Barometro:
         self.atualizaReferencia()
 
     def atualizaReferencia(self):
-        self.pressaoReferencia = 0
-        for i in range(0, 10):
+        self.referenciaDePressao = 0
+        for i in range(0, 100):
             self.atualiza()
-            self.pressaoReferencia = self.pressaoReferencia + self.getPressao()
-        self.pressaoReferencia = self.pressaoReferencia / 10
+            self.referenciaDePressao = self.referenciaDePressao + self.getPressao()
+        self.referenciaDePressao = self.referenciaDePressao / 100
 
     def refreshPressure(self, OSR=__MS5611_RA_D1_OSR_4096):
         """Função utilizada internamente para comunicação I2C.
@@ -145,31 +146,31 @@ class Barometro:
         É a função principal para realizar a aquisição dos dados via I2C.
         """
         dT = self.D2 - self.C5 * 2**8
-        self.temp = 2000 + dT * self.C6 / 2**23
+        self.temperatura = 2000 + dT * self.C6 / 2**23
 
         OFF = self.C2 * 2**16 + (self.C4 * dT) / 2**7
         SENS = self.C1 * 2**15 + (self.C3 * dT) / 2**8
 
-        if (self.temp >= 2000):
+        if (self.temperatura >= 2000):
             T2 = 0
             OFF2 = 0
             SENS2 = 0
-        elif (self.temp < 2000):
+        elif (self.temperatura < 2000):
             T2 = dT * dT / 2**31
-            OFF2 = 5 * ((self.temp - 2000) ** 2) / 2
+            OFF2 = 5 * ((self.temperatura - 2000) ** 2) / 2
             SENS2 = OFF2 / 2
-        elif (self.temp < -1500):
-            OFF2 = OFF2 + 7 * ((self.temp + 1500) ** 2)
-            SENS2 = SENS2 + 11 * (self.temp + 1500) ** 2 / 2
+        elif (self.temperatura < -1500):
+            OFF2 = OFF2 + 7 * ((self.temperatura + 1500) ** 2)
+            SENS2 = SENS2 + 11 * (self.temperatura + 1500) ** 2 / 2
 
-        self.temp = self.temp - T2
+        self.temperatura = self.temperatura - T2
         OFF = OFF - OFF2
         SENS = SENS - SENS2
 
-        self.pres = (self.D1 * SENS / 2**21 - OFF) / 2**15
+        self.pressao = (self.D1 * SENS / 2**21 - OFF) / 2**15
 
-        self.temp = self.temp / 100  # Temperature updated
-        self.pres = self.pres / 100  # Pressure updated
+        self.temperatura = self.temperatura / 100  # Temperature updated
+        self.pressao = self.pressao / 100  # Pressure updated
 
     def getPressao(self, um="PA"):
         """Retorna valor da pressão atual.
@@ -178,20 +179,20 @@ class Barometro:
         :param um: Unidade de medida
         """
         if um == "PA":
-            return self.pres * 100
+            return self.pressao * 100
         elif um == "hPA":
-            return self.pres
+            return self.pressao
         elif um == "mBar":
-            return self.pres
+            return self.pressao
         else:
-            return self.pres
+            return self.pressao
 
     def getTemperatura(self):
         """Retorna valor de temperatura.
 
         :returns: Temperatura (ºC)
         """
-        return self.temp
+        return self.temperatura
 
     def getDensidadeAr(self):
         """Retorna Densidade do ar.
@@ -249,17 +250,18 @@ class Barometro:
                 self.readTemperature()
 
             self.calculatePressureAndTemperature()
-            somaTemp = somaTemp + self.temp
-            somaPressao = somaPressao + self.pres
-        self.temp = somaTemp / samples
-        self.pres = somaPressao / samples
+            somaTemp = somaTemp + self.temperatura
+            somaPressao = somaPressao + self.pressao
+        self.temperatura = somaTemp / samples
+        self.pressao = somaPressao / samples
+        self.pressaoReferenciada = self.pressao - self.referenciaDePressao
         if self.useTemp:
             if self.usePressao:
-                self.densidadeAr = self.pres * 100 / \
-                    (287.05 * (self.temp + 273.15))
+                self.densidadeAr = self.pressao * 100 / \
+                    (287.05 * (self.temperatura + 273.15))
         if self.usePressao:
-            if (self.pressaoReferencia != 0):
+            if (self.referenciaDePressao != 0):
                 self.altitudeRelativa = (
-                    44330.0 * (1.0 - pow(self.pres * 100 / (self.pressaoReferencia), 0.1902949)))
+                    44330.0 * (1.0 - pow(self.pressao * 100 / (self.referenciaDePressao), 0.1902949)))
             self.altitudePressao = (
-                44330.0 * (1.0 - pow(self.pres * 100 / self.pressaoAtmosfericaPadrao, 0.1902949)))
+                44330.0 * (1.0 - pow(self.pressao * 100 / self.pressaoAtmosfericaPadrao, 0.1902949)))

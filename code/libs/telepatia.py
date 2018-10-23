@@ -56,15 +56,6 @@ class Transmissor:
                     self.serial = serial.Serial(port=self.porta, baudrate=self.baudrate, timeout=1)
                     self.transmissorEncontrado = True
 
-    def setDados(self, dados):
-        """Função que atualiza o vetor de dados do Transmissor com os dados que vem como parâmetro dessa função.
-        O Transmissor apenas consegue ver os dados que foram passados por meio dessa função.
-        É utilizada como a porta de entrada para os dados que serão escritos.
-
-        :param d: Vetor de Dado que será escrito na ordem do vetor.
-        """
-        self.dados = dados
-
     def transmiteLinha(self):
         """Função será chamada quando os dados deverão ser transmitidos.
 

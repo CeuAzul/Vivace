@@ -41,15 +41,6 @@ class SondaAoA:
         if self.aoa is not 'OutOfRange':
             if isinstance(self.aoa, complex):
                 self.aoa = 'OutOfRange'
-            elif self.aoa>1000.0 or self.aoa<1000.0:
+            elif self.aoa>100.0 or self.aoa<100.0:
                 self.aoa = 'OutOfRange'
-
-    def getDifPressure(self):
-        return self.difPressure
-
-    def getDynPressure(self):
-        return self.dynPressure
-
-    def getAoA(self):
-        return self.aoa
 

@@ -45,40 +45,30 @@ def main():
     criador.criar_dados_sensores()
 
     if configurador.ATIVAR_GRAVACAO:
-        criador.escritor.setDados(ajudante.receber_dados_usados())
+        criador.escritor.dados = criador.receber_todos_os_dados()
         criador.escritor.fazCabecalho()
     if configurador.ATIVAR_TRANSMISSAO:
-        if(configurador.TRANSMITIR_IMU):
-            ajudante.ativar_transmissao('IMU')
-        if(configurador.TRANSMITIR_BARO):
-            ajudante.ativar_transmissao('BARO')
-        if(configurador.TRANSMITIR_GPS):
-            ajudante.ativar_transmissao('GPS')
-        if(configurador.TRANSMITIR_PITOTS):
-            ajudante.ativar_transmissao('PITOT')
-        if(configurador.TRANSMITIR_SONDAS_AOA):
-            ajudante.ativar_transmissao('SONDA_AOA')
-        if(configurador.TRANSMITIR_CELULAS):
-            ajudante.ativar_transmissao('CELULA')
+        for sensor in configurador.LISTA_TRANSMITIR:
+            ajudante.ativar_transmissao(sensor)
     seletor.setModo(4)
 
     threadGeral = Thredeiro('Dados gerais', atualizador.atualizarGeral, 0.01)
 
-    if(configurador.USAR_IMU):
+    if('IMU' in configurador.LISTA_USAR):
         threadIMU = Thredeiro('IMU', atualizador.atualizarIMU, 0.02)
-    if(configurador.USAR_BARO):
+    if('BARO' in configurador.LISTA_USAR):
         threadBARO = Thredeiro('BARO', atualizador.atualizarBarometro, 0.1)
-    if(configurador.USAR_GPS):
+    if('GPS' in configurador.LISTA_USAR):
         threadGPS = Thredeiro('GPS', atualizador.atualizarGps, 0.5)
-    if(configurador.USAR_PITOTS):
+    if('PITOT' in configurador.LISTA_USAR):
         threadPITOT = Thredeiro('PITOT', atualizador.atualizarPitot, 0.02)
-    if(configurador.USAR_SONDAS_AOA):
+    if('SONDA_AOA' in configurador.LISTA_USAR):
         threadPITOT = Thredeiro('SONDA_AOA', atualizador.atualizarSondasAoA, 0.02)
-    if(configurador.USAR_BALANCA):
+    if('BALANCA' in configurador.LISTA_USAR):
         threadBALANCA = Thredeiro('BALANCA', atualizador.atualizarBalanca, 0.05)
-    if(configurador.USAR_CELULAS):
+    if('CELULA' in configurador.LISTA_USAR):
         threadCELULAS = Thredeiro('CELULAS', atualizador.atualizarCelulas, 0.05)
-    if(configurador.USAR_ARDUINO):
+    if('ARDUINO' in configurador.LISTA_USAR):
         threadARDUINO = Thredeiro('ARDUINO', atualizador.atualizarArduino, 0.01)
     if(configurador.ATIVAR_TRANSMISSAO):
         threadTransmissao = Thredeiro('Transmissao', atualizador.transmitirDados, 0.05)

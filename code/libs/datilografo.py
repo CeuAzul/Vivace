@@ -76,17 +76,6 @@ class Escritor:
         """
         self.dados.append(dados)
 
-    def setDados(self, dados):
-        """Atualiza o vetor de dados do Escritor com os dados que vem como parâmetro dessa função.
-
-        O Escritor apenas consegue ver os dados que foram passados por meio dessa função.
-
-        É utilizada como a porta de entrada para os dados que serão escritos.
-
-        :param d: Vetor de Dado que será escrito na ordem do vetor.
-        """
-        self.dados = dados
-
     def verificaTamanhoArquivo(self):
         """Retorna o tamanho do arquivo.
         """
@@ -113,14 +102,14 @@ class Escritor:
                 file.write('Angulo de incidencia do profundor: ' + self.configurador.ANGULO_INCIDENCIA_PROFUNDOR + '\r\n')
                 file.write('Informaçoes extras: ' + self.configurador.INFOS_EXTRAS + '\r\n')
             if self.printaNome:
-                for x in self.dados:
-                    if x.gravaDado:
-                        file.write("%s%s" % (x.nome, self.separador))
+                for dado in self.dados:
+                    if dado.gravaDado:
+                        file.write("%s%s" % (dado.nome, self.separador))
             file.write("\r\n")
             if self.printaUM:
-                for x in self.dados:
-                    if x.gravaDado:
-                        file.write("%s%s" % (x.unidadeMedida, self.separador))
+                for dado in self.dados:
+                    if dado.gravaDado:
+                        file.write("%s%s" % (dado.unidadeMedida, self.separador))
             file.write("\r\n")
 
     def escreveLinhaDado(self):
@@ -130,13 +119,13 @@ class Escritor:
         """
         os.makedirs(os.path.dirname(self.nomeCompleto), exist_ok=True)
         with open(self.nomeCompleto, "a") as file:
-            for x in self.dados:
-                if x.gravaDado:
-                    if type(x.valor) == float:
+            for dado in self.dados:
+                if dado.gravaDado:
+                    if type(dado.valor) == float:
                         file.write("%.*f%s" %
-                                   (x.casasDecimais, x.valor, self.separador))
+                                   (dado.casasDecimais, dado.valor, self.separador))
                     else:
-                        file.write("%s%s" % (x.valor, self.separador))
+                        file.write("%s%s" % (dado.valor, self.separador))
             file.write("\r\n")
 
     def passaProPendrive(self):
