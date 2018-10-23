@@ -82,6 +82,3 @@ class Arduino:
             self.serial.write(bytes("!" + comando + "@\n", self.codificacao))
         except:
             pass
-
-    def getData(self):
-        return self.dicioDeDados

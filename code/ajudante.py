@@ -29,61 +29,25 @@ class Ajudante(object):
         self.gravando = False
 
         self.configuracoes_recebidas = False
-        self.telecomandoExecutado = False
 
         self.NaN = float('nan')
         self.tempoGPS = self.NaN
         self.utc = self.NaN
-        self.sensores = ["IMU", "BARO", "GPS", "PITOT", "SONDA_AOA", "CELULA"]
-
-    def receber_dados_usados(self):
-
-        pacoteDeDados = []
-        todosOsDados = self.criador.receber_todos_os_dados()
-
-        pacoteDeDados.extend([
-            self.criador.tempo,
-            self.criador.mensagemRecebida,
-            self.criador.modo,
-            self.criador.tamanho,
-        ])
-
-        for dado in todosOsDados:
-            if dado.sensor == 'IMU':
-                if self.configurador.USAR_IMU:
-                    pacoteDeDados.extend([dado])
-            if dado.sensor == 'BARO':
-                if self.configurador.USAR_BARO:
-                    pacoteDeDados.extend([dado])
-            if dado.sensor == 'GPS':
-                if self.configurador.USAR_GPS:
-                    pacoteDeDados.extend([dado])
-            if dado.sensor == 'PITOT':
-                if self.configurador.USAR_PITOTS:
-                    pacoteDeDados.extend([dado])
-            if dado.sensor == 'SONDA_AOA':
-                if self.configurador.USAR_SONDAS_AOA:
-                    pacoteDeDados.extend([dado])
-            if dado.sensor == 'CELULA':
-                if self.configurador.USAR_CELULAS:
-                    pacoteDeDados.extend([dado])
-
-        return pacoteDeDados
 
     def criar_novo_arquivo(self):
-        print('Novo arquivo sendo criado!')
+        print('Criando novo arquivo')
         self.criador.escritor
         modoAtual = self.modo.getValor()
         del self.criador.escritor
         self.criador.escritor = Escritor("\t", True, True, self.configurador.NOME_DO_ARQUIVO, ".txt", pasta=self.configurador.PASTA_DESTINO)
-        self.criador.escritor.setDados(self.receber_dados_usados())
+        self.criador.escritor.dados = self.criador.receber_todos_os_dados()
 
     def ativar_transmissao(self, sensor):
-        dadosUsados = self.receber_dados_usados()
+        dadosUsados = self.criador.receber_todos_os_dados()
         for dado in dadosUsados:
             if dado.sensor == sensor:
-                print('Transmissao de ' + dado.nome + ' ativada!')
-                dado.setTransmissao(True)
+                print('Transmissao de ' + dado.nome + ' ativada')
+                dado.transmiteDado = True
 
     def setar_transmissao_seletiva(self, comandoRecebido):
 
@@ -93,44 +57,44 @@ class Ajudante(object):
         except:
             pass
 
-        dadosUsados = self.receber_dados_usados()
+        dadosUsados = self.criador.receber_todos_os_dados()
 
         for dado in dadosUsados:
             if dado.apelido == apelido:
                 if estado == 'True':
-                    dado.setTransmissao(True)
+                    dado.transmiteDado = True
                     print('Transmissao de ' + dado.nome + ' ativada')
                 elif estado == 'False':
-                    dado.setTransmissao(False)
+                    dado.transmiteDado = False
                     print('Transmissao de ' + dado.nome + ' desativada')
 
     def desativar_transmissao_generalizada(self):
-        dadosUsados = self.receber_dados_usados()
+        dadosUsados = self.criador.receber_todos_os_dados()
         for dado in dadosUsados:
-            dado.setTransmissao(False)
+            dado.transmiteDado = False
 
     def liga_threads(self):
-        print('Ligando as threads!')
+        print('Ligando as threads')
         self.threadsRodando = True
 
     def desliga_threads(self):
-        print('Desligando as threads!')
+        print('Desligando as threads')
         self.threadsRodando = False
 
     def liga_transmissao(self):
-        print('Ligando transmissao!')
+        print('Ligando transmissao')
         self.transmitindo = True
 
     def desliga_transmissao(self):
-        print('Desligando transmissao!')
+        print('Desligando transmissao')
         self.transmitindo = False
 
     def liga_gravacao(self):
-        print('Ligando gravaçao!')
+        print('Ligando gravaçao')
         self.gravando = True
 
     def desliga_gravacao(self):
-        print('Desligando gravaçao!')
+        print('Desligando gravaçao')
         self.gravando = False
 
     def configurar_configurador(self, comandoRecebido):

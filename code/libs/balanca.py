@@ -54,15 +54,4 @@ class Balanca(object):
         except:
             pass
 
-    def getLift(self):
-        return self.Lift
-
-    def getDrag(self):
-        return self.Drag
-
-    def getMoment(self):
-        return self.Moment
-
-    def getDistCp(self):
-        return self.Dist_Cp_front
 

@@ -26,14 +26,14 @@ class Atualizador(object):
         """
         while self.ajudante.threadsRodando:
             self.criador.mpu.atualiza()
-            self.criador.taxaGiroX.setValor(self.criador.mpu.getGyx())
-            self.criador.taxaGiroY.setValor(self.criador.mpu.getGyy())
-            self.criador.taxaGiroZ.setValor(self.criador.mpu.getGyz())
-            self.criador.aceleracaoX.setValor(self.criador.mpu.getAcx())
-            self.criador.aceleracaoY.setValor(self.criador.mpu.getAcy())
-            self.criador.aceleracaoZ.setValor(self.criador.mpu.getAcz())
-            self.criador.pitch.setValor(self.criador.mpu.getPitch())
-            self.criador.roll.setValor(self.criador.mpu.getRoll())
+            self.criador.taxaGiroX.valor = self.criador.mpu.getGyx()
+            self.criador.taxaGiroY.valor = self.criador.mpu.getGyy()
+            self.criador.taxaGiroZ.valor = self.criador.mpu.getGyz()
+            self.criador.aceleracaoX.valor = self.criador.mpu.getAcx()
+            self.criador.aceleracaoY.valor = self.criador.mpu.getAcy()
+            self.criador.aceleracaoZ.valor = self.criador.mpu.getAcz()
+            self.criador.pitch.valor = self.criador.mpu.getPitch()
+            self.criador.roll.valor = self.criador.mpu.getRoll()
             time.sleep(delay)
 
 
@@ -48,14 +48,12 @@ class Atualizador(object):
                 self.criador.barometro.atualizaReferencia()
                 atualizaRefBar = False
             self.criador.barometro.atualiza()
-            self.criador.pressaoEstatica.setValor(self.criador.barometro.getPressao("PA"))
-            self.criador.pressaoEstaticar.setValor(self.criador.barometro.getPressao("PA"))
-            self.criador.pressaoTotal.setValor(self.criador.barometro.getPressao("PA") + self.criador.pitot.getPressaoDinamica("PA"))
-            self.criador.pressaoTotalr.setValor(self.criador.barometro.getPressao("PA") + self.criador.pitot.getPressaoDinamica("PA"))
-            self.criador.temperaturaBar.setValor(self.criador.barometro.getTemperatura())
-            self.criador.densidadeAr.setValor(self.criador.barometro.getDensidadeAr())
-            self.criador.altitudeRelativa.setValor(self.criador.barometro.getAltitudeRelativa("m"))
-            self.criador.altitudePressao.setValor(self.criador.barometro.getAltitudePressao("ft"))
+            self.criador.pressaoEstatica.valor = self.criador.barometro.pressao
+            self.criador.pressaoEstaticaReferenciada.valor = self.criador.barometro.pressaoReferenciada
+            self.criador.temperaturaBar.valor = self.criador.barometro.temperatura
+            self.criador.densidadeAr.valor = self.criador.barometro.densidadeAr
+            self.criador.altitudeRelativa.valor = self.criador.barometro.altitudeRelativa
+            self.criador.altitudePressao.valor = self.criador.barometro.altitudePressao
             time.sleep(delay)
 
     def atualizarGps(self, delay):
@@ -66,30 +64,30 @@ class Atualizador(object):
         """
         while self.ajudante.threadsRodando:
             self.criador.gps.atualiza()
-            self.criador.latitude.setValor(self.criador.gps.getLatitude())
-            self.criador.longitude.setValor(self.criador.gps.getLongitude())
-            self.criador.altitude.setValor(self.criador.gps.getAltitude())
-            self.criador.direcaoCurso.setValor(self.criador.gps.getDirecaoCurso())
-            self.criador.velocidade.setValor(self.criador.gps.getVelocidade())
-            self.criador.velocidadeSubida.setValor(self.criador.gps.getVelSubida())
-            self.criador.erroX.setValor(self.criador.gps.getErroX())
-            self.criador.erroY.setValor(self.criador.gps.getErroY())
-            self.criador.erroAltitude.setValor(self.criador.gps.getErroAltitude())
-            self.criador.erroVelocidade.setValor(self.criador.gps.getErroVelocidade())
-            self.criador.erroVelocidadeSubida.setValor(self.criador.gps.getErroVelSubida())
-            self.criador.nivelFixacao.setValor(self.criador.gps.getNivelFixacao())
-            self.criador.latitudeRef.setValor(self.criador.gps.getLatitudeRef())
-            self.criador.longitudeRef.setValor(self.criador.gps.getLongitudeRef())
-            self.criador.posicaoX.setValor(self.criador.gps.getPosicaoX())
-            self.criador.posicaoY.setValor(self.criador.gps.getPosicaoY())
-            self.criador.distanciaAbsoluta.setValor(self.criador.gps.getDistanciaAbsoluta())
-            self.criador.tempoGps = self.gps.ajudante.getTempo()
-            self.criador.dadoTempoGPS.setValor(self.criador.tempoGps)
+            self.criador.latitude.valor = self.criador.gps.latitude
+            self.criador.longitude.valor = self.criador.gps.longitude
+            self.criador.altitude.valor = self.criador.gps.altitude
+            self.criador.direcaoCurso.valor = self.criador.gps.direcaoCurso
+            self.criador.velocidade.valor = self.criador.gps.velocidade
+            self.criador.velocidadeSubida.valor = self.criador.gps.velocidadeSubida
+            self.criador.erroX.valor = self.criador.gps.erroX
+            self.criador.erroY.valor = self.criador.gps.erroY
+            self.criador.erroAltitude.valor = self.criador.gps.erroAltitude
+            self.criador.erroVelocidade.valor = self.criador.gps.erroVelocidade
+            self.criador.erroVelocidadeSubida.valor = self.criador.gps.erroVelocidadeSubida
+            self.criador.nivelFixacao.valor = self.criador.gps.nivelFixacao
+            self.criador.latitudeRef.valor = self.criador.gps.latitudeRef
+            self.criador.longitudeRef.valor = self.criador.gps.longitudeRef
+            self.criador.posicaoX.valor = self.criador.gps.posicaoX
+            self.criador.posicaoY.valor = self.criador.gps.posicaoY
+            self.criador.distanciaAbsoluta.valor = self.criador.gps.distanciaAbsoluta
+            self.criador.tempoGps = self.criador.gps.utc
+            self.criador.dadoTempoGPS.valor = self.criador.gps.tempo
 
             agora = datetime.now()
             inicioDia = datetime(agora.year, agora.month, agora.day)
 
-            if (self.criador.gps.verificaAtualizacaoHorario()) and (self.ajudante.modo.getValor() == 0):
+            if (self.criador.gps.verificaAtualizacaoHorario()) and (self.ajudante.modo.valor == 0):
                 self.ajudante.trocarModoDeTransmissao(1)
 
             time.sleep(delay)
@@ -105,9 +103,9 @@ class Atualizador(object):
         while self.ajudante.threadsRodando:
             for i in range(self.configurador.NUMERO_DE_PITOTS):
                 self.criador.pitots[i].atualiza()
-                self.criador.rawPitotData[i].setValor(self.criador.pitots[i].getRawPitotData())
-                self.criador.pressaoDinRef[i].setValor(self.criador.pitots[i].getPressaoDinRef())
-                self.criador.velRef[i].setValor(self.criador.pitots[i].getVelocidadeRef("m/s"))
+                self.criador.rawPitotData[i].valor = self.criador.pitots[i].rawPitotData
+                self.criador.pressaoDinRef[i].valor = self.criador.pitots[i].pressaoDinamicaRef
+                self.criador.velRef[i].valor = self.criador.pitots[i].velocidadeRef
             time.sleep(delay)
 
     def atualizarSondasAoA(self, delay):
@@ -119,9 +117,9 @@ class Atualizador(object):
         while self.ajudante.threadsRodando:
             for i in range(self.configurador.NUMERO_DE_SONDAS_AOA):
                 self.criador.sondas_aoa[i].atualiza(samples=10)
-                self.criador.aoa_dif_press[i].setValor(self.criador.sondas_aoa[i].getDifPressure())
-                self.criador.aoa_dyn_press[i].setValor(self.criador.sondas_aoa[i].getDynPressure())
-                self.criador.aoa[i].setValor(self.criador.sondas_aoa[i].getAoA())
+                self.criador.aoa_dif_press[i].valor = self.criador.sondas_aoa[i].difPressure
+                self.criador.aoa_dyn_press[i].valor = self.criador.sondas_aoa[i].dynPressure
+                self.criador.aoa[i].valor = self.criador.sondas_aoa[i].aoa
             time.sleep(delay)
 
 
@@ -145,8 +143,8 @@ class Atualizador(object):
         while self.ajudante.threadsRodando:
             for i in range(self.configurador.NUMERO_DE_CELULAS):
                 self.criador.celulas[i].atualiza()
-                self.criador.rawCellData[i].setValor(self.criador.celulas[i].getRawCellData())
-                self.criador.forcas[i].setValor(self.criador.celulas[i].getForce())
+                self.criador.rawCellData[i].valor = self.criador.celulas[i].rawCellData
+                self.criador.forcas[i].valor = self.criador.celulas[i].force
 
             time.sleep(delay)
 
@@ -157,30 +155,30 @@ class Atualizador(object):
         :param delay: Valor com o tempo entre cada atualização.
         """
         while self.ajudante.threadsRodando:
-            self.criador.balanca.updateForces(self.criador.forcas[0].getValor(),
-                                                self.criador.forcas[1].getValor(),
-                                                self.criador.forcas[2].getValor(),
-                                                self.criador.forcas[3].getValor(),
-                                                self.criador.forcas[4].getValor())
+            self.criador.balanca.updateForces(self.criador.forcas[0].valor,
+                                                self.criador.forcas[1].valor,
+                                                self.criador.forcas[2].valor,
+                                                self.criador.forcas[3].valor,
+                                                self.criador.forcas[4].valor)
 
-            self.criador.Lift.setValor(self.criador.balanca.getLift())
-            self.criador.Drag.setValor(self.criador.balanca.getDrag())
-            self.criador.Moment.setValor(self.criador.balanca.getMoment())
-            self.criador.DistCp.setValor(self.criador.balanca.getDistCp())
+            self.criador.Lift.valor = self.criador.balanca.Lift
+            self.criador.Drag.valor = self.criador.balanca.Drag
+            self.criador.Moment.valor = self.criador.balanca.Moment
+            self.criador.DistCp.valor = self.criador.balanca.Dist_Cp_front
 
             time.sleep(delay)
 
     def transmitirDados(self, delay):
         while self.ajudante.threadsRodando:
             if self.ajudante.transmitindo:
-                self.criador.transmissor.setDados(self.ajudante.receber_dados_usados())
+                self.criador.transmissor.dados = self.criador.receber_todos_os_dados()
                 self.criador.transmissor.transmiteLinha()
             time.sleep(delay)
 
     def gravarDados(self, delay):
         while self.ajudante.threadsRodando:
             if self.ajudante.gravando:
-                self.criador.escritor.setDados(self.ajudante.receber_dados_usados())
+                self.criador.escritor.dados = self.criador.receber_todos_os_dados()
                 self.criador.escritor.escreveLinhaDado()
             time.sleep(delay)
 
@@ -188,6 +186,8 @@ class Atualizador(object):
         index = 0
         while self.ajudante.threadsRodando:
             index += 1
+            if index >= 360:
+                index = 0
             self.criador.transmissor.transmiteDadoProtocolado("htb", 1)
             self.criador.transmissor.transmiteDadoProtocolado("tmt", int(self.ajudante.transmitindo))
             self.criador.transmissor.transmiteDadoProtocolado("gvd", int(self.ajudante.gravando))
@@ -198,27 +198,27 @@ class Atualizador(object):
 
     def atualizarGeral(self, delay):
         while self.ajudante.threadsRodando:
-            self.criador.tempo.setValor((datetime.now() - self.inicioDoDia).total_seconds())
-            self.criador.tamanho.setValor(self.criador.escritor.verificaTamanhoArquivo())
+            self.criador.tempo.valor = (datetime.now() - self.inicioDoDia).total_seconds()
+            self.criador.tamanho.valor = self.criador.escritor.verificaTamanhoArquivo()
             time.sleep(delay)
 
     def lerTelecomando(self, delay):
         while self.ajudante.threadsRodando:
             comandoRecebido = self.criador.transmissor.leLinha()
-            self.criador.mensagemRecebida.setValor(comandoRecebido)
+            self.criador.mensagemRecebida.valor = comandoRecebido
 
             if comandoRecebido.startswith('!') and comandoRecebido.endswith('@'):
                 comandoRecebido = comandoRecebido.replace("!", "")
                 comandoRecebido = comandoRecebido.replace("@", "")
 
                 if comandoRecebido == "tc":
-                    print('Tarando Celulas!')
+                    print('Tarando Celulas')
                     try:
                         self.criador.arduino.sendCommand('tc')
                     except:
                         pass
                 if comandoRecebido == "zp":
-                    print('Tarando Pitots!')
+                    print('Tarando Pitots')
                     for i in range(self.configurador.NUMERO_DE_PITOTS):
                         try:
                             self.criador.pitots[i].setRefPitot()
@@ -226,7 +226,6 @@ class Atualizador(object):
                             pass
 
                 if (comandoRecebido == "AqT%$BNy*("):
-                    print('Criando novo arquivo')
                     self.ajudante.criar_novo_arquivo()
                 if (comandoRecebido == "spd"):
                     print('Passando dados para o pendrive')
@@ -238,22 +237,17 @@ class Atualizador(object):
                     print('Desligando plataforma')
                     os.system('sudo shutdown now')
                 if (comandoRecebido == 'sc'):
-                    print('Configuraçoes recebidas')
+                    print('Recebendo configuraçoes')
                     self.ajudante.configuracoes_recebidas = True
                 if (comandoRecebido == 'dg'):
-                    print('Gravaçao desligada')
                     self.ajudante.desliga_gravacao()
                 if (comandoRecebido == 'lg'):
-                    print('Gravaçao ligada')
                     self.ajudante.liga_gravacao()
                 if (comandoRecebido == 'dt'):
-                    print('Transmissao desligada')
                     self.ajudante.desliga_transmissao()
                 if (comandoRecebido == 'lt'):
-                    print('Transmissao ligada')
                     self.ajudante.liga_transmissao()
                 if (comandoRecebido == 'dtg'):
-                    print('Desativando transmissao generalizada')
                     self.ajudante.desativar_transmissao_generalizada()
                 if (comandoRecebido.startswith('sts')):
                     self.ajudante.setar_transmissao_seletiva(comandoRecebido)

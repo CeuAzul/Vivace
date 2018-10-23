@@ -9,7 +9,7 @@ class SeletorDeModos(object):
         """Função responsável por setar o modo de tranmissao de dados.
         """
 
-        self.criador.modo.setValor(modo)
+        self.criador.modo.valor = modo
         print('Trocando para modo ' + str(modo) + ' de transmissao!')
 
         if modo == 1:

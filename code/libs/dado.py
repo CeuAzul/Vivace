@@ -33,39 +33,3 @@ class Dado:
         self.sensor = sensor
         self.isCru = isCru
         self.isUtil = isUtil
-
-    def setValor(self, valor):
-        """Função seta o valor atual da variável para a especificada no parâmetro.
-
-        :param valor: Valor atual do dado
-        """
-        # Filtrar dado aqui
-        self.valor = valor
-
-    def getValor(self):
-        """Retorna o valor atual do dado.
-
-        :returns: Valor atual do dado
-        """
-        return self.valor
-
-    def setTransmissao(self, mode):
-        """Indica se dado deve ser transmitido ou não.
-
-        :param mode: Boolean indicando se deve ser transmitido ou não
-        """
-        self.transmiteDado = mode
-
-    def setGravacao(self, mode):
-        """Indica se dado deve ser gravado ou não.
-
-        :param mode: Boolean indicando se deve ser gravado ou não
-        """
-        self.gravaDado = mode
-
-    def setPrintDado(self, mode):
-        """Indica se dado deve ser exibido na tela ou não.
-
-        :param mode: Boolean indicando se deve ser exibido ou não
-        """
-        self.printaDado = mode
