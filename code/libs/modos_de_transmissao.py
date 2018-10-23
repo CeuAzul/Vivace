@@ -1,5 +1,3 @@
-from ajudante import Ajudante
-
 class SeletorDeModos(object):
 
     def __init__(self, criador):

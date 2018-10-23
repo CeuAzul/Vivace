@@ -39,7 +39,7 @@ class Pitot:
         :param densAr: Densidade local do ar
         """
 
-        dicioDeDados = self.arduino.getData()
+        dicioDeDados = self.arduino.dicioDeDados
         if self.apelido in dicioDeDados:
             self.rawPitotData = dicioDeDados[self.apelido]
 

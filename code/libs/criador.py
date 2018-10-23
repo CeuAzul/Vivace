@@ -7,19 +7,19 @@ from datetime import datetime
 
 from libs.dado import Dado
 
-from libs.mpu import MPU
-from libs.barometro import Barometro
-from libs.gps import GPS
-from libs.pitot import Pitot
-from libs.sonda_aoa import SondaAoA
-from libs.arduino import Arduino
+from libs.sensors.mpu import MPU
+from libs.sensors.barometro import Barometro
+from libs.sensors.gps import GPS
+from libs.sensors.pitot import Pitot
+from libs.sensors.sonda_aoa import SondaAoA
+from libs.sensors.arduino import Arduino
 
-from libs.celula import Celula
-from libs.balanca import Balanca
+from libs.sensors.celula import Celula
+from libs.sensors.balanca import Balanca
 
 from libs.datilografo import Escritor
 from libs.telepatia import Transmissor
-from configurador import Configurador
+from libs.configurador import Configurador
 
 class Criador(object):
 

@@ -22,11 +22,11 @@ class SondaAoA:
     def atualiza(self, samples=10):
         for pitot in self.pitots:
             if pitot.apelido == self.apelido_pitot_dif:
-                self.difPressure = pitot.getPressaoDinRef()
+                self.difPressure = pitot.pressaoDinamicaRef
                 self.ultimosCemDifPressure.pop(0)
                 self.ultimosCemDifPressure.append(self.difPressure)
             if pitot.apelido == self.apelido_pitot_dyn:
-                self.dynPressure = pitot.getPressaoDinRef()
+                self.dynPressure = pitot.pressaoDinamicaRef
                 self.ultimosCemDynPressure.pop(0)
                 self.ultimosCemDynPressure.append(self.dynPressure)
 
