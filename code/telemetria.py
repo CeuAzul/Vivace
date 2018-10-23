@@ -12,13 +12,13 @@ from datetime import datetime
 import threading
 import sys
 
-from ajudante import Ajudante
-from thredeiro import Thredeiro
-from configurador import Configurador
-from atualizador import Atualizador
-from criador import Criador
+from libs.thredeiro import Thredeiro
+from libs.configurador import Configurador
+from libs.atualizador import Atualizador
+from libs.ajudante import Ajudante
+from libs.criador import Criador
 
-from modos_de_transmissao import SeletorDeModos
+from libs.modos_de_transmissao import SeletorDeModos
 
 def main():
 
