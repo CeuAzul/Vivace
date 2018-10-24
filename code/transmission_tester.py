@@ -1,5 +1,5 @@
 from libs.telepatia import Transmissor
-from thredeiro import Thredeiro
+from libs.thredeiro import Thredeiro
 from datetime import datetime
 import time
 import math

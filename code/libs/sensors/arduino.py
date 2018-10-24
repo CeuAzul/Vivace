@@ -71,7 +71,8 @@ class Arduino:
                                 receivedChecksum = valor
                         except:
                             pass
-                    if float(receivedChecksum) == float(calculatedChecksum):
+
+                    if abs(float(receivedChecksum) - float(calculatedChecksum)) <=1:
                         self.dicioDeDados.update(tempDicioDeDados)
         except:
             pass

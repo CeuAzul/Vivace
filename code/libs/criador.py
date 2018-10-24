@@ -41,9 +41,7 @@ class Criador(object):
                         print(sensor + ' nao encontrado')
 
                 if sensor == 'IMU':
-                    # if self.arduino.arduinoEncontrado:
-                    if False:
-                        # self.mpu = MPU(True, True, True, True, True, True, True, True)
+                    if self.arduino.arduinoEncontrado:
                         self.imu = IMU(self.arduino)
                         print(sensor + ' conectado')
                     else:
