@@ -26,14 +26,14 @@ class Atualizador(object):
         """
         while self.ajudante.threadsRodando:
             self.criador.mpu.atualiza()
-            self.criador.taxaGiroX.valor = self.criador.mpu.getGyx()
-            self.criador.taxaGiroY.valor = self.criador.mpu.getGyy()
-            self.criador.taxaGiroZ.valor = self.criador.mpu.getGyz()
-            self.criador.aceleracaoX.valor = self.criador.mpu.getAcx()
-            self.criador.aceleracaoY.valor = self.criador.mpu.getAcy()
-            self.criador.aceleracaoZ.valor = self.criador.mpu.getAcz()
-            self.criador.pitch.valor = self.criador.mpu.getPitch()
-            self.criador.roll.valor = self.criador.mpu.getRoll()
+
+            self.criador.imu.atualiza()
+            self.criador.taxaGiroX.valor = self.criador.imu.gyx
+            self.criador.taxaGiroY.valor = self.criador.imu.gyy
+            self.criador.taxaGiroZ.valor = self.criador.imu.gyz
+            self.criador.aceleracaoX.valor = self.criador.imu.acx
+            self.criador.aceleracaoY.valor = self.criador.imu.acy
+            self.criador.aceleracaoZ.valor = self.criador.imu.acz
             time.sleep(delay)
 
 
