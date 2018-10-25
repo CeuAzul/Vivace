@@ -20,7 +20,7 @@ class Transmissor:
 
     """
 
-    def __init__(self, separador=",", usarProtocolo=True,  baudrate=57600, codificacao='UTF-8'):
+    def __init__(self, separador=";", usarProtocolo=True,  baudrate=57600, codificacao='UTF-8'):
         """Construtor: Inicializa parâmetros de configuração do Transmissor.
         Exitem dois métodos de transmissão, utilizando o protolo ou não.
 
@@ -66,21 +66,18 @@ class Transmissor:
             if dado.transmiteDado:
                 if self.usarProtocolo:
                     try:
-                        self.serial.write(
+                        string = '!{}={:.{prec}f}{sep}cks={:.{prec}f}@\n'.format(dado.apelido, dado.valor, dado.valor, prec=dado.casasDecimais, sep=self.separador)
                             bytes("!" + dado.apelido + "=" + str(dado.valor) + ';cks=' + str(dado.valor) + "@\n", self.codificacao))
+                        self.serial.write(bytes(string, self.codificacao))
                     except:
                         pass
                 else:
                     try:
-                        self.serial.write(
-                            bytes(str(dado.valor) + self.separador, self.codificacao))
+                        string = '{:.{prec}f}\n'.format(dado.valor, prec=dado.casasDecimais)
+                        self.serial.write(bytes(string, self.codificacao))
                     except:
                         pass
         if not self.usarProtocolo:
-            try:
-                self.serial.write(bytes("\n", self.codificacao))
-            except:
-                pass
 
     def leLinha(self):
         """Essa função é responsável por ler telecomandos recebidos pela serial.
@@ -99,18 +96,14 @@ class Transmissor:
 
     def transmiteCru(self, data):
         try:
-            self.serial.write(bytes(str(data), self.codificacao))
-        except:
-            pass
-
-    def transmiteProtocolado(self, data):
-        try:
-            self.serial.write(bytes("!" + str(data) + "@\n", self.codificacao))
+            string = '{:.4f}\n'.format(data)
+            self.serial.write(bytes(string, self.codificacao))
         except:
             pass
 
     def transmiteDadoProtocolado(self, apelido, valor):
         try:
-            self.serial.write(bytes("!" + str(apelido) + "=" + str(valor) + ';cks=' + str(valor) + "@\n", self.codificacao))
+            string = '!{}={:.4f}{sep}cks={:.4f}@\n'.format(apelido, valor, valor, sep=self.separador)
+            self.serial.write(bytes(string, self.codificacao))
         except:
             pass

@@ -193,7 +193,7 @@ class Atualizador(object):
             self.criador.transmissor.transmiteDadoProtocolado("cfg", int(self.ajudante.configuracoes_recebidas))
             self.criador.transmissor.transmiteDadoProtocolado("idx", index)
             self.criador.transmissor.transmiteDadoProtocolado("sin", seno)
-            print(seno)
+            # print('{:.3f}'.format(seno))
             time.sleep(delay)
 
     def atualizarGeral(self, delay):

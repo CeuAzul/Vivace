@@ -117,7 +117,7 @@ class Criador(object):
             print('Escritor nao criado')
 
     def criar_transmissor(self):
-        self.transmissor = Transmissor(",", True, 57600, 'UTF-8')
+        self.transmissor = Transmissor(";", True, 57600, 'UTF-8')
 
         if self.transmissor.transmissorEncontrado == True:
             self.configurador.ENVIAR_SINAL_DE_VIDA = True
