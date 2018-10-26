@@ -38,7 +38,7 @@ class Arduino:
                     self.porta = pt[0]
                     self.devName = pt[1]
                     print('Connecting on Arduino ' + self.devName + ' on port ' + self.porta)
-                    self.serial = serial.Serial(port=self.porta, baudrate=self.baudrate, timeout=1)
+                    self.serial = serial.Serial(port=self.porta, baudrate=self.baudrate, timeout=0.01)
                     self.arduinoEncontrado = True
 
     def updateData(self):
@@ -47,33 +47,34 @@ class Arduino:
         separa os dados por ";" e separa cada dado entre "apelido" e "valor".
         Por fim, retorna um dicionario com apelidos e valores.
         """
-
         try:
-            linha_de_dados = self.serial.readline().decode(self.codificacao)
+            if self.serial.in_waiting > 0:
+                linha_de_dados = self.serial.readline().decode(self.codificacao)
 
-            if(linha_de_dados != ""):
-                linha_de_dados = linha_de_dados.replace("\r\n", "")
-                if linha_de_dados.startswith("!") and linha_de_dados.endswith("@"):
-                    linha_de_dados = linha_de_dados.replace(" ", "")
-                    linha_de_dados = linha_de_dados.replace("!", "")
-                    linha_de_dados = linha_de_dados.replace("@", "")
-                    dados = linha_de_dados.split(";")
-                    receivedChecksum = 0
-                    calculatedChecksum = 0
-                    tempDicioDeDados = {}
-                    for dado in dados:
-                        try:
-                            apelido, valor = dado.split("=")
-                            if apelido != 'cks':
-                                calculatedChecksum += float(valor)
-                                tempDicioDeDados[apelido] = float(valor)
-                            else:
-                                receivedChecksum = valor
-                        except:
-                            pass
+                if(linha_de_dados != ""):
+                    linha_de_dados = linha_de_dados.replace("\r\n", "")
+                    if linha_de_dados.startswith("!") and linha_de_dados.endswith("@"):
+                        linha_de_dados = linha_de_dados.replace(" ", "")
+                        linha_de_dados = linha_de_dados.replace("!", "")
+                        linha_de_dados = linha_de_dados.replace("@", "")
+                        dados = linha_de_dados.split(";")
+                        receivedChecksum = 0
+                        calculatedChecksum = 0
+                        tempDicioDeDados = {}
+                        for dado in dados:
+                            try:
+                                apelido, valor = dado.split("=")
+                                if apelido != 'cks':
+                                    calculatedChecksum += float(valor)
+                                    tempDicioDeDados[apelido] = float(valor)
+                                else:
+                                    receivedChecksum = valor
+                            except:
+                                pass
 
-                    if abs(float(receivedChecksum) - float(calculatedChecksum)) <=1:
-                        self.dicioDeDados.update(tempDicioDeDados)
+                        if abs(float(receivedChecksum) - float(calculatedChecksum)) <=1:
+                            self.dicioDeDados.update(tempDicioDeDados)
+                    self.sendCommand('cs')
         except:
             pass
 

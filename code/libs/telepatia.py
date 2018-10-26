@@ -53,7 +53,7 @@ class Transmissor:
                     self.porta = pt[0]
                     self.devName = pt[1]
                     print('Connecting on Transmissor ' + self.devName + ' on port ' + self.porta)
-                    self.serial = serial.Serial(port=self.porta, baudrate=self.baudrate, timeout=1)
+                    self.serial = serial.Serial(port=self.porta, baudrate=self.baudrate, timeout=0.01)
                     self.transmissorEncontrado = True
 
     def transmiteLinha(self):
@@ -67,7 +67,6 @@ class Transmissor:
                 if self.usarProtocolo:
                     try:
                         string = '!{}={:.{prec}f}{sep}cks={:.{prec}f}@\n'.format(dado.apelido, dado.valor, dado.valor, prec=dado.casasDecimais, sep=self.separador)
-                            bytes("!" + dado.apelido + "=" + str(dado.valor) + ';cks=' + str(dado.valor) + "@\n", self.codificacao))
                         self.serial.write(bytes(string, self.codificacao))
                     except:
                         pass
@@ -77,7 +76,6 @@ class Transmissor:
                         self.serial.write(bytes(string, self.codificacao))
                     except:
                         pass
-        if not self.usarProtocolo:
 
     def leLinha(self):
         """Essa função é responsável por ler telecomandos recebidos pela serial.
