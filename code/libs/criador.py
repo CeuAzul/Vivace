@@ -8,6 +8,7 @@ from datetime import datetime
 from libs.dado import Dado
 
 from libs.sensors.mpu import MPU
+from libs.sensors.imu import IMU
 from libs.sensors.barometro import Barometro
 from libs.sensors.gps import GPS
 from libs.sensors.pitot import Pitot
@@ -40,10 +41,10 @@ class Criador(object):
                         print(sensor + ' nao encontrado')
 
                 if sensor == 'IMU':
-                    try:
-                        self.mpu = MPU(True, True, True, True, True, True, True, True)
+                    if self.arduino.arduinoEncontrado:
+                        self.imu = IMU(self.arduino)
                         print(sensor + ' conectado')
-                    except:
+                    else:
                         self.configurador.LISTA_USAR.remove('IMU')
                         print(sensor + ' nao conectado')
 
@@ -116,7 +117,7 @@ class Criador(object):
             print('Escritor nao criado')
 
     def criar_transmissor(self):
-        self.transmissor = Transmissor(",", True, 57600, 'UTF-8')
+        self.transmissor = Transmissor(";", True, 57600, 'UTF-8')
 
         if self.transmissor.transmissorEncontrado == True:
             self.configurador.ENVIAR_SINAL_DE_VIDA = True
@@ -148,8 +149,6 @@ class Criador(object):
                     self.aceleracaoX = Dado("Aceleração em X", "g", "acx", "IMU", 2)
                     self.aceleracaoY = Dado("Aceleração em Y", "g", "acy", "IMU", 2)
                     self.aceleracaoZ = Dado("Aceleração em Z", "g", "acz", "IMU", 2)
-                    self.pitch = Dado("Pitch", "º", "pit", "IMU", 2)
-                    self.roll = Dado("Roll", "º", "rol", "IMU", 2)
 
                 if sensor == 'BARO':
                     print('Dados do BARO criados')
@@ -251,9 +250,7 @@ class Criador(object):
                         self.taxaGiroZ,
                         self.aceleracaoX,
                         self.aceleracaoY,
-                        self.aceleracaoZ,
-                        self.pitch,
-                        self.roll
+                        self.aceleracaoZ
                     ])
 
                 if sensor == 'BARO':

@@ -104,12 +104,14 @@ class Escritor:
             if self.printaNome:
                 for dado in self.dados:
                     if dado.gravaDado:
-                        file.write("%s%s" % (dado.nome, self.separador))
+                        string = '{}{sep}'.format(dado.nome, sep=self.separador)
+                        file.write(string)
             file.write("\r\n")
             if self.printaUM:
                 for dado in self.dados:
                     if dado.gravaDado:
-                        file.write("%s%s" % (dado.unidadeMedida, self.separador))
+                        string = '{}{sep}'.format(dado.unidadeMedida, sep=self.separador)
+                        file.write(string)
             file.write("\r\n")
 
     def escreveLinhaDado(self):
@@ -122,9 +124,10 @@ class Escritor:
             for dado in self.dados:
                 if dado.gravaDado:
                     if type(dado.valor) == float:
-                        file.write("%.*f%s" %
-                                   (dado.casasDecimais, dado.valor, self.separador))
+                        string = '{:.{prec}f}{sep}'.format(dado.valor, prec=dado.casasDecimais, sep=self.separador)
+                        file.write(string)
                     else:
+                        string = '{}{sep}'.format(dado.valor, sep=self.separador)
                         file.write("%s%s" % (dado.valor, self.separador))
             file.write("\r\n")
 

@@ -25,15 +25,13 @@ class Atualizador(object):
         :param delay: Valor com o tempo entre cada atualização.
         """
         while self.ajudante.threadsRodando:
-            self.criador.mpu.atualiza()
-            self.criador.taxaGiroX.valor = self.criador.mpu.getGyx()
-            self.criador.taxaGiroY.valor = self.criador.mpu.getGyy()
-            self.criador.taxaGiroZ.valor = self.criador.mpu.getGyz()
-            self.criador.aceleracaoX.valor = self.criador.mpu.getAcx()
-            self.criador.aceleracaoY.valor = self.criador.mpu.getAcy()
-            self.criador.aceleracaoZ.valor = self.criador.mpu.getAcz()
-            self.criador.pitch.valor = self.criador.mpu.getPitch()
-            self.criador.roll.valor = self.criador.mpu.getRoll()
+            self.criador.imu.atualiza()
+            self.criador.taxaGiroX.valor = self.criador.imu.gyx
+            self.criador.taxaGiroY.valor = self.criador.imu.gyy
+            self.criador.taxaGiroZ.valor = self.criador.imu.gyz
+            self.criador.aceleracaoX.valor = self.criador.imu.acx
+            self.criador.aceleracaoY.valor = self.criador.imu.acy
+            self.criador.aceleracaoZ.valor = self.criador.imu.acz
             time.sleep(delay)
 
 
@@ -188,12 +186,13 @@ class Atualizador(object):
             index += 1
             if index >= 360:
                 index = 0
+            seno = math.sin(math.radians(index))
             self.criador.transmissor.transmiteDadoProtocolado("htb", 1)
             self.criador.transmissor.transmiteDadoProtocolado("tmt", int(self.ajudante.transmitindo))
             self.criador.transmissor.transmiteDadoProtocolado("gvd", int(self.ajudante.gravando))
             self.criador.transmissor.transmiteDadoProtocolado("cfg", int(self.ajudante.configuracoes_recebidas))
             self.criador.transmissor.transmiteDadoProtocolado("idx", index)
-            self.criador.transmissor.transmiteDadoProtocolado("sin", math.sin(index))
+            self.criador.transmissor.transmiteDadoProtocolado("sin", seno)
             time.sleep(delay)
 
     def atualizarGeral(self, delay):
